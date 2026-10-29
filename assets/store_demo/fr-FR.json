@@ -1,0 +1,54 @@
+{
+  "items": [
+    [
+      "Chaise de cuisine",
+      "Pin",
+      "Établi 1",
+      "Vérifier l’ancien vernis sur une zone cachée."
+    ],
+    [
+      "Horloge murale",
+      "Bouleau",
+      "Étagère 2",
+      "Vérifier l’état"
+    ],
+    [
+      "Malle de voyage",
+      "Chêne",
+      "Étagère 3",
+      "Nettoyer la surface"
+    ],
+    [
+      "Cadre de miroir",
+      "Pin",
+      "Étagère 4",
+      "Appliquer une couche protectrice"
+    ],
+    [
+      "Table d’appoint",
+      "Bouleau",
+      "Étagère 5",
+      "Vérifier l’état"
+    ]
+  ],
+  "photos": [
+    "images/chair.png",
+    "images/clock.jpg",
+    "images/chest.png",
+    null,
+    null
+  ],
+  "statuses": [
+    "started",
+    "planned",
+    "finished",
+    "planned",
+    "started"
+  ],
+  "steps": [
+    "Vérifier l’état",
+    "Nettoyer la surface",
+    "Appliquer une couche protectrice"
+  ],
+  "search": "vernis"
+}

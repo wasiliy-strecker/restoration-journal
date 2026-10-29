@@ -1,0 +1,5 @@
+RestaurierungsHeft
+
+Guarda el nombre, objeto o material, ubicación y notas. Añade una foto, tres estados y pasos con casillas. Exporta el proyecto guardado con su foto, estado y lista de pasos como PDF.
+
+Busca en los cuatro campos de texto y edita tus proyectos. Todo se guarda localmente sin cuenta ni Internet. Elige alemán, inglés, español, francés, italiano o portugués de Brasil. El idioma cambia al reiniciar.

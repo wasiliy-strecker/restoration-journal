@@ -1,0 +1,54 @@
+{
+  "items": [
+    [
+      "Cadeira de cozinha",
+      "Pinho",
+      "Bancada 1",
+      "Verificar o verniz antigo em uma área escondida."
+    ],
+    [
+      "Relógio de parede",
+      "Bétula",
+      "Prateleira 2",
+      "Verificar o estado"
+    ],
+    [
+      "Baú de viagem",
+      "Carvalho",
+      "Prateleira 3",
+      "Limpar a superfície"
+    ],
+    [
+      "Moldura de espelho",
+      "Pinho",
+      "Prateleira 4",
+      "Aplicar uma camada protetora"
+    ],
+    [
+      "Mesa lateral",
+      "Bétula",
+      "Prateleira 5",
+      "Verificar o estado"
+    ]
+  ],
+  "photos": [
+    "images/chair.png",
+    "images/clock.jpg",
+    "images/chest.png",
+    null,
+    null
+  ],
+  "statuses": [
+    "started",
+    "planned",
+    "finished",
+    "planned",
+    "started"
+  ],
+  "steps": [
+    "Verificar o estado",
+    "Limpar a superfície",
+    "Aplicar uma camada protetora"
+  ],
+  "search": "verniz"
+}

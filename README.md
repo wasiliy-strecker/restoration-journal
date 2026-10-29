@@ -221,3 +221,12 @@ Jede Stufe behält die vorherigen Grundfunktionen. RestaurierungsHeft ist die
 beauftragte fünfte und letzte Stufe. FactoryForge und PDF Batch Studio bleiben
 separate größere Projekte. Keine Kostenplanung, Werkzeugbestände, Fristen,
 Unteraufgaben, Fortschrittswerte, PDF-Import, PDF-Editor, Druckfunktion oder Cloud.
+
+## Sprachen und Store-Vorschau
+
+Oberfläche und PDF-Ausgabe unterstützen Deutsch, Englisch, Spanisch, Französisch,
+Italienisch und brasilianisches Portugiesisch. „Sprache“ oder Strg+, speichert
+die Auswahl für den nächsten Start. Bestandsdaten und Projektumfang bleiben erhalten.
+[Internationalisierung](docs/internationalization.md) beschreibt Store-Texte, echte
+Linux-Aufnahmen, PDF-Nachweise und Lieferung als Ordner ohne Archiv.
+Windows-Abnahme und Einreichung bleiben separat.

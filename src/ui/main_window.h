@@ -18,7 +18,8 @@ class MainWindow final : public QMainWindow {
   Q_OBJECT
 public:
   MainWindow(StorageController& controller, QString dataDirectory, QWidget* parent = nullptr,
-             std::shared_ptr<ExportDialogs> exportDialogs = {});
+             std::shared_ptr<ExportDialogs> exportDialogs = {},
+             QString languagePreference = QStringLiteral("auto"));
 
 protected:
   void closeEvent(QCloseEvent* event) override;
@@ -35,8 +36,10 @@ private:
   void exportSelected();
   std::shared_ptr<ExportDialogs> exportDialogs_;
   bool choosingExport_ = false;
+  void showLanguage();
   StorageController& controller_;
   QString dataDirectory_;
+  QString languagePreference_;
   ProjectList projects_;
   ProjectList visibleProjects_;
   QPointer<ProjectEditor> editor_;
@@ -56,6 +59,7 @@ private:
   QPushButton* edit_;
   QPushButton* remove_;
   QPushButton* reload_;
+  QPushButton* language_;
   QPushButton* export_;
   bool ready_ = false;
 };

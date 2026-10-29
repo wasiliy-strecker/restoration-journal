@@ -1,0 +1,54 @@
+{
+  "items": [
+    [
+      "Küchenstuhl",
+      "Kiefer",
+      "Werkbank 1",
+      "Alte Lackschicht an verdeckter Stelle prüfen."
+    ],
+    [
+      "Wanduhr",
+      "Birke",
+      "Regal 2",
+      "Zustand prüfen"
+    ],
+    [
+      "Reisetruhe",
+      "Eiche",
+      "Regal 3",
+      "Oberfläche reinigen"
+    ],
+    [
+      "Spiegelrahmen",
+      "Kiefer",
+      "Regal 4",
+      "Schutzschicht auftragen"
+    ],
+    [
+      "Beistelltisch",
+      "Birke",
+      "Regal 5",
+      "Zustand prüfen"
+    ]
+  ],
+  "photos": [
+    "images/chair.png",
+    "images/clock.jpg",
+    "images/chest.png",
+    null,
+    null
+  ],
+  "statuses": [
+    "started",
+    "planned",
+    "finished",
+    "planned",
+    "started"
+  ],
+  "steps": [
+    "Zustand prüfen",
+    "Oberfläche reinigen",
+    "Schutzschicht auftragen"
+  ],
+  "search": "Lackschicht"
+}

@@ -1,0 +1,54 @@
+{
+  "items": [
+    [
+      "Sedia da cucina",
+      "Pino",
+      "Banco da lavoro 1",
+      "Controllare la vecchia vernice in una zona nascosta."
+    ],
+    [
+      "Orologio da parete",
+      "Betulla",
+      "Scaffale 2",
+      "Controllare lo stato"
+    ],
+    [
+      "Baule da viaggio",
+      "Quercia",
+      "Scaffale 3",
+      "Pulire la superficie"
+    ],
+    [
+      "Cornice dello specchio",
+      "Pino",
+      "Scaffale 4",
+      "Applicare uno strato protettivo"
+    ],
+    [
+      "Tavolino",
+      "Betulla",
+      "Scaffale 5",
+      "Controllare lo stato"
+    ]
+  ],
+  "photos": [
+    "images/chair.png",
+    "images/clock.jpg",
+    "images/chest.png",
+    null,
+    null
+  ],
+  "statuses": [
+    "started",
+    "planned",
+    "finished",
+    "planned",
+    "started"
+  ],
+  "steps": [
+    "Controllare lo stato",
+    "Pulire la superficie",
+    "Applicare uno strato protettivo"
+  ],
+  "search": "vernice"
+}

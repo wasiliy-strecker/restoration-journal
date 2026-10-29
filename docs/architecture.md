@@ -302,3 +302,11 @@ PDF-Grundlagen:
 [QTextLayout](https://doc.qt.io/qt-6.8/qtextlayout.html),
 [QSaveFile](https://doc.qt.io/qt-6.8/qsavefile.html),
 [DejaVu-Lizenz](https://dejavu-fonts.github.io/License.html).
+
+## Sprachen
+
+App-lokale TS-Kataloge und Qt-Basistexte werden vor Fenstern und Worker installiert.
+Die Auswahl bleibt pro Prozess unveränderlich und gilt auch für PDF-Fehler und
+PDF-Inhalte. QLocale steuert Sortierung und regionale Zahlen. `LanguageDialog`
+speichert atomar über den vorhandenen Worker. Fachliche Daten und Schema bleiben
+unverändert. PDF-Dateien werden weiterhin aus konsistenten gespeicherten Daten erzeugt.

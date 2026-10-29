@@ -171,3 +171,11 @@ Stand der Prüfung: 28. Oktober 2026. Vor Veröffentlichung erneut prüfen.
 Für die Sandbox-Fotoauswahl zusätzlich die offizielle
 [Apple-Dokumentation zum lesenden Zugriff auf ausgewählte Dateien](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.security.files.user-selected.read-write) prüfen.
 Die Bilddecoder-Herkunft ist in [den Komponentenhinweisen](../THIRD_PARTY_NOTICES.md) dokumentiert.
+
+## Internationale Vorschau
+
+LinguistTools und passende Qt-Basiskataloge sind Build-Voraussetzungen. Alle
+Sprachen werden in die Laufzeit eingebettet. `--stage-only --output-dir` erlaubt
+eine eigene Prüflaufzeit ohne Lieferarchiv. Qt, Bild-/SQL-Plugins und DejaVu
+bleiben app-lokal gebündelt. Poppler ist ausschließlich ein Prüfwerkzeug.
+Siehe [Internationalisierung](internationalization.md).

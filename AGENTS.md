@@ -7,7 +7,11 @@ je eines gespeicherten Projekts. Keine weiteren Hauptfunktionen.
 
 Workspace-Regeln gelten ergänzend. Andere Apps nur lesen. Eigene App-Kennung
 `de.appfabrik.restaurierungsheft`. Keine gemeinsame Runtime oder Datenübernahme.
-C++-Bezeichner englisch, Oberfläche und Dokumentation deutsch.
+C++-Bezeichner und GitHub-Metadaten englisch, Dokumentation deutsch.
+Oberfläche und PDF-Ausgabe unterstützen de-DE, en-US, es-ES, fr-FR, it-IT und pt-BR.
+Neue sichtbare Texte vollständig übersetzen. Schema, UUIDs, Statuscodes und
+Benutzerdaten bleiben sprachneutral. Sprachwahl gilt ab Neustart.
+`docs/internationalization.md` beschreibt isolierte Prüfungen und Ordnerlieferung.
 
 ## Architektur
 

@@ -1,9 +1,7 @@
 # Prüfbericht
 
-Stand: 28. Oktober 2026, RestaurierungsHeft 0.1.0.
+Stand: 29. Oktober 2026, RestaurierungsHeft 0.1.0.
 Alle Testdaten sind synthetisch. Normale Benutzerdaten wurden nicht geöffnet.
-Andere Portfolio-Apps wurden ausschließlich gelesen. HolzwerkProjekt blieb
-auf seinem sauberen Ausgangscommit `6940968`.
 
 ## Tatsächlich verwendete Umgebung
 
@@ -35,8 +33,9 @@ ruff format --check scripts
 bash -n scripts/*.sh
 ```
 
-**145 fachliche Testausführungen in neun CTest-Suiten bestehen** in Debug,
-Release und unter AddressSanitizer, LeakSanitizer und UndefinedBehaviorSanitizer.
+**203 fachliche Qt-Testausführungen und die Katalogprüfung bestehen** in Release
+und unter AddressSanitizer, LeakSanitizer und UndefinedBehaviorSanitizer.
+Das sind zehn Qt-Suiten und elf erfolgreiche CTest-Einträge.
 Zusätzlich meldet jede Qt-Suite Initialisierung und Abschluss. Auf dieser
 Linux-Umgebung gab es keine ausgelassenen Fälle.
 
@@ -49,8 +48,9 @@ Linux-Umgebung gab es keine ausgelassenen Fälle.
 | status | 10 | Standards, explizite Zuordnung, alle Wechsel, ungültige Werte und atomare Fehler |
 | photo_dialogs | 8 | Fotoentwürfe, Abbruch, Fehler, veraltete Ergebnisse und zerstörte Fenster |
 | checklist | 25 | UUIDs, Reihenfolge, Suche, Constraints, echte späte SQL-Fehler und vollständige Entwürfe |
-| pdf | 31 | Inhalt, Schrift, Foto, Seiten, Snapshots, Dateinamen und sichere Dateioperationen |
+| pdf | 37 | Inhalt, Schrift, Foto, Seiten, Snapshots, Dateinamen und sichere Dateioperationen |
 | pdf_dialogs | 5 | Auswahl, Abbruch, Ersatz, Fehlerwiederholung, feste ID, Hintergrundarbeit und Lebensdauer |
+| i18n | 52 | Sechs Sprachen, Formatparameter, regionale Formate, Spracheinstellungen, Worker und übersetzte Dialoge |
 
 Formatter, strenge Compilerwarnungen und clang-tidy bestehen. Ein eng begrenzter
 NOLINT-Kommentar begründet die zwei benannten QString-Pfadparameter an der
@@ -59,6 +59,43 @@ SQLite und Bilddecoder sind selbst nicht mit den Sanitizern instrumentiert.
 Offscreen-Hinweise und absichtlich ausgelöste Decoderwarnungen sind bekannte
 Ausgaben der Fehlerfälle. Python-Lint und Format, Shell-Syntax, JSON und XML
 wurden geprüft. PowerShell und native Zielsystemwerkzeuge wurden nicht ausgeführt.
+
+## Internationalisierung vom 29. Oktober 2026
+
+181 eigene Meldungen je Sprache und passende Qt-Basisübersetzungen sind für
+de-DE, en-US, es-ES, fr-FR, it-IT und pt-BR eingebettet. Katalogschlüssel,
+Formatparameter, regionale Formate und atomare Spracheinstellungen werden
+geprüft. Die gewählte Sprache gilt ab Neustart. Eigene UI, Fehler und PDF-Felder
+sind übersetzt. Produktidentität, Schema und gespeicherte Nutzertexte bleiben erhalten.
+
+Zwölf echte Prozesse aus dem eigenständigen Paket bestehen den vollständigen
+Ablauf in sechs Sprachen einschließlich Neustart. Fotos, alle Statuswechsel,
+leere Schritte, doppelte Schritttexte mit unabhängigen UUIDs, Positionslücken,
+Verwerfen, echte SQLite-Sperren, Fehlerwiederholung und Sprachwechsel sind
+nachgewiesen. 24 echte Aufnahmen in 1920 × 1080 wurden visuell geprüft.
+
+Jede Sprache exportiert ein gespeichertes Projekt über den nativen Dialog.
+Abbruch, sichere Ersatzvorauswahl und bestätigter Ersatz werden bedient.
+Poppler prüft Text, eingebettete DejaVu-Schrift, Fotoobjekte und A4-Seiten
+unabhängig und rendert sämtliche Seiten. Alle sechs Projektseiten wurden visuell
+geprüft. Unicode-Ligaturen werden im Textvergleich mit NFKC normalisiert.
+Die Datenbank bleibt bei jedem Export bytegenau unverändert.
+
+Zusätzlich besteht der bisherige vollständige deutsche Paketablauf mit
+Schreibfehler, Wiederholung, Quellenlöschung, Neustart, minimaler PDF und einem
+siebenseitigen Dokument. Foto, Checkliste, Umbrüche und Schlussseite wurden
+visuell geprüft. Alle Laufzeitdateien, Quellstände und Nachweise werden über
+SHA-256 zugeordnet. Sechs Store-Textfassungen und eigene Restaurierungsmotive
+liegen vor. Es werden ausschließlich Ordner geliefert.
+
+Aktuelle Nachweise liegen in den ignorierten Verzeichnissen:
+
+```text
+build/international-release-check.log
+build/international-asan-check.log
+build/international-captures-final-v2
+build/international-legacy-gui-final
+```
 
 ## Speicherung und übernommene Funktionen
 
@@ -123,12 +160,12 @@ Reproduzierbare synthetische Beispiel-PDFs entstehen durch:
 
 ```bash
 source scripts/env.sh
-ctest --preset dev -R '^pdf$'
-python3 scripts/verify_pdf.py build/dev/verification/pdf/*.pdf
+ctest --preset release -R '^pdf$'
+python3 scripts/verify_pdf.py build/release/verification/pdf/*.pdf
 ```
 
 `minimal.pdf`, sechs vollständige Varianten und `long.pdf` liegen danach unter
-`build/dev/verification/pdf`. Der zusätzliche Helfer prüft Schrifteinbettung,
+`build/release/verification/pdf`. Der zusätzliche Helfer prüft Schrifteinbettung,
 A4-Maße, Seitenränder, Kopf-/Fußabstand und Wortüberschneidungen unabhängig
 an den extrahierten Poppler-Koordinaten. Für das lange Dokument wurden alle
 1930 Wörter auf 13 Seiten ohne Randverletzung oder Wortüberlappung geprüft.
@@ -141,22 +178,17 @@ zur Checkliste und die Schlusszeile bleiben lesbar. Die sichtbaren Bedienläufe
 erzeugten zusätzlich ein siebenseitiges Dokument. Auch dessen Übergang und
 Schluss sowie das Foto-PDF nach Neustart wurden visuell kontrolliert.
 
-## Vollständige sichtbare Bedienung
+## Vollständige echte Bedienung
 
-```bash
-source scripts/env.sh
-DISPLAY=:0 python3 scripts/visible_desktop.py --wm-root .tools/desktop/root --binary build/dev/restaurierungsheft --output build/manual/dev-visible-4
-```
+Der bisherige vollständige deutsche Ablauf wurde am 29. Oktober aus dem neuen
+Paket erneut ausgeführt. Ein eigenes Xvfb-Display mit eigenem Openbox bleibt
+vollständig vom Nutzerdesktop getrennt. Die Automation kontrolliert ausschließlich
+eigene Prozess- und Fenster-IDs. Es werden nur synthetische Daten verwendet.
 
-Xephyr erhielt ein eigenes freies Display, hier :2, mit eigenem Openbox und
-sichtbarem Fenster auf :0. Die gemeinsame UI-Sperre blieb über Start, Bedienung
-und Abbau gehalten. Automation kontrolliert eigene Prozess- und Fenster-IDs.
-Kein fremdes Display, Fenster oder Testserver wurde beendet.
-Die zusätzliche lokale Openbox-Werkzeuginstallation ist ignoriert und gehört
-nicht zur Produktlaufzeit. Ohne lokale Werkzeugkopie kann `--wm-root` entfallen.
-
-Der Entwicklungsablauf besteht vollständig. Der Helfer prüft die Daten zusätzlich
-über eine unabhängige lesende SQLite-Verbindung und kontrolliert Originalbildbytes.
+Der Helfer prüft den Datenbestand zusätzlich über eine unabhängige lesende
+SQLite-Verbindung und kontrolliert Originalbildbytes. Der Ablauf unter
+`build/international-legacy-gui-final` besteht einschließlich nativer Dialoge,
+PDF-Schreibfehler, sicherem Dateiersatz und Neustart.
 
 | Sichtbarer Ablauf | Ergebnis |
 | --- | --- |
@@ -181,36 +213,29 @@ Der Entwicklungsablauf besteht vollständig. Der Helfer prüft die Daten zusätz
 
 Die Datenbankdatei ist vor und nach jedem Export-, Abbruch- und Exportfehler-
 ablauf bytegenau gleich. Eigene temporäre Exportreste bleiben nicht zurück.
-Separate sichtbare Qt-Tests auf :0 prüfen 18-Punkt-Schrift bei 400 × 340 Pixeln
-und bis zu 30 Schritten. Speichern und Abbrechen bleiben erreichbar.
+Die Qt-Dialogtests prüfen zusätzlich große Schrift und kleine Fenster.
+Speichern und Abbrechen bleiben erreichbar.
 
 ## Eigenständiges Linux-Paket
 
-Das Release-Paket wurde außerhalb des Projekts unter
-`/tmp/restaurierungsheft-package-test-jkr45ec7/RestaurierungsHeft` sichtbar geprüft:
+Geprüfte Laufzeit:
 
-```bash
-DISPLAY=:0 python3 scripts/visible_desktop.py --wm-root .tools/desktop/root --binary /tmp/restaurierungsheft-package-test-jkr45ec7/RestaurierungsHeft/RestaurierungsHeft.sh --output build/manual/package-visible-2 --clean-environment
-python3 scripts/verify_pdf.py build/manual/package-visible-2/*.pdf
+```text
+build/staging/international-20261029/restaurierungsheft-0.1.0-linux-x64/RestaurierungsHeft.sh
 ```
 
-Derselbe vollständige Ablauf besteht aus diesem Paket. Qt-, QML-, SDK- und
-externe Bibliotheksvariablen wurden entfernt, PATH auf `/usr/bin:/bin` begrenzt.
-Eine eigene Fontconfig-Konfiguration stellt nur System-Noto-Schriften für den
-Desktop bereit. `fc-list` findet darin keine DejaVu-Schrift. Dennoch enthält
-die Paket-PDF die eingebettete DejaVu Sans mit korrektem Text und Foto.
-
+Qt-, QML-, SDK- und externe Bibliotheksvariablen wurden entfernt, PATH auf
+`/usr/bin:/bin` begrenzt. Eine eigene Fontconfig-Konfiguration stellt im deutschen
+Gesamtablauf nur System-Noto-Schriften für den Desktop bereit. Die Paket-PDF
+enthält dennoch die eingebettete DejaVu Sans mit korrektem Text und Foto.
 `/proc/<pid>/maps` bestätigt Qt, ICU 73, QSQLITE, JPEG und das GTK3-Plattformthema
-aus dem Paket. Der native GTK-Dialog lädt daneben den System-SVG-Decoder.
-Dessen libxml2 hängt an System-ICU 74, nachgewiesen über Prozessabbild und ldd.
-Das ist eine Desktopabhängigkeit, keine fehlende Qt-Paketbibliothek.
-Die Nachweise liegen unter `build/manual/package-visible-2`, einschließlich
-`result.json`, `loaded-libraries.json`, `process-maps.txt` und
-`system-svg-dependencies.txt`.
+aus dem Paket. Der System-SVG-Decoder des nativen GTK-Dialogs bleibt eine
+Desktopabhängigkeit. `loaded-libraries.json` und die Prozessabbilder enthalten
+die konkreten Herkunftsnachweise.
 
-Das abschließende Lieferarchiv unter `build/releases` enthält aktualisierte
-Dokumentation und Screenshots. Launcher, Programm, Bibliotheken, Plugins und
-Übersetzungen werden bytegenau gegen die sichtbar geprüfte Laufzeit verglichen.
+Die internationale Lieferung besteht aus einem Ordner ohne Archiv. Launcher,
+Programm, Bibliotheken, Plugins, Übersetzungen und Quellstand werden bytegenau
+gegen die geprüfte Laufzeit verglichen. Das Manifest nennt den lokalen Commit.
 Der Test ist ein vollständiger GUI-/PDF-Nachweis, kein bloßer Versionsaufruf.
 
 Versionierte synthetische Belege:
@@ -226,7 +251,7 @@ Versionierte synthetische Belege:
 
 ## Offene native und Store-Abnahmen
 
-Windows-x64-ZIP/MSIX und macOS-App/DMG für Intel und Apple Silicon sind
+Windows-x64-Paketierung/MSIX und macOS-App/DMG für Intel und Apple Silicon sind
 vorbereitet. Sie wurden hier nicht nativ gebaut oder ausgeführt. Native Dialoge,
 Dateisperren, Hardlinks, atomarer Ersatz, ACLs, Installation, Updates, Skalierung
 und Tastenkürzel benötigen dort dieselbe vollständige Paketabnahme ohne SDK.

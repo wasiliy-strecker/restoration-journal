@@ -1,0 +1,54 @@
+{
+  "items": [
+    [
+      "Kitchen chair",
+      "Pine",
+      "Workbench 1",
+      "Check the old varnish in a hidden area."
+    ],
+    [
+      "Wall clock",
+      "Birch",
+      "Shelf 2",
+      "Check the condition"
+    ],
+    [
+      "Travel chest",
+      "Oak",
+      "Shelf 3",
+      "Clean the surface"
+    ],
+    [
+      "Mirror frame",
+      "Pine",
+      "Shelf 4",
+      "Apply a protective finish"
+    ],
+    [
+      "Side table",
+      "Birch",
+      "Shelf 5",
+      "Check the condition"
+    ]
+  ],
+  "photos": [
+    "images/chair.png",
+    "images/clock.jpg",
+    "images/chest.png",
+    null,
+    null
+  ],
+  "statuses": [
+    "started",
+    "planned",
+    "finished",
+    "planned",
+    "started"
+  ],
+  "steps": [
+    "Check the condition",
+    "Clean the surface",
+    "Apply a protective finish"
+  ],
+  "search": "varnish"
+}

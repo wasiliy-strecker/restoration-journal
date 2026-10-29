@@ -11,7 +11,7 @@
 
 namespace restoration {
 
-enum class Operation : quint8 { Load, Save, Remove, Import, Export };
+enum class Operation : quint8 { Load, Save, Remove, Import, Export, Language };
 using RepositoryFactory = std::function<std::unique_ptr<ProjectRepository>()>;
 
 class StorageWorker final : public QObject {
@@ -23,6 +23,7 @@ public slots:
   void load();
   void save(qint64 id, const restoration::ProjectDraft& draft);
   void remove(qint64 id);
+  void saveLanguage(const QString& directory, const QString& preference);
   void read(qint64 id, quint64 token);
   void importPhotoFile(const QString& path);
   void inspectExport(qint64 id, const QString& path, const QString& dataDirectory);
@@ -39,6 +40,7 @@ signals:
   void loaded(const restoration::ProjectList& projects);
   void saved(const restoration::RestorationProject& project);
   void removed(qint64 id);
+  void languageSaved(const QString& preference);
   void failed(restoration::Operation operation, const QString& message);
 
 private:
@@ -55,6 +57,7 @@ public:
   bool load();
   bool save(qint64 id, const ProjectDraft& draft);
   bool remove(qint64 id);
+  bool saveLanguage(const QString& directory, const QString& preference);
   void read(qint64 id, quint64 token);
   bool importPhotoFile(const QString& path);
   bool prepareExport(qint64 id, const QString& path, const QString& dataDirectory);
@@ -72,6 +75,7 @@ signals:
   void loaded(const restoration::ProjectList& projects);
   void saved(const restoration::RestorationProject& project);
   void removed(qint64 id);
+  void languageSaved(const QString& preference);
   void failed(restoration::Operation operation, const QString& message);
   void busyChanged(bool busy);
   void readRequested(qint64 id, quint64 token);
@@ -82,6 +86,7 @@ signals:
   void loadRequested();
   void saveRequested(qint64 id, const restoration::ProjectDraft& draft);
   void removeRequested(qint64 id);
+  void languageRequested(const QString& directory, const QString& preference);
 
 private:
   bool begin();

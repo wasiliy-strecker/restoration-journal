@@ -1,0 +1,5 @@
+RestaurierungsHeft
+
+Record a project name, item or material, storage location, and notes. Add a photo, three status values, and work steps with checkmarks. Export the saved project with its photo, status, and checklist as a PDF.
+
+Search all four text fields and edit your projects. Everything stays local without an account or internet connection. Choose German, English, Spanish, French, Italian, or Portuguese (Brazil). Language changes apply after restarting.

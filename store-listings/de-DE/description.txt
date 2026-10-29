@@ -1,0 +1,5 @@
+RestaurierungsHeft
+
+Erfasse Projektname, Gegenstand oder Material, Aufbewahrungsort und Notiz. Ergänze ein Foto, drei Statuswerte und Arbeitsschritte zum Abhaken. Exportiere den gespeicherten Projektstand mit Foto, Status und Checkliste als PDF.
+
+Durchsuche die vier Textfelder und bearbeite deine Projekte. Alles bleibt lokal ohne Konto oder Internet. Die sechs Oberflächensprachen Deutsch, Englisch, Spanisch, Französisch, Italienisch und brasilianisches Portugiesisch gelten nach einem Neustart.

@@ -1,4 +1,5 @@
 #include "pdf/pdf_export.h"
+#include <QCoreApplication>
 
 #include <QCryptographicHash>
 #include <QDateTime>
@@ -18,11 +19,11 @@
 namespace restoration {
 namespace {
 [[noreturn]] void fileFailure(const QString& detail) {
-  throw ExportError(
-      QStringLiteral("Die PDF konnte nicht sicher gespeichert werden. "
-                     "Prüfe Ordner, Zugriffsrechte, freien Speicher und eine mögliche "
-                     "Dateisperre. Du kannst ein anderes Ziel wählen.\n%1")
-          .arg(detail));
+  throw ExportError(QCoreApplication::translate(
+                        "App", "Die PDF konnte nicht sicher gespeichert werden. "
+                               "Prüfe Ordner, Zugriffsrechte, freien Speicher und eine mögliche "
+                               "Dateisperre. Du kannst ein anderes Ziel wählen.\n%1")
+                        .arg(detail));
 }
 std::filesystem::path nativePath(const QString& path) {
 #ifdef Q_OS_WIN
@@ -38,21 +39,21 @@ QByteArray identity(const QString& path) {
                   FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING,
                   FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT, nullptr);
   if (handle == INVALID_HANDLE_VALUE)
-    fileFailure(QStringLiteral("Die Dateiidentität ist nicht lesbar."));
+    fileFailure(QCoreApplication::translate("App", "Die Dateiidentität ist nicht lesbar."));
   BY_HANDLE_FILE_INFORMATION info{};
   const bool ok = GetFileInformationByHandle(handle, &info) != 0;
   CloseHandle(handle);
   if (!ok || (info.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) != 0)
-    fileFailure(
-        QStringLiteral("Dateiverweise oder unbekannte Dateiidentität sind nicht zulässig."));
+    fileFailure(QCoreApplication::translate(
+        "App", "Dateiverweise oder unbekannte Dateiidentität sind nicht zulässig."));
   return QByteArray::number(static_cast<qulonglong>(info.dwVolumeSerialNumber)) + ':' +
          QByteArray::number(static_cast<qulonglong>(info.nFileIndexHigh)) + ':' +
          QByteArray::number(static_cast<qulonglong>(info.nFileIndexLow));
 #else
   struct stat info{};
   if (::lstat(QFile::encodeName(path).constData(), &info) != 0 || S_ISLNK(info.st_mode))
-    fileFailure(
-        QStringLiteral("Dateiverweise oder unbekannte Dateiidentität sind nicht zulässig."));
+    fileFailure(QCoreApplication::translate(
+        "App", "Dateiverweise oder unbekannte Dateiidentität sind nicht zulässig."));
   return QByteArray::number(static_cast<qulonglong>(info.st_dev)) + ':' +
          QByteArray::number(static_cast<qulonglong>(info.st_ino));
 #endif
@@ -66,7 +67,7 @@ QByteArray revision(const QString& path) {
 #else
   struct stat info{};
   if (::lstat(QFile::encodeName(path).constData(), &info) != 0)
-    fileFailure(QStringLiteral("Der Zielzustand ist nicht mehr lesbar."));
+    fileFailure(QCoreApplication::translate("App", "Der Zielzustand ist nicht mehr lesbar."));
 #ifdef Q_OS_MACOS
   const auto modified = info.st_mtimespec;
   const auto changed = info.st_ctimespec;
@@ -98,7 +99,7 @@ QString suggestedPdfName(const QString& name) {
   }
   result.remove(QRegularExpression(QStringLiteral("[. ]+$")));
   if (result.isEmpty())
-    result = QStringLiteral("Restaurierungsprojekt");
+    result = QCoreApplication::translate("App", "Restaurierungsprojekt");
   if (QRegularExpression(QStringLiteral("^(CON|PRN|AUX|NUL|COM[1-9¹²³]|LPT[1-9¹²³])(?:\\.|$)"),
                          QRegularExpression::CaseInsensitiveOption)
           .match(result)
@@ -113,27 +114,31 @@ ExportTarget inspectExportTarget(const QString& path, const QString& dataDirecto
   const QFileInfo file(path);
   if (path.isEmpty() || !file.isAbsolute() ||
       file.suffix().compare(QStringLiteral("pdf"), Qt::CaseInsensitive) != 0)
-    fileFailure(QStringLiteral("Wähle einen absoluten Dateipfad mit der Endung .pdf."));
+    fileFailure(
+        QCoreApplication::translate("App", "Wähle einen absoluten Dateipfad mit der Endung .pdf."));
   const auto directory = file.dir().canonicalPath();
   if (directory.isEmpty() || !QFileInfo(directory).isWritable())
-    fileFailure(QStringLiteral("Der Zielordner fehlt oder ist nicht beschreibbar."));
+    fileFailure(
+        QCoreApplication::translate("App", "Der Zielordner fehlt oder ist nicht beschreibbar."));
   const auto protectedDirectory = QFileInfo(dataDirectory).canonicalFilePath();
   if (!protectedDirectory.isEmpty() &&
       (directory == protectedDirectory || directory.startsWith(protectedDirectory + QChar('/'))))
-    fileFailure(QStringLiteral("Wähle einen Exportordner außerhalb des App-Datenverzeichnisses."));
+    fileFailure(QCoreApplication::translate(
+        "App", "Wähle einen Exportordner außerhalb des App-Datenverzeichnisses."));
   // Freeze the resolved parent. A later parent replacement is detected before publication.
   ExportTarget target;
   target.path = QDir(directory).filePath(file.fileName());
   target.directoryIdentity = identity(directory);
   const QFileInfo resolved(target.path);
   if (resolved.isSymLink())
-    fileFailure(QStringLiteral("Symbolische Dateiverweise sind kein Exportziel."));
+    fileFailure(
+        QCoreApplication::translate("App", "Symbolische Dateiverweise sind kein Exportziel."));
   target.exists = resolved.exists();
   if (!target.exists)
     return target;
   if (!resolved.isFile() || !resolved.isReadable() || !resolved.isWritable())
-    fileFailure(
-        QStringLiteral("Das Ziel muss eine lesbare und beschreibbare normale PDF-Datei sein."));
+    fileFailure(QCoreApplication::translate(
+        "App", "Das Ziel muss eine lesbare und beschreibbare normale PDF-Datei sein."));
   target.identity = identity(target.path);
   target.revision = revision(target.path);
   // Also reject aliases of our own database and lock, even with a .pdf name elsewhere.
@@ -144,7 +149,8 @@ ExportTarget inspectExportTarget(const QString& path, const QString& dataDirecto
         QStringLiteral("restaurierungsheft.sqlite3-shm")}) {
     const auto protectedFile = QDir(dataDirectory).filePath(name);
     if (QFileInfo::exists(protectedFile) && identity(protectedFile) == target.identity)
-      fileFailure(QStringLiteral("App-Daten und Sperrdateien dürfen nicht ersetzt werden."));
+      fileFailure(QCoreApplication::translate(
+          "App", "App-Daten und Sperrdateien dürfen nicht ersetzt werden."));
   }
   QFile input(target.path);
   if (!input.open(QIODevice::ReadOnly))
@@ -154,7 +160,8 @@ ExportTarget inspectExportTarget(const QString& path, const QString& dataDirecto
     fileFailure(input.errorString());
   target.digest = hash.result();
   if (identity(target.path) != target.identity || revision(target.path) != target.revision)
-    fileFailure(QStringLiteral("Das Ziel hat sich während der Prüfung geändert."));
+    fileFailure(
+        QCoreApplication::translate("App", "Das Ziel hat sich während der Prüfung geändert."));
   return target;
 }
 
@@ -162,9 +169,11 @@ void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarg
                       bool replaceApproved, const QString& dataDirectory,
                       const PdfRenderer& renderer) {
   if (target.exists && !replaceApproved)
-    throw ExportError(QStringLiteral("Das Ersetzen der vorhandenen PDF wurde nicht bestätigt."));
+    throw ExportError(QCoreApplication::translate(
+        "App", "Das Ersetzen der vorhandenen PDF wurde nicht bestätigt."));
   if (inspectExportTarget(target.path, dataDirectory) != target)
-    throw ExportError(QStringLiteral("Das PDF-Ziel hat sich geändert. Bitte wähle es erneut."));
+    throw ExportError(QCoreApplication::translate(
+        "App", "Das PDF-Ziel hat sich geändert. Bitte wähle es erneut."));
   const auto snapshot = repository.find(id);
   QTemporaryFile temporary(
       QFileInfo(target.path).dir().filePath(QStringLiteral(".restaurierungsheft-XXXXXX.tmp")));
@@ -177,8 +186,9 @@ void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarg
   if (temporary.error() != QFileDevice::NoError)
     fileFailure(temporary.errorString());
   if (inspectExportTarget(target.path, dataDirectory) != target)
-    throw ExportError(QStringLiteral("Das PDF-Ziel wurde inzwischen angelegt oder verändert. "
-                                     "Keine Datei wurde ersetzt. Bitte wähle das Ziel erneut."));
+    throw ExportError(QCoreApplication::translate(
+        "App", "Das PDF-Ziel wurde inzwischen angelegt oder verändert. "
+               "Keine Datei wurde ersetzt. Bitte wähle das Ziel erneut."));
   std::error_code error;
   if (!target.exists) {
     // Atomic no-clobber publication. A competing new file is never overwritten.
@@ -190,7 +200,8 @@ void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarg
 #ifdef Q_OS_WIN
     if (!MoveFileExW(reinterpret_cast<LPCWSTR>(temporary.fileName().utf16()),
                      reinterpret_cast<LPCWSTR>(target.path.utf16()), MOVEFILE_REPLACE_EXISTING))
-      fileFailure(QStringLiteral("Windows-Dateiersatz fehlgeschlagen (%1).").arg(GetLastError()));
+      fileFailure(QCoreApplication::translate("App", "Windows-Dateiersatz fehlgeschlagen (%1).")
+                      .arg(GetLastError()));
 #else
     std::filesystem::rename(nativePath(temporary.fileName()), nativePath(target.path), error);
     if (error)

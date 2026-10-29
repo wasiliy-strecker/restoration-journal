@@ -1,0 +1,54 @@
+{
+  "items": [
+    [
+      "Silla de cocina",
+      "Pino",
+      "Mesa de trabajo 1",
+      "Comprobar el barniz antiguo en una zona oculta."
+    ],
+    [
+      "Reloj de pared",
+      "Abedul",
+      "Estante 2",
+      "Comprobar el estado"
+    ],
+    [
+      "Baúl de viaje",
+      "Roble",
+      "Estante 3",
+      "Limpiar la superficie"
+    ],
+    [
+      "Marco de espejo",
+      "Pino",
+      "Estante 4",
+      "Aplicar una capa protectora"
+    ],
+    [
+      "Mesa auxiliar",
+      "Abedul",
+      "Estante 5",
+      "Comprobar el estado"
+    ]
+  ],
+  "photos": [
+    "images/chair.png",
+    "images/clock.jpg",
+    "images/chest.png",
+    null,
+    null
+  ],
+  "statuses": [
+    "started",
+    "planned",
+    "finished",
+    "planned",
+    "started"
+  ],
+  "steps": [
+    "Comprobar el estado",
+    "Limpiar la superficie",
+    "Aplicar una capa protectora"
+  ],
+  "search": "barniz"
+}

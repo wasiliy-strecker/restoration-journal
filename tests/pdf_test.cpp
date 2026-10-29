@@ -1,3 +1,4 @@
+#include "i18n/languages.h"
 #include "pdf/pdf_export.h"
 #include "persistence/sqlite_project_repository.h"
 #include <QBuffer>
@@ -6,6 +7,7 @@
 #include <QProcess>
 #include <QRegularExpression>
 #include <QSaveFile>
+#include <QScopeGuard>
 #include <QSqlQuery>
 #include <QTemporaryDir>
 #include <QXmlStreamReader>
@@ -68,6 +70,45 @@ class PdfTest final : public QObject {
   Q_OBJECT
 private slots:
   void initTestCase() { initializePdfFonts(); }
+  void localizedContents_data() {
+    QTest::addColumn<QString>("language");
+    for (const auto& language : supportedLanguages())
+      QTest::newRow(qPrintable(language)) << language;
+  }
+  void localizedContents() {
+    QFETCH(QString, language);
+    Translations translations;
+    translations.install(language);
+    const auto restore = qScopeGuard([] { QLocale::setDefault(QLocale("de-DE")); });
+    const auto tr = [](const char* source) { return QCoreApplication::translate("App", source); };
+    ProjectDraft draft{QStringLiteral("Étoile – ação"),
+                       QStringLiteral("Eiche & Öl"),
+                       QStringLiteral("Werkstatt 2"),
+                       QStringLiteral("Grüße, café, coração\n"),
+                       ProjectStatus::Started,
+                       picture(),
+                       {{QUuid::createUuid(), QStringLiteral("Kanten prüfen – ação"), true, 0},
+                        {QUuid::createUuid(), QStringLiteral("Kanten prüfen – ação"), false, 2}}};
+    draft.note += QStringLiteral("Lange Notiz. ").repeated(180);
+    const auto path = artifact(QStringLiteral("localized-") + language + QStringLiteral(".pdf"));
+    makePdf(path, draft);
+    const auto text = run(QStringLiteral("pdftotext"), {path, QStringLiteral("-")});
+    for (const auto& expected :
+         {draft.name, draft.material, draft.location,
+          tr("Status: %1").arg(displayStatus(draft.status)), tr("Notiz"), tr("Arbeitsschritte"),
+          tr("☑ Erledigt"), tr("☐ Offen"), tr("Seite %1").arg(QLocale().toString(1))})
+      QVERIFY2(compact(text).contains(compact(expected)), qPrintable(expected));
+    QCOMPARE(text.count(QStringLiteral("Kanten prüfen – ação")), 2);
+    QVERIFY(run(QStringLiteral("pdfimages"), {QStringLiteral("-list"), path})
+                .contains(QStringLiteral("image")));
+    const auto fonts = run(QStringLiteral("pdffonts"), {path});
+    QVERIFY(fonts.contains(QStringLiteral("DejaVuSans")));
+    const auto prefix = artifact(QStringLiteral("localized-") + language);
+    run(QStringLiteral("pdftoppm"), {QStringLiteral("-f"), QStringLiteral("1"),
+                                     QStringLiteral("-singlefile"), QStringLiteral("-scale-to"),
+                                     QStringLiteral("1200"), QStringLiteral("-png"), path, prefix});
+    QVERIFY(!QImage(prefix + QStringLiteral(".png")).isNull());
+  }
   void minimal() {
     const auto path = artifact(QStringLiteral("minimal.pdf"));
     makePdf(path, {QStringLiteral("Schrank"), {}, {}, {}});

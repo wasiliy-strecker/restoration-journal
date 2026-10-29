@@ -1,5 +1,7 @@
 #include "pdf/pdf_renderer.h"
 #include "application/photo_importer.h"
+#include <QCoreApplication>
+#include <QLocale>
 
 #include <QFontDatabase>
 #include <QPageLayout>
@@ -28,7 +30,8 @@ QString printable(QString text, const QRawFont& font) {
     if (unit.isHighSurrogate() && index + 1 < text.size() && text.at(index + 1).isLowSurrogate()) {
       ++index;
     } else if (unit.isSurrogate()) {
-      throw ExportError(QStringLiteral(
+      throw ExportError(QCoreApplication::translate(
+          "App",
           "Der Text enthält ein ungültiges Unicode-Zeichen. Bitte korrigiere es vor dem Export."));
     }
   }
@@ -39,10 +42,10 @@ QString printable(QString text, const QRawFont& font) {
     const auto category = QChar::category(code);
     if (category == QChar::Other_Control || category == QChar::Other_Format ||
         category == QChar::Other_Surrogate || !font.supportsCharacter(code)) {
-      throw ExportError(
-          QStringLiteral("Das Zeichen U+%1 wird von der PDF-Schrift nicht unterstützt. "
-                         "Bitte ersetze es im Projekt und speichere erneut.")
-              .arg(static_cast<uint>(code), 4, 16, QChar('0')));
+      throw ExportError(QCoreApplication::translate(
+                            "App", "Das Zeichen U+%1 wird von der PDF-Schrift nicht unterstützt. "
+                                   "Bitte ersetze es im Projekt und speichere erneut.")
+                            .arg(static_cast<uint>(code), 4, 16, QChar('0')));
     }
   }
   return text;
@@ -107,7 +110,8 @@ private:
     if (y_ + height <= bottom)
       return;
     if (!writer_.newPage())
-      throw ExportError(QStringLiteral("Eine weitere PDF-Seite konnte nicht geschrieben werden."));
+      throw ExportError(QCoreApplication::translate(
+          "App", "Eine weitere PDF-Seite konnte nicht geschrieben werden."));
     ++page_;
     y_ = top;
     decorate();
@@ -117,7 +121,9 @@ private:
     painter_.setPen(QColor(QStringLiteral("#53645a")));
     painter_.drawText(QPointF(left, 34), QStringLiteral("RestaurierungsHeft"));
     painter_.drawLine(QPointF(left, 44), QPointF(left + width, 44));
-    painter_.drawText(QPointF(left, 812), QStringLiteral("Seite %1").arg(page_));
+    painter_.drawText(
+        QPointF(left, 812),
+        QCoreApplication::translate("App", "Seite %1").arg(QLocale().toString(page_)));
   }
   QPdfWriter& writer_;
   QPainter& painter_;
@@ -130,14 +136,15 @@ private:
 void initializePdfFonts() {
   initializeFontResource();
   if (QFontDatabase::addApplicationFont(QStringLiteral(":/assets/fonts/DejaVuSans.ttf")) < 0)
-    throw ExportError(QStringLiteral("Die mitgelieferte PDF-Schrift konnte nicht geladen werden."));
+    throw ExportError(QCoreApplication::translate(
+        "App", "Die mitgelieferte PDF-Schrift konnte nicht geladen werden."));
 }
 
 void renderProjectPdf(const ProjectDraft& project, QIODevice& output) {
   const auto valid = validateDraft(project);
   QRawFont raw(QStringLiteral(":/assets/fonts/DejaVuSans.ttf"), 11);
   if (!raw.isValid())
-    throw ExportError(QStringLiteral("Die mitgelieferte PDF-Schrift fehlt."));
+    throw ExportError(QCoreApplication::translate("App", "Die mitgelieferte PDF-Schrift fehlt."));
   // Validate every field before writing. Never fall back to system fonts or replacement boxes.
   const auto name = printable(valid.name, raw);
   const auto material = printable(valid.material, raw);
@@ -145,10 +152,11 @@ void renderProjectPdf(const ProjectDraft& project, QIODevice& output) {
   const auto note = printable(valid.note, raw);
   QStringList steps;
   for (const auto& step : valid.steps)
-    steps.append(printable(
-        QStringLiteral("%1  %2").arg(
-            step.completed ? QStringLiteral("☑ Erledigt") : QStringLiteral("☐ Offen"), step.text),
-        raw));
+    steps.append(printable(QStringLiteral("%1  %2").arg(
+                               step.completed ? QCoreApplication::translate("App", "☑ Erledigt")
+                                              : QCoreApplication::translate("App", "☐ Offen"),
+                               step.text),
+                           raw));
   const auto image =
       valid.photo.isEmpty() ? QImage() : decodePhoto(valid.photo, maxPhotoSide).preview;
   QPdfWriter writer(&output);
@@ -159,31 +167,33 @@ void renderProjectPdf(const ProjectDraft& project, QIODevice& output) {
   writer.setCreator(QStringLiteral("RestaurierungsHeft"));
   QPainter painter;
   if (!painter.begin(&writer))
-    throw ExportError(QStringLiteral("Die PDF-Erzeugung konnte nicht gestartet werden."));
+    throw ExportError(
+        QCoreApplication::translate("App", "Die PDF-Erzeugung konnte nicht gestartet werden."));
   PagePainter page(writer, painter);
   page.text(name, 19, true);
-  page.text(QStringLiteral("Status: %1").arg(displayStatus(valid.status)));
+  page.text(QCoreApplication::translate("App", "Status: %1").arg(displayStatus(valid.status)));
   if (!material.isEmpty())
-    page.text(QStringLiteral("Gegenstand / Material: %1").arg(material));
+    page.text(QCoreApplication::translate("App", "Gegenstand / Material: %1").arg(material));
   if (!location.isEmpty())
-    page.text(QStringLiteral("Aufbewahrungsort: %1").arg(location));
+    page.text(QCoreApplication::translate("App", "Aufbewahrungsort: %1").arg(location));
   page.gap();
   if (!image.isNull())
     page.photo(image);
   if (!note.isEmpty()) {
-    page.text(QStringLiteral("Notiz"), 14, true);
+    page.text(QCoreApplication::translate("App", "Notiz"), 14, true);
     page.text(note);
     page.gap();
   }
   if (!steps.isEmpty()) {
-    page.text(QStringLiteral("Arbeitsschritte"), 14, true);
+    page.text(QCoreApplication::translate("App", "Arbeitsschritte"), 14, true);
     for (const auto& step : steps) {
       page.text(step);
       page.gap();
     }
   }
   if (!painter.end())
-    throw ExportError(QStringLiteral("Die PDF konnte nicht vollständig abgeschlossen werden."));
+    throw ExportError(QCoreApplication::translate(
+        "App", "Die PDF konnte nicht vollständig abgeschlossen werden."));
   // Writer destruction finalizes the device before returning to the export service.
 }
 } // namespace restoration

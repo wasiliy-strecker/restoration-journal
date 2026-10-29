@@ -1,0 +1,5 @@
+RestaurierungsHeft
+
+Enregistrez le nom, l’objet ou matériau, l’emplacement et les notes. Ajoutez une photo, trois états et des étapes à cocher. Exportez le projet enregistré avec sa photo, son état et ses étapes en PDF.
+
+Recherchez dans les quatre champs de texte et modifiez vos projets. Tout reste local, sans compte ni Internet. Choisissez l’allemand, l’anglais, l’espagnol, le français, l’italien ou le portugais du Brésil. La langue change au prochain démarrage.
