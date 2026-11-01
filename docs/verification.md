@@ -1,5 +1,42 @@
 # Prüfbericht
 
+## PDF-Export mit Emojis, 1. November 2026
+
+Gespeicherte Emojis blockieren weder Einzel- noch Sammlungs-PDFs. Noto Emoji ist
+app-lokal eingebettet. Der Renderer setzt vollständige Grapheme mit expliziter
+Schriftzuweisung. Andere fehlende Zeichen erscheinen als `[U+XXXX]`, ohne die
+gespeicherten Texte oder JSON-Dateien zu ändern. Ungültige UTF-16-Daten bleiben
+ein Fehler vor Dateiübernahme. Die frühere pauschale Ablehnung fehlender Glyphen
+in den historischen Prüfungen weiter unten ist damit ersetzt.
+
+Die Regression prüft alle fünf Textbereiche, fett gesetzte Namen, Hautfarbe,
+ZWJ-Familie, Flagge, Tastensymbol, Einzelzeichen und einen erfolgreichen
+Gesamtexport. Ein unabhängiger Poppler-Vergleich mit einer PDF ohne Emojis weist
+zusätzliche gezeichnete Konturen in jedem Textbereich nach. Die Datenbank bleibt
+beim Export bytegleich. Ein später Rendererfehler schützt weiterhin vorhandene
+Dateien. Die alte, nun unbenutzte Fehlermeldung wurde aus allen sechs Katalogen
+entfernt.
+
+Die Entwicklungsprüfung und die Address-/Leak-/UndefinedBehaviorSanitizer-Prüfung
+bestehen mit jeweils 20 CTest-Suiten. Formatter und Compilerwarnungen als Fehler
+bestehen. clang-tidy endet erfolgreich und meldet 13 Hinweise an unveränderten
+globalen Farbwerten und bestehenden benachbarten Funktionsparametern.
+Eine zusätzliche Umgebung
+mit leerer Fontconfig-Schriftliste besteht zehn Prüfungen einschließlich aller
+sechs Sprachen. Poppler bestätigt eingebettete DejaVu- und Noto-Schriften sowie
+die Geometrie der Emoji-, Ersatzzeichen-, Minimal- und 14-seitigen Langtext-PDFs.
+Die Emoji-Seite wurde unabhängig gerendert und visuell geprüft.
+
+Qt 6.8 beschränkt seine PDF-Unicode-Zuordnung auf BMP-Codepoints. Deshalb bleibt
+das Zurückkopieren der sichtbaren Emoji-Symbole eingeschränkt. JSON und SQLite
+erhalten den Originaltext vollständig. Der Poppler-24-BBox-Helfer normalisiert
+gültige CESU-8-Surrogatpaare in Metadatentiteln, ungültige Kodierung bleibt ein Fehler.
+
+Nachweise liegen in `build/emoji-dev-check.log`, `build/emoji-asan-check.log`,
+`build/emoji-font-isolation/`
+und `build/dev/verification/pdf/`. Native macOS-/Windows-Ausführung und neue
+Store-Pakete sind nicht Teil dieser Prüfung.
+
 ## Einzel- und Sammlungs-PDFs, 1. November 2026
 
 Der Nutzer beauftragte beide PDF-Umfänge und das Kartenlayout von Costume Planner.

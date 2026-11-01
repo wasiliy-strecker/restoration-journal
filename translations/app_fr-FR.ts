@@ -190,10 +190,6 @@
       <translation>Le projet a été supprimé.</translation>
     </message>
     <message>
-      <source>Das Zeichen U+%1 wird von der PDF-Schrift nicht unterstützt. Bitte ersetze es im Projekt und speichere erneut.</source>
-      <translation>La police PDF ne prend pas en charge le caractère U+%1. Remplacez-le dans le projet et enregistrez à nouveau.</translation>
-    </message>
-    <message>
       <source>Das Ziel hat sich während der Prüfung geändert.</source>
       <translation>La destination a changé pendant la vérification.</translation>
     </message>

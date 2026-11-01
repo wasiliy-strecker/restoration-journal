@@ -3,12 +3,12 @@
 #include "application/photo_importer.h"
 #include <QCoreApplication>
 #include <QFontDatabase>
-#include <QFontMetricsF>
 #include <QLocale>
 #include <QPageLayout>
 #include <QPainter>
 #include <QPdfWriter>
 #include <QRawFont>
+#include <QTextBoundaryFinder>
 #include <QTextLayout>
 #include <algorithm>
 
@@ -31,7 +31,27 @@ const QColor greenSoft(QStringLiteral("#EDF5EF"));
 const QColor amber(QStringLiteral("#906018"));
 const QColor amberSoft(QStringLiteral("#FBF2DF"));
 
-QString printable(QString text, const QRawFont& font) {
+bool emojiCluster(const QString& text, const QRawFont& regular, const QRawFont& emoji) {
+  bool needsEmoji = false;
+  bool hasVisibleCharacter = false;
+  for (const auto code : text.toUcs4()) {
+    // Selectors, joiners and subdivision flag tags belong to the surrounding emoji.
+    if (code == 0xfe0f || code == 0x200d || (code >= 0xe0020 && code <= 0xe007f)) {
+      needsEmoji = true;
+      continue;
+    }
+    if (code == 0xfe0e)
+      continue;
+    if (!emoji.supportsCharacter(code))
+      return false;
+    hasVisibleCharacter = true;
+    needsEmoji =
+        needsEmoji || code >= 0x1f000 || code == 0x20e3 || !regular.supportsCharacter(code);
+  }
+  return hasVisibleCharacter && needsEmoji;
+}
+
+QString printable(QString text, const QRawFont& font, const QRawFont& emoji) {
   text.replace(QStringLiteral("\r\n"), QStringLiteral("\n"));
   text.replace(QChar('\r'), QChar('\n'));
   text.replace(QChar(0x2028), QChar('\n'));
@@ -48,19 +68,31 @@ QString printable(QString text, const QRawFont& font) {
     }
   }
   text = text.normalized(QString::NormalizationForm_C);
-  for (const auto code : text.toUcs4()) {
-    if (code == '\n')
+  QString result;
+  QTextBoundaryFinder boundaries(QTextBoundaryFinder::Grapheme, text);
+  qsizetype start = 0;
+  for (auto end = boundaries.toNextBoundary(); end != -1; end = boundaries.toNextBoundary()) {
+    const auto cluster = text.mid(start, end - start);
+    start = end;
+    if (emojiCluster(cluster, font, emoji)) {
+      result += cluster;
       continue;
-    const auto category = QChar::category(code);
-    if (category == QChar::Other_Control || category == QChar::Other_Format ||
-        category == QChar::Other_Surrogate || !font.supportsCharacter(code)) {
-      throw ExportError(QCoreApplication::translate(
-                            "App", "Das Zeichen U+%1 wird von der PDF-Schrift nicht unterstützt. "
-                                   "Bitte ersetze es im Projekt und speichere erneut.")
-                            .arg(static_cast<uint>(code), 4, 16, QChar('0')));
+    }
+    for (const auto code : cluster.toUcs4()) {
+      const auto category = QChar::category(code);
+      if (code == '\n' || (category != QChar::Other_Control && category != QChar::Other_Format &&
+                           font.supportsCharacter(code))) {
+        const auto scalar = static_cast<char32_t>(code);
+        result += QString::fromUcs4(&scalar, 1);
+      } else {
+        // Keep an explicit, lossless notation for characters outside the bundled fonts.
+        // This changes only the PDF representation, never the stored project.
+        result +=
+            QStringLiteral("[U+%1]").arg(static_cast<uint>(code), 4, 16, QChar('0')).toUpper();
+      }
     }
   }
-  return text;
+  return result;
 }
 
 // The first pass measures pages without painting. The second replays the same saved snapshot,
@@ -70,8 +102,9 @@ public:
   PagePainter(QPdfWriter& writer, QPainter* painter = nullptr, int totalPages = 0)
       : writer_(writer), painter_(painter), totalPages_(totalPages),
         regular_(QStringLiteral(":/assets/fonts/DejaVuSans.ttf"), 11),
-        bold_(QStringLiteral(":/assets/fonts/DejaVuSans-Bold.ttf"), 11) {
-    if (!regular_.isValid() || !bold_.isValid())
+        bold_(QStringLiteral(":/assets/fonts/DejaVuSans-Bold.ttf"), 11),
+        emoji_(QStringLiteral(":/assets/fonts/NotoEmoji.ttf"), 11) {
+    if (!regular_.isValid() || !bold_.isValid() || !emoji_.isValid())
       throw ExportError(QCoreApplication::translate("App", "Die mitgelieferte PDF-Schrift fehlt."));
   }
 
@@ -139,11 +172,36 @@ private:
   }
 
   QString checked(const QString& value, bool strong) const {
-    return printable(value, strong ? bold_ : regular_);
+    return printable(value, strong ? bold_ : regular_, emoji_);
+  }
+
+  void format(QTextLayout& layout, int size, bool strong) const {
+    QList<QTextLayout::FormatRange> ranges;
+    const auto value = layout.text();
+    QTextBoundaryFinder boundaries(QTextBoundaryFinder::Grapheme, value);
+    qsizetype start = 0;
+    for (auto end = boundaries.toNextBoundary(); end != -1; end = boundaries.toNextBoundary()) {
+      if (emojiCluster(value.mid(start, end - start), strong ? bold_ : regular_, emoji_)) {
+        QFont emojiFont(QStringLiteral("Noto Emoji"));
+        emojiFont.setPixelSize(size);
+        emojiFont.setWeight(QFont::Normal);
+        emojiFont.setStyleStrategy(QFont::NoFontMerging);
+        QTextCharFormat character;
+        character.setFont(emojiFont);
+        ranges.append({static_cast<int>(start), static_cast<int>(end - start), character});
+      }
+      start = end;
+    }
+    layout.setFormats(ranges);
   }
 
   qreal measure(const QString& value, int size, bool strong) const {
-    return QFontMetricsF(font(size, strong), &writer_).horizontalAdvance(checked(value, strong));
+    QTextLayout layout(checked(value, strong), font(size, strong), &writer_);
+    format(layout, size, strong);
+    layout.beginLayout();
+    const auto line = layout.createLine();
+    layout.endLayout();
+    return line.isValid() ? line.naturalTextWidth() : 0;
   }
 
   QStringList wrap(const QString& raw, qreal available, int size, bool strong) const {
@@ -154,6 +212,7 @@ private:
         continue;
       }
       QTextLayout layout(paragraph, font(size, strong), &writer_);
+      format(layout, size, strong);
       QTextOption option;
       option.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
       layout.setTextOption(option);
@@ -175,9 +234,14 @@ private:
     const auto value = checked(raw, strong);
     if (!painter_)
       return;
-    painter_->setFont(font(size, strong));
     painter_->setPen(color);
-    painter_->drawText(baseline, value);
+    QTextLayout layout(value, font(size, strong), &writer_);
+    format(layout, size, strong);
+    layout.beginLayout();
+    const auto line = layout.createLine();
+    layout.endLayout();
+    if (line.isValid())
+      line.draw(painter_, baseline - QPointF(0, line.ascent()));
   }
 
   void rect(const QRectF& area, const QColor& fill) {
@@ -380,6 +444,7 @@ private:
   int totalPages_;
   QRawFont regular_;
   QRawFont bold_;
+  QRawFont emoji_;
   int page_ = 0;
   int projects_ = 0;
   QString firstTitle_;
@@ -389,7 +454,8 @@ private:
 
 void initializePdfFonts() {
   initializeFontResource();
-  for (const auto* path : {":/assets/fonts/DejaVuSans.ttf", ":/assets/fonts/DejaVuSans-Bold.ttf"}) {
+  for (const auto* path : {":/assets/fonts/DejaVuSans.ttf", ":/assets/fonts/DejaVuSans-Bold.ttf",
+                           ":/assets/fonts/NotoEmoji.ttf"}) {
     if (QFontDatabase::addApplicationFont(QString::fromLatin1(path)) < 0)
       throw ExportError(QCoreApplication::translate(
           "App", "Die mitgelieferte PDF-Schrift konnte nicht geladen werden."));

@@ -199,8 +199,13 @@ Status, Farbe und aller Arbeitsschritte. Im Editor gibt es keine Exportaktion.
 Zwei Layout-Durchläufe bestimmen zuerst die Seitenzahl und schreiben anschließend
 das Dokument. Für den Gesamtexport bleiben beide Durchläufe in derselben
 SQLite-Lesetransaktion. Es wird jeweils nur ein vollständiges Foto geladen.
-DejaVu Sans 2.37 in Regular und Bold ist in der App und in den PDFs eingebettet.
-Fehlende Zeichen werden vor Dateiübernahme gemeldet, ohne gespeicherte Daten zu ändern.
+DejaVu Sans 2.37 in Regular und Bold sowie Noto Emoji sind in der App und in den
+PDFs eingebettet. Emojis erscheinen einfarbig, auch in Namen und Arbeitsschritten.
+Zusammengesetzte Emojis werden gemeinsam gesetzt. Zeichen außerhalb der
+mitgelieferten Schriften erscheinen ausdrücklich als `[U+XXXX]`. Sie blockieren
+den Export nicht. Gespeicherte Texte und JSON-Sicherungen bleiben unverändert.
+Die Symbole sind sichtbar und druckbar. Das Zurückkopieren von Emoji-Text aus
+der PDF ist mit Qt 6.8 eingeschränkt. JSON bleibt das verlustfreie Austauschformat.
 
 Auf macOS wählst du einen Zielordner und danach den Dateinamen. Auf anderen
 Plattformen öffnet sich der native Speicherdialog. Abbrechen verändert keine

@@ -49,7 +49,7 @@ add_library(project_storage src/application/collection_codec.cpp src/application
 target_link_libraries(project_storage PUBLIC project_domain project_photo Qt6::Sql PRIVATE project_options)
 add_library(project_pdf src/pdf/pdf_renderer.cpp src/pdf/pdf_export.cpp)
 target_link_libraries(project_pdf PUBLIC project_domain project_photo Qt6::Gui PRIVATE project_options)
-qt_add_resources(project_pdf export_fonts PREFIX "/" FILES assets/fonts/DejaVuSans.ttf assets/fonts/DejaVuSans-Bold.ttf)
+qt_add_resources(project_pdf export_fonts PREFIX "/" FILES assets/fonts/DejaVuSans.ttf assets/fonts/DejaVuSans-Bold.ttf assets/fonts/NotoEmoji.ttf)
 add_library(project_ui src/ui/native_edit_menus.cpp src/ui/color_field.cpp src/ui/information_dialog.cpp src/ui/sort_header.cpp src/ui/export_file_dialog.cpp src/ui/export_dialogs.cpp src/ui/checklist_editor.cpp src/ui/storage_controller.cpp src/ui/project_editor.cpp src/ui/main_window.cpp src/ui/ui_support.cpp src/ui/photo_view.cpp src/ui/language_dialog.cpp)
 target_link_libraries(project_ui PUBLIC project_storage project_pdf Qt6::Widgets PRIVATE project_options)
 qt_add_executable(restaurierungsheft WIN32 MACOSX_BUNDLE src/main.cpp)

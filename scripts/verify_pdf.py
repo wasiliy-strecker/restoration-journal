@@ -14,10 +14,17 @@ def run(*args):
 def verify(path):
     fonts = run("pdffonts", str(path)).splitlines()[2:]
     assert fonts and all(
-        "DejaVuSans" in line and re.search(r"yes\s+(yes|no)\s+yes", line)
+        any(family in line for family in ("DejaVuSans", "NotoEmoji"))
+        and re.search(r"yes\s+(yes|no)\s+yes", line)
         for line in fonts
     ), "Schrift oder Unicode-Zuordnung fehlt"
-    root = ET.fromstring(run("pdftotext", "-bbox", str(path), "-"))
+    # Poppler 24 emits UTF-16 surrogate halves as CESU-8 in HTML metadata titles.
+    # Join valid pairs before parsing. Invalid bytes or unpaired surrogates still fail.
+    bounds = subprocess.check_output(
+        ["pdftotext", "-bbox", str(path), "-"], timeout=30
+    ).decode("utf-8", "surrogatepass")
+    bounds = bounds.encode("utf-16", "surrogatepass").decode("utf-16")
+    root = ET.fromstring(bounds)
     namespace = {"x": "http://www.w3.org/1999/xhtml"}
     pages = root.findall(".//x:page", namespace)
     words = 0

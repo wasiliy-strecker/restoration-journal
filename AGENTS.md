@@ -29,7 +29,10 @@ Alle Abbruchwege schützen Entwürfe mit Weiterbearbeiten als Vorauswahl.
 Fotoimport nur lesend. Grenzen: 10 MiB, 6000 Pixel je Seite, 16 Millionen Pixel.
 
 PDF verwendet einen konsistent gespeicherten Snapshot. Schrift app-lokal bündeln.
-Fehlende Zeichen melden. Temporäre PDF vollständig schließen und erst dann
+Emojis mit der gebündelten Noto-Emoji-Schrift als vollständige Grapheme setzen.
+Übrige fehlende Zeichen in der PDF ausdrücklich als `[U+XXXX]` darstellen.
+Gespeicherte Texte nicht verändern. Ungültige UTF-16-Daten weiterhin melden.
+Temporäre PDF vollständig schließen und erst dann
 sicher übernehmen. Neue Ziele ohne Überschreiben veröffentlichen. Vorhandene
 Ziele ausdrücklich bestätigen und vor Ersatz erneut prüfen. Bei neuen Dateien ist
 der exklusive Kopierweg ohne Überschreiben erlaubt. Bestehende Ziele bleiben
@@ -96,4 +99,4 @@ Jedes Projekt beginnt auf einer neuen Seite. Alle gespeicherten Projekte werden
 alphabetisch in der App-Sprache ausgegeben, unabhängig von Suche und Auswahl.
 Beide Layout-Durchläufe müssen denselben Snapshot lesen. SQLite hält dazu eine
 Lesetransaktion offen und lädt jeweils nur ein vollständiges Projekt mit Foto.
-DejaVu Sans und DejaVu Sans Bold bleiben app-lokal gebündelt.
+DejaVu Sans, DejaVu Sans Bold und Noto Emoji bleiben app-lokal gebündelt.

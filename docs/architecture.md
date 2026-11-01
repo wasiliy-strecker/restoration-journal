@@ -233,14 +233,27 @@ Die erste Messung verwendet dieselben Umbruch- und Platzierungsfunktionen ohne
 Zeichenausgabe. Der zweite Durchlauf schreibt Seite-von-Gesamt-Fußzeilen.
 Jedes Projekt beginnt auf einer neuen Seite. Eine leere Quelle ist ein Fehler.
 
-Die unveränderte DejaVu Sans 2.37 in Regular und Bold liegt als Qt-Ressource in der App und wird vor
-Workerstart registriert. Der Renderer prüft Unicode-Codepoints mit QRawFont,
-verbietet fehlende Glyphen, ungültige Surrogate und unsichtbare Steuer-/Formatzeichen
-und deaktiviert Schriftfallback. Er meldet nicht darstellbare Inhalte vor
-Dateiübernahme. Eine Zusage für beliebige Schriften, komplexe Schreibrichtungen
-oder Emoji-Sequenzen gibt es nicht. Poppler prüft die tatsächliche eingebettete
-TrueType-Schrift samt Unicode-Zuordnung. Qt meldet sie hier als vollständig
-eingebettet, nicht als Subset. Es gibt keine Abhängigkeit von Entwicklerschriften.
+DejaVu Sans 2.37 in Regular und Bold sowie die unveränderte Noto Emoji 3.002 liegen
+als Qt-Ressourcen in der App und werden vor Workerstart registriert. Der Renderer
+erkennt vollständige Grapheme mit QTextBoundaryFinder. Emoji-Grapheme erhalten
+eine explizite QTextLayout-Formatierung mit Noto Emoji in normaler Schriftstärke.
+Hautfarben, Flaggen, Variation-Selektoren und ZWJ-Sequenzen bleiben dabei zusammen.
+Messung, Zeilenumbruch und Zeichnung verwenden dieselben Schriftzuweisungen.
+Die Symbole werden einfarbig als eingebettete Schrift ausgegeben. Systemschriften
+und insbesondere plattformspezifische Farbschriften sind nicht erforderlich.
+
+QRawFont prüft beide Schriftarten. Übrige fehlende Zeichen sowie Steuerzeichen
+außerhalb einer Emoji-Sequenz erscheinen ausdrücklich als `[U+XXXX]`. Das bewahrt
+ihre Codepoints in einer lesbaren Ersatznotation und blockiert keine Sammlung.
+SQLite und JSON behalten die Originaltexte. Ungültige UTF-16-Surrogate bleiben
+ein Fehler vor Dateiübernahme. Poppler prüft Text, eingebettete Schriften und
+Unicode-Zuordnung. Eine Zusage für beliebige komplexe Schreibrichtungen gibt es nicht.
+Qt 6.8 erstellt seine PDF-Unicode-Zuordnung nur für BMP-Codepoints. Deshalb sind
+die Emoji-Konturen sichtbar und druckbar, außerhalb des BMP und bei Ligaturen
+aber nicht zuverlässig als Originaltext aus der PDF extrahierbar. Die Prüfung
+kontrolliert diese Symbole zusätzlich im unabhängigen Poppler-Rasterbild.
+Originaltexte bleiben in SQLite und im JSON-Export vollständig erhalten.
+Referenz: https://github.com/qt/qtbase/blob/v6.8.3/src/gui/text/qfontsubset.cpp#L148
 
 QPainter wird ausdrücklich beendet, anschließend endet QPdfWriter, danach wird
 die Datei gespült und geschlossen. Lokale Werte sorgen auch bei Exceptions für

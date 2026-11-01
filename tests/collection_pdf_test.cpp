@@ -115,7 +115,7 @@ private slots:
     QCOMPARE(repository.findAll().size(), 3);
   }
 
-  void emptyAndInvalidLaterProjectPreserveTarget() {
+  void emptyAndLateRenderFailurePreserveTarget() {
     QTemporaryDir data, output;
     SqliteProjectRepository repository(data.path());
     repository.initialize();
@@ -127,12 +127,30 @@ private slots:
     QCOMPARE(bytes(path), QByteArray("Existing PDF"));
     repository.create({QStringLiteral("Alpha"), {}, {}, {}});
     repository.create({QStringLiteral("Zulu"), {}, {}, QString::fromUcs4(U"🧵")});
-    QVERIFY_EXCEPTION_THROWN(exportCollectionPdf(repository, target, true, data.path()),
-                             ExportError);
+    const auto failingRenderer = [](const ProjectSource& source, QIODevice& device) {
+      int visited = 0;
+      renderProjectsPdf(
+          [&](const ProjectReceiver& receive) {
+            source([&](const ProjectDraft& project) {
+              if (++visited == 2)
+                throw ExportError(QStringLiteral("Late renderer failure"));
+              receive(project);
+            });
+          },
+          device);
+    };
+    QVERIFY_EXCEPTION_THROWN(
+        exportCollectionPdf(repository, target, true, data.path(), failingRenderer), ExportError);
     QCOMPARE(bytes(path), QByteArray("Existing PDF"));
     QCOMPARE(
         QDir(output.path()).entryList({QStringLiteral("*.tmp")}, QDir::Files | QDir::Hidden).size(),
         0);
+    exportCollectionPdf(repository, target, true, data.path());
+    const auto exported = textFrom(path);
+    QVERIFY(exported.contains(QStringLiteral("Alpha")));
+    QVERIFY(exported.contains(QStringLiteral("Zulu")));
+    QVERIFY(bytes(path).contains("NotoEmoji-Regular"));
+    QCOMPARE(repository.findAll().size(), 2);
   }
 
   void replacementCollisionAndPortableNewFile() {

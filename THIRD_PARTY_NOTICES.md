@@ -55,6 +55,12 @@ Herkunft und SHA-256 stehen in licenses/PROVENANCE.md.
 https://dejavu-fonts.github.io/License.html
 https://github.com/dejavu-fonts/dejavu-fonts/releases/tag/version_2_37
 
+Noto Emoji 3.002, Copyright 2013 Google LLC, wird unverändert als app-lokale
+TrueType-Schrift gebündelt und für einfarbige Emojis in PDFs eingebettet.
+Lizenz: SIL Open Font License 1.1. Der unveränderte Lizenztext steht unter
+licenses/noto-emoji-OFL.txt. Quelle und SHA-256 stehen in licenses/PROVENANCE.md.
+https://github.com/google/fonts/tree/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/notoemoji
+
 Nur für Prüfungen: Poppler 24.02.0 mit pdftotext, pdfinfo, pdffonts, pdfimages
 und pdftoppm unter GPL-2.0-or-later. Die App verlinkt und verteilt diese
 Werkzeuge nicht. Python, ImageMagick, xdotool, Xsel, Xephyr und Openbox dienen

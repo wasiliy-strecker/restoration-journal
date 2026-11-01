@@ -190,10 +190,6 @@
       <translation>Se ha eliminado el proyecto.</translation>
     </message>
     <message>
-      <source>Das Zeichen U+%1 wird von der PDF-Schrift nicht unterstützt. Bitte ersetze es im Projekt und speichere erneut.</source>
-      <translation>La fuente del PDF no admite el carácter U+%1. Sustitúyelo en el proyecto y guarda de nuevo.</translation>
-    </message>
-    <message>
       <source>Das Ziel hat sich während der Prüfung geändert.</source>
       <translation>El destino cambió durante la comprobación.</translation>
     </message>

@@ -190,10 +190,6 @@
       <translation>The project was deleted.</translation>
     </message>
     <message>
-      <source>Das Zeichen U+%1 wird von der PDF-Schrift nicht unterstützt. Bitte ersetze es im Projekt und speichere erneut.</source>
-      <translation>The PDF font does not support character U+%1. Replace it in the project and save again.</translation>
-    </message>
-    <message>
       <source>Das Ziel hat sich während der Prüfung geändert.</source>
       <translation>The destination changed during verification.</translation>
     </message>

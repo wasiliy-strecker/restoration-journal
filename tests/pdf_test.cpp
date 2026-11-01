@@ -261,19 +261,74 @@ private slots:
         {QStringLiteral("-scale-to"), QStringLiteral("1100"), QStringLiteral("-png"), path,
          artifact(QStringLiteral("long"))});
   }
-  void unsupportedGlyphs_data() {
-    QTest::addColumn<QString>("text");
-    QTest::newRow("emoji") << QString::fromUcs4(U"🧵");
-    QTest::newRow("control") << QString(QChar(0x0001));
-    QTest::newRow("format") << QString(QChar(0x200b));
-    QTest::newRow("unpaired-surrogate") << QString(QChar(0xd800));
+  void storedEmojiFieldsAndSequences() {
+    QTemporaryDir data, destination;
+    SqliteProjectRepository repository(data.path());
+    repository.initialize();
+    const auto emoji = QString::fromUcs4(
+        U"🧵 🪵 🛠️ 👩🏽‍🔧 🇩🇪 👨‍👩‍👧‍👦 1️⃣");
+    ProjectDraft draft{QStringLiteral("Name ") + emoji, QStringLiteral("Material ") + emoji,
+                       QStringLiteral("Location ") + emoji, QStringLiteral("Note ") + emoji};
+    draft.steps = {{QUuid::createUuid(), QStringLiteral("Step ") + emoji, true, 0}};
+    const auto saved = repository.create(draft);
+    const auto before = readBytes(data.filePath(QStringLiteral("restaurierungsheft.sqlite3")));
+    const auto path = destination.filePath(QStringLiteral("emoji.pdf"));
+    exportProjectPdf(repository, saved.id, inspectExportTarget(path, data.path()), false,
+                     data.path());
+    writeBytes(artifact(QStringLiteral("emoji.pdf")), readBytes(path));
+    run(QStringLiteral("pdftoppm"),
+        {QStringLiteral("-f"), QStringLiteral("1"), QStringLiteral("-singlefile"),
+         QStringLiteral("-scale-to"), QStringLiteral("1600"), QStringLiteral("-png"), path,
+         artifact(QStringLiteral("emoji"))});
+    const auto text = run(QStringLiteral("pdftotext"), {path, QStringLiteral("-")});
+    // Qt 6.8's PDF Unicode map covers BMP characters only. Verify ordinary text,
+    // embedded emoji outlines and actual rendering rather than promising emoji copy/paste.
+    for (const auto& field : {"Name", "Material", "Location", "Note", "Step"})
+      QVERIFY2(text.contains(QString::fromLatin1(field)), qPrintable(text));
+    const auto fonts = run(QStringLiteral("pdffonts"), {path});
+    QVERIFY2(fonts.contains(QStringLiteral("NotoEmoji")), qPrintable(fonts));
+    QCOMPARE(readBytes(data.filePath(QStringLiteral("restaurierungsheft.sqlite3"))), before);
+    QCOMPARE(repository.find(saved.id), draft);
+    const QImage rendered(artifact(QStringLiteral("emoji.png")));
+    QVERIFY(!rendered.isNull());
+    ProjectDraft plain{QStringLiteral("Name "), QStringLiteral("Material "),
+                       QStringLiteral("Location "), QStringLiteral("Note ")};
+    plain.steps = {{QUuid::createUuid(), QStringLiteral("Step "), true, 0}};
+    const auto plainPath = destination.filePath(QStringLiteral("plain.pdf"));
+    makePdf(plainPath, plain);
+    const auto plainImage = destination.filePath(QStringLiteral("plain"));
+    run(QStringLiteral("pdftoppm"),
+        {QStringLiteral("-f"), QStringLiteral("1"), QStringLiteral("-singlefile"),
+         QStringLiteral("-scale-to"), QStringLiteral("1600"), QStringLiteral("-png"), plainPath,
+         plainImage});
+    const QImage withoutEmoji(plainImage + QStringLiteral(".png"));
+    QCOMPARE(rendered.size(), withoutEmoji.size());
+    // Every field must gain painted glyphs, including the bold title and the checklist.
+    for (const auto& band :
+         {QPair{80, 115}, QPair{165, 200}, QPair{213, 248}, QPair{295, 330}, QPair{402, 437}}) {
+      int changed = 0;
+      const qreal scale = static_cast<qreal>(rendered.height()) / 842;
+      for (int y = qRound(band.first * scale); y < qRound(band.second * scale); ++y)
+        for (int x = qRound(48 * scale); x < qRound(547 * scale); ++x)
+          if (rendered.pixel(x, y) != withoutEmoji.pixel(x, y))
+            ++changed;
+      QVERIFY2(changed > 100, "Emoji outlines are missing from a rendered field");
+    }
   }
-  void unsupportedGlyphs() {
-    QFETCH(QString, text);
+  void missingGlyphsUseExplicitNotation() {
+    const auto path = artifact(QStringLiteral("missing-glyphs.pdf"));
+    const auto note = QStringLiteral("Before ") + QChar(0x0001) + QChar(0x200b) +
+                      QString::fromUcs4(U"\U0010ffff") + QStringLiteral(" after");
+    makePdf(path, {QStringLiteral("Project"), {}, {}, note});
+    const auto text = run(QStringLiteral("pdftotext"), {path, QStringLiteral("-")});
+    QVERIFY(text.contains(QStringLiteral("Before [U+0001][U+200B][U+10FFFF] after")));
+  }
+  void invalidUnicodeStillFailsBeforeWriting() {
     QBuffer output;
     output.open(QIODevice::WriteOnly);
-    QVERIFY_EXCEPTION_THROWN(renderProjectPdf({QStringLiteral("Projekt"), {}, {}, text}, output),
-                             ExportError);
+    QVERIFY_EXCEPTION_THROWN(
+        renderProjectPdf({QStringLiteral("Projekt"), {}, {}, QString(QChar(0xd800))}, output),
+        ExportError);
     QVERIFY(output.data().isEmpty());
   }
   void safeNames_data() {

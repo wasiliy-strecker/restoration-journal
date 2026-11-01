@@ -42,3 +42,12 @@ Die Kopie stammt aus dem vorhandenen Costume-Planner-Bestand. `fc-scan` meldet
 DejaVu Sans Bold und Schriftversion 155320 / 65536, also 2.37.
 SHA-256: `5c1247acef7f2b8522a31742c76d6adcb5569bacc0be7ceaa4dc39dd252ce895`.
 Es gelten dieselbe offizielle Veröffentlichung und die vorhandene DejaVu-Lizenz.
+
+Noto Emoji 3.002, unveränderte variable TrueType-Schrift mit Standardgewicht 400.
+Die Originaldatei `NotoEmoji[wght].ttf` liegt unter `assets/fonts/NotoEmoji.ttf`.
+Quelle mit festem Commit:
+https://github.com/google/fonts/blob/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/notoemoji/NotoEmoji%5Bwght%5D.ttf
+SHA-256: `de6c18832938afc99caf132b39d6a30a19bac7f2e812e28db2535b4608d27551`.
+`fc-scan` meldet Schriftversion 196739 / 65536, also 3.002.
+Die unveränderte OFL.txt desselben Commits liegt unter `noto-emoji-OFL.txt`.
+Lizenz-SHA-256: `500bb1ccf43df7bbb522112f9133a52b16e1c35e809632f5d8609b179152de5b`.
