@@ -5,12 +5,50 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QLocale>
+#include <QPainter>
+#include <QPainterPath>
 #include <QPushButton>
+#include <QStyleOptionButton>
 #include <QVBoxLayout>
 #include <algorithm>
 #include <limits>
 
 namespace restoration {
+namespace {
+// Keep native checkbox input and accessibility, but avoid low-contrast platform indicators.
+class StepCheckBox final : public QCheckBox {
+public:
+  explicit StepCheckBox(QWidget* parent) : QCheckBox(parent) {
+    setFixedSize(24, 24);
+    setFocusPolicy(Qt::StrongFocus);
+    setAttribute(Qt::WA_Hover);
+  }
+
+protected:
+  bool hitButton(const QPoint& position) const override { return rect().contains(position); }
+
+  void paintEvent(QPaintEvent*) override {
+    QStyleOptionButton option;
+    initStyleOption(&option);
+    option.rect = QRect(4, 4, 16, 16);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    // Use the same border, background, hover and focus treatment as the app's buttons.
+    style()->drawControl(QStyle::CE_PushButton, &option, &painter, this);
+    if (isChecked()) {
+      painter.setPen(QPen(option.palette.color(QPalette::ButtonText), 1.5, Qt::SolidLine,
+                          Qt::RoundCap, Qt::RoundJoin));
+      painter.setBrush(Qt::NoBrush);
+      QPainterPath tick;
+      tick.moveTo(8, 12);
+      tick.lineTo(11, 15);
+      tick.lineTo(16, 9);
+      painter.drawPath(tick);
+    }
+  }
+};
+} // namespace
+
 ChecklistEditor::ChecklistEditor(const Checklist& steps, QWidget* parent)
     : QWidget(parent), rowsLayout_(new QVBoxLayout),
       add_(
@@ -52,7 +90,7 @@ void ChecklistEditor::append(const ChecklistStep& step, bool focus) {
   layout->setContentsMargins(0, 4, 0, 8);
   layout->setSpacing(4);
   auto* line = new QHBoxLayout;
-  auto* completed = new QCheckBox(widget);
+  auto* completed = new StepCheckBox(widget);
   completed->setObjectName(QStringLiteral("stepCompleted"));
   completed->setChecked(step.completed);
   auto* text = new QLineEdit(step.text, widget);
