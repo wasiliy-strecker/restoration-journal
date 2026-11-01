@@ -1,4 +1,5 @@
 #include "ui/main_window.h"
+#include "ui/color_field.h"
 #include "ui/export_file_dialog.h"
 #include "ui/information_dialog.h"
 #include "ui/language_dialog.h"
@@ -113,11 +114,12 @@ MainWindow::MainWindow(StorageController& controller, QString dataDirectory, QWi
   collectionLayout->addWidget(state_);
   table_->setObjectName(QStringLiteral("projectsTable"));
   table_->setAccessibleName(QCoreApplication::translate("App", "Restaurierungsprojekte"));
-  table_->setColumnCount(5);
+  table_->setColumnCount(6);
   auto* sortHeader = new SortHeader(table_);
   table_->setHorizontalHeader(sortHeader);
   table_->setHorizontalHeaderLabels({QCoreApplication::translate("App", "Projektname"),
                                      QCoreApplication::translate("App", "Gegenstand / Material"),
+                                     QCoreApplication::translate("App", "Farbe"),
                                      QCoreApplication::translate("App", "Aufbewahrungsort"),
                                      QCoreApplication::translate("App", "Status"),
                                      QCoreApplication::translate("App", "Foto")});
@@ -130,8 +132,10 @@ MainWindow::MainWindow(StorageController& controller, QString dataDirectory, QWi
   table_->verticalHeader()->setDefaultSectionSize(table_->fontMetrics().height() + 20);
   table_->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   table_->horizontalHeader()->setMinimumSectionSize(65);
-  table_->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
   table_->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
+  table_->horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents);
+  table_->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+  table_->setIconSize(QSize(24, 24));
   table_->installEventFilter(this);
   collectionLayout->addWidget(table_, 1);
   auto* detail = new QWidget(splitter);
@@ -431,7 +435,10 @@ void MainWindow::refresh(std::optional<qint64> preferredId, int fallbackRow) {
                       : std::clamp(fallbackRow, 0, static_cast<int>(visibleProjects_.size()) - 1);
   for (int row = 0; row < visibleProjects_.size(); ++row) {
     const auto& project = visibleProjects_.at(row);
-    const QStringList values{project.fields.name, project.fields.material, project.fields.location,
+    const QStringList values{project.fields.name,
+                             project.fields.material,
+                             project.fields.color,
+                             project.fields.location,
                              displayStatus(project.fields.status),
                              project.hasPhoto ? QCoreApplication::translate("App", "Ja")
                                               : QStringLiteral("–")};
@@ -439,6 +446,8 @@ void MainWindow::refresh(std::optional<qint64> preferredId, int fallbackRow) {
       auto* item = new QTableWidgetItem(values.at(column));
       item->setData(Qt::UserRole, project.id);
       item->setToolTip(values.at(column));
+      if (column == static_cast<int>(SortField::Color))
+        item->setIcon(colorIcon(project.fields.color));
       table_->setItem(row, column, item);
     }
     if (preferredId && project.id == *preferredId) {

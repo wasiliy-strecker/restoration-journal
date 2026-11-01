@@ -121,14 +121,16 @@ private slots:
                        picture(),
                        {{QUuid::createUuid(), QStringLiteral("Kanten prüfen – ação"), true, 0},
                         {QUuid::createUuid(), QStringLiteral("Kanten prüfen – ação"), false, 2}}};
+    draft.color = QStringLiteral("#315A7D80");
     draft.note += QStringLiteral("Lange Notiz. ").repeated(180);
     const auto path = artifact(QStringLiteral("localized-") + language + QStringLiteral(".pdf"));
     makePdf(path, draft);
     const auto text = run(QStringLiteral("pdftotext"), {path, QStringLiteral("-")});
     for (const auto& expected :
          {draft.name, draft.material, draft.location,
-          tr("Status: %1").arg(displayStatus(draft.status)), tr("Notiz"), tr("Arbeitsschritte"),
-          tr("☑ Erledigt"), tr("☐ Offen"), tr("Seite %1").arg(QLocale().toString(1))})
+          tr("Status: %1").arg(displayStatus(draft.status)), tr("Farbe: %1").arg(draft.color),
+          tr("Notiz"), tr("Arbeitsschritte"), tr("☑ Erledigt"), tr("☐ Offen"),
+          tr("Seite %1").arg(QLocale().toString(1))})
       QVERIFY2(compact(text).contains(compact(expected)), qPrintable(expected));
     QCOMPARE(text.count(QStringLiteral("Kanten prüfen – ação")), 2);
     QVERIFY(run(QStringLiteral("pdfimages"), {QStringLiteral("-list"), path})

@@ -85,7 +85,7 @@ Die Dialogschaltflächen liegen außerhalb des Scrollbereichs.
 
 ## Transaktion über zwei Tabellen
 
-Schema 1 und die eigene SQLite-`application_id=1380471857` kennzeichnen die Datei.
+Schema 2 und die eigene SQLite-`application_id=1380471857` kennzeichnen die Datei.
 `projects` enthält Texte, Status und optionalen Foto-BLOB.
 `checklist_steps` besitzt UUID-Primärschlüssel, `project_id` als Fremdschlüssel,
 Text, Boolean als INTEGER 0/1 und explizite Position.
@@ -310,3 +310,24 @@ Die Auswahl bleibt pro Prozess unveränderlich und gilt auch für PDF-Fehler und
 PDF-Inhalte. QLocale steuert Sortierung und regionale Zahlen. `LanguageDialog`
 speichert atomar über den vorhandenen Worker. Fachliche Daten und Schema bleiben
 unverändert. PDF-Dateien werden weiterhin aus konsistenten gespeicherten Daten erzeugt.
+
+## Farbfeld und Migration, 1. November 2026
+
+Der Entwurf enthält zusätzlich `color`. Leer bedeutet keine Farbe. Der
+Hexwert verwendet RGB mit optionalem Alpha am Ende. Die Domain prüft das
+Format, der app-lokale `ColorField` kapselt Auswahl, Abbrechen und Entfernen.
+`application/colors` verarbeitet sRGB-Werte und Schachbrett-Farbflächen mit
+QImage ohne Widgets. QWidget und QPixmap bleiben ausschließlich in der UI.
+
+Die SQLite-Erweiterung prüft zuerst App-Kennung, Schema und Integrität.
+`ALTER TABLE ... ADD COLUMN color TEXT NOT NULL DEFAULT ''` und
+`PRAGMA user_version=2` bilden eine Transaktion. Bei gesperrtem Commit wird
+auch die Schemaänderung zurückgerollt. IDs, Fotobytes und vorhandene
+Zusatzdaten werden weder kopiert noch neu vergeben. Schema 2 wird beim
+nächsten Start erneut validiert. Ältere Builds weisen es als zu neu zurück.
+
+JSON-Version 1 erhält das optionale Feld `color`. Der aktuelle Decoder liest
+auch frühere Einträge ohne dieses Feld als farblos. Neue Exporte enthalten es
+immer. Die alten strengen Decoder akzeptieren diese Erweiterung nicht.
+Fingerprints berücksichtigen Farbe, so dass verschiedenfarbige Einträge beim
+ergänzenden Import unabhängig bleiben. Wiederholter Import bleibt idempotent.

@@ -782,7 +782,7 @@ Datenschutz: contact@appfabrik-ai.de
 Support: support@appfabrik-ai.de
 
 Zweck und gespeicherte Daten
-Restoration Journal verwaltet deine privaten Einträge. Die App speichert Namen, Materialangaben, Aufbewahrungsorte, Notizen, interne Eintragskennungen und deine Spracheinstellung sowie ein optionales Foto, den Projektstatus und Arbeitsschritte mit Reihenfolge und Erledigungsstand standardmäßig lokal im Benutzerprofil deines Computers. Fotos bleiben als Originaldateiinhalt gespeichert und können Metadaten enthalten. Die Angaben können personenbezogene Informationen enthalten, wenn du sie selbst einträgst. Die Verarbeitung dient ausschließlich den von dir angeforderten Funktionen zum Verwalten, Suchen, Exportieren und Importieren deiner Sammlung.
+Restoration Journal verwaltet deine privaten Einträge. Die App speichert Namen, Materialangaben, Aufbewahrungsorte, Farben, Notizen, interne Eintragskennungen und deine Spracheinstellung sowie ein optionales Foto, den Projektstatus und Arbeitsschritte mit Reihenfolge und Erledigungsstand standardmäßig lokal im Benutzerprofil deines Computers. Fotos bleiben als Originaldateiinhalt gespeichert und können Metadaten enthalten. Die Angaben können personenbezogene Informationen enthalten, wenn du sie selbst einträgst. Die Verarbeitung dient ausschließlich den von dir angeforderten Funktionen zum Verwalten, Suchen, Exportieren und Importieren deiner Sammlung.
 
 Lokale Verarbeitung
 Die App benötigt kein Konto und keinen Server. Sie übermittelt deine Sammlung und Spracheinstellung nicht an den Entwickler oder andere Empfänger. Sie enthält keine Werbung, Telemetrie, Nutzungsanalyse oder eigene Cloud-Synchronisierung. Die Datenschutzerklärung ist Bestandteil der App und wird ohne Internetverbindung angezeigt. Restoration Journal verschlüsselt weder seine gespeicherte Sammlung noch exportierte JSON-Dateien selbst. Der Schutz hängt auch von deinem Benutzerkonto, den Zugriffsrechten und einer gegebenenfalls aktivierten Datenträgerverschlüsselung ab.
@@ -808,7 +808,7 @@ Privacy: contact@appfabrik-ai.de
 Support: support@appfabrik-ai.de
 
 Purpose and stored data
-Restoration Journal manages your personal entries. By default, the app stores names, material details, storage locations, notes, internal entry identifiers and your language preference, along with an optional photo, project status and ordered checklist steps with completion states, locally in your computer’s user profile. Photos retain their original file contents and may include metadata. Entries can contain personal information if you enter it yourself. Processing serves only the functions you request to manage, search, export and import your collection.
+Restoration Journal manages your personal entries. By default, the app stores names, material details, storage locations, colors, notes, internal entry identifiers and your language preference, along with an optional photo, project status and ordered checklist steps with completion states, locally in your computer’s user profile. Photos retain their original file contents and may include metadata. Entries can contain personal information if you enter it yourself. Processing serves only the functions you request to manage, search, export and import your collection.
 
 Local processing
 The app requires no account or server. It does not transmit your collection or language preference to the developer or other recipients. It contains no advertising, telemetry, usage analytics or built-in cloud synchronization. This privacy policy is included in the app and can be read without an internet connection. Restoration Journal does not itself encrypt its stored collection or exported JSON files. Protection also depends on your user account, access permissions and any disk encryption you have enabled.
@@ -939,6 +939,30 @@ Where applicable, you have rights of access, rectification, erasure, restriction
     <message>
       <source>Dateiname ohne Ordnerpfad. Die Endung .pdf wird bei Bedarf ergänzt.</source>
       <translation>File name without a folder path. The .pdf extension is added if needed.</translation>
+    </message>
+    <message>
+      <source>Farbe</source>
+      <translation>Color</translation>
+    </message>
+    <message>
+      <source>Farbe auswählen</source>
+      <translation>Choose color</translation>
+    </message>
+    <message>
+      <source>Farbe entfernen</source>
+      <translation>Remove color</translation>
+    </message>
+    <message>
+      <source>Keine Farbe</source>
+      <translation>No color</translation>
+    </message>
+    <message>
+      <source>Die Farbe muss ein Hexwert wie #RRGGBB oder #RRGGBBAA sein.</source>
+      <translation>The color must be a hex value such as #RRGGBB or #RRGGBBAA.</translation>
+    </message>
+    <message>
+      <source>Farbe: %1</source>
+      <translation>Color: %1</translation>
     </message>
   </context>
 </TS>

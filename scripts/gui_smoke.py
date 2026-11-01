@@ -215,7 +215,7 @@ def exercise(args):
             window("^Restoration Journal$")
             command("xdotool", "windowsize", focused, "1100", "800")
             command("xdotool", "windowmove", focused, "80", "60")
-            wait_for(lambda: query("PRAGMA user_version") == [(1,)])
+            wait_for(lambda: query("PRAGMA user_version") == [(2,)])
             time.sleep(0.5)
 
         def stop():

@@ -1,4 +1,5 @@
 #include "pdf/pdf_renderer.h"
+#include "application/colors.h"
 #include "application/photo_importer.h"
 #include <QCoreApplication>
 #include <QLocale>
@@ -103,6 +104,12 @@ public:
     painter_.drawImage(QRectF(QPointF(left, y_), QSizeF(size)), image);
     y_ += size.height() + 14;
   }
+  void color(const QString& value) {
+    reserve(52);
+    text(QCoreApplication::translate("App", "Farbe: %1").arg(value));
+    painter_.drawImage(QRectF(left, y_, 28, 28), colorSwatch(value, 56));
+    y_ += 36;
+  }
   void gap() { y_ += 10; }
 
 private:
@@ -174,6 +181,8 @@ void renderProjectPdf(const ProjectDraft& project, QIODevice& output) {
   page.text(QCoreApplication::translate("App", "Status: %1").arg(displayStatus(valid.status)));
   if (!material.isEmpty())
     page.text(QCoreApplication::translate("App", "Gegenstand / Material: %1").arg(material));
+  if (!valid.color.isEmpty())
+    page.color(valid.color);
   if (!location.isEmpty())
     page.text(QCoreApplication::translate("App", "Aufbewahrungsort: %1").arg(location));
   page.gap();
