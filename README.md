@@ -182,6 +182,10 @@ und die Uhrzeit im Format `yyyy-MM-dd_HH-mm-ss`. Für alle Projekte lautet der
 Vorschlag `restoration-journal-2026-11-01_22-00-00.pdf`. Beim Einzelprojekt steht
 der bereinigte Projektname vor dem Zeitstempel. Der Name bleibt frei änderbar.
 
+Während der App-Sitzung öffnen beide PDF-Aktionen den Ordner des letzten
+erfolgreichen PDF-Exports. Abgebrochene oder fehlgeschlagene Exporte verändern
+diesen Ordner nicht. Fehlt er inzwischen, beginnt die Auswahl im Dokumente-Ordner.
+
 Die PDFs verwenden denselben Aufbau wie Costume Planner: Titel und farbige
 Statuskarte, Angaben links neben dem proportionalen Foto, echte Farbkachel mit
 Hexcode, Notiz und farbige Karten für die Arbeitsschritte. Lange Angaben erscheinen

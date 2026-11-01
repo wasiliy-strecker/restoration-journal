@@ -238,6 +238,7 @@ MainWindow::MainWindow(StorageController& controller, QString dataDirectory, QWi
             controller_.writeExport(id, target, target.exists, dataDirectory_);
           });
   connect(&controller_, &StorageController::exported, this, [this](const QString& path) {
+    exportDialogs_->rememberExport(path);
     feedback_->setText(QCoreApplication::translate("App", "PDF gespeichert: %1").arg(path));
   });
   connect(aboutAction, &QAction::triggered, this, &MainWindow::showAbout);
