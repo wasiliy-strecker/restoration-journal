@@ -18,8 +18,8 @@ ctest --preset release
 mkdir -p "$restoration_stage"
 cp README.md THIRD_PARTY_NOTICES.md "$restoration_stage/"
 cp -R docs "$restoration_stage/docs"
-cp -R build/release/restaurierungsheft.app "$restoration_stage/RestaurierungsHeft.app"
-restoration_app="$restoration_stage/RestaurierungsHeft.app"
+cp -R build/release/restaurierungsheft.app "$restoration_stage/Restoration Journal.app"
+restoration_app="$restoration_stage/Restoration Journal.app"
 "$RESTAURIERUNGSHEFT_QT_ROOT/bin/macdeployqt" "$restoration_app" -always-overwrite -appstore-compliant
 test -f "$restoration_app/Contents/PlugIns/sqldrivers/libqsqlite.dylib"
 test -f "$restoration_app/Contents/PlugIns/platforms/libqcocoa.dylib"
@@ -45,7 +45,7 @@ iconutil -c icns "$restoration_icons" -o "$restoration_app/Contents/Resources/Re
 /usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string RestaurierungsHeft.icns" "$restoration_app/Contents/Info.plist"
 # Ad-hoc signing permits local Apple-Silicon testing. It is not a distribution identity.
 codesign --force --deep --sign - "$restoration_app"
-hdiutil create -volname RestaurierungsHeft -srcfolder "$restoration_stage" -ov -format UDZO "$restoration_dmg"
+hdiutil create -volname "Restoration Journal" -srcfolder "$restoration_stage" -ov -format UDZO "$restoration_dmg"
 shasum -a 256 "$restoration_dmg" > "$restoration_dmg.sha256"
 echo "$restoration_dmg"
 echo "Native GUI-Abnahme und spätere Store-Signierung bleiben erforderlich."

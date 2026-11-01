@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
   QCoreApplication::setApplicationName(QStringLiteral("de.appfabrik.restaurierungsheft"));
   QCoreApplication::setOrganizationDomain(QStringLiteral("appfabrik.de"));
   QCoreApplication::setApplicationVersion(QStringLiteral(APP_VERSION));
-  QApplication::setApplicationDisplayName(QStringLiteral("RestaurierungsHeft"));
+  QApplication::setApplicationDisplayName(QStringLiteral("Restoration Journal"));
   QApplication::setWindowIcon(QIcon(QStringLiteral(":/assets/branding/icon-256.png")));
   restoration::Translations translations;
   translations.install(QStringLiteral("auto"));
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
     return QApplication::exec();
   } catch (const std::exception& error) {
     QMessageBox::critical(
-        nullptr, QCoreApplication::translate("App", "RestaurierungsHeft kann nicht starten"),
+        nullptr, QCoreApplication::translate("App", "Restoration Journal kann nicht starten"),
         QString::fromUtf8(error.what()));
     return 1;
   }

@@ -1,4 +1,4 @@
-RestaurierungsHeft
+Restoration Journal
 
 Guarda el nombre, objeto o material, ubicación y notas. Añade una foto, tres estados y pasos con casillas. Exporta el proyecto guardado con su foto, estado y lista de pasos como PDF.
 

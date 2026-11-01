@@ -31,7 +31,7 @@ def verify(path):
             )
             assert x0 >= 47 and x1 <= 548, (word.text, "Seitenrand")
             if (
-                word.text not in ("RestaurierungsHeft", "Seite")
+                word.text not in ("Restoration Journal", "Seite")
                 and not (word.text or "").isdecimal()
             ):
                 assert y0 >= 63 and y1 <= 778, (word.text, "Inhaltsbereich")

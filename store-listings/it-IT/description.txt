@@ -1,4 +1,4 @@
-RestaurierungsHeft
+Restoration Journal
 
 Registra nome, oggetto o materiale, posizione e note. Aggiungi una foto, tre stati e passi di lavoro con spunte. Esporta il progetto salvato con foto, stato e checklist come PDF.
 

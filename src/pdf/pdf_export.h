@@ -5,6 +5,7 @@
 #include <QByteArray>
 #include <QStringList>
 #include <functional>
+#include <system_error>
 
 namespace restoration {
 QString suggestedPdfName(const QString& name);
@@ -19,9 +20,11 @@ struct ExportTarget {
 };
 // Called on worker before asking for replacement permission and again before publishing.
 ExportTarget inspectExportTarget(const QString& path, const QString& dataDirectory);
+using PdfLinkAttempt = std::function<std::error_code(const QString&, const QString&)>;
 using PdfRenderer = std::function<void(const ProjectDraft&, QIODevice&)>;
 void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarget& target,
                       bool replaceApproved, const QString& dataDirectory,
-                      const PdfRenderer& renderer = renderProjectPdf);
+                      const PdfRenderer& renderer = renderProjectPdf,
+                      const PdfLinkAttempt& link = {});
 } // namespace restoration
 Q_DECLARE_METATYPE(restoration::ExportTarget)

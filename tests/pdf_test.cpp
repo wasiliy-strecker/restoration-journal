@@ -69,6 +69,38 @@ void makePdf(const QString& path, const ProjectDraft& draft) {
 class PdfTest final : public QObject {
   Q_OBJECT
 private slots:
+  void newPdfWithoutHardLinksAndLateCollision() {
+    QTemporaryDir data, output;
+    SqliteProjectRepository repository(data.path());
+    repository.initialize();
+    ProjectDraft draft;
+    draft.name = QStringLiteral("Portable PDF");
+    const auto saved = repository.create(draft);
+    const auto path = output.filePath(QStringLiteral("portable.pdf"));
+    const auto denied = [](const QString&, const QString&) {
+      return std::make_error_code(std::errc::operation_not_supported);
+    };
+    exportProjectPdf(repository, saved.id, inspectExportTarget(path, data.path()), false,
+                     data.path(), renderProjectPdf, denied);
+    QVERIFY(readBytes(path).startsWith("%PDF-"));
+    const auto original = readBytes(path);
+    QVERIFY_EXCEPTION_THROWN(exportProjectPdf(repository, saved.id,
+                                              inspectExportTarget(path, data.path()), false,
+                                              data.path(), renderProjectPdf, denied),
+                             ExportError);
+    QCOMPARE(readBytes(path), original);
+    const auto raced = output.filePath(QStringLiteral("raced.pdf"));
+    const auto collision = [&raced](const QString&, const QString&) {
+      writeBytes(raced, "Another writer");
+      return std::make_error_code(std::errc::operation_not_supported);
+    };
+    QVERIFY_EXCEPTION_THROWN(exportProjectPdf(repository, saved.id,
+                                              inspectExportTarget(raced, data.path()), false,
+                                              data.path(), renderProjectPdf, collision),
+                             ExportError);
+    QCOMPARE(readBytes(raced), QByteArray("Another writer"));
+  }
+
   void initTestCase() { initializePdfFonts(); }
   void localizedContents_data() {
     QTest::addColumn<QString>("language");
@@ -197,7 +229,7 @@ private slots:
     QVERIFY(text.contains(QStringLiteral("LetzteNotizzeile")));
     // Repeated page furniture may separate a word spanning pages.
     auto content = text;
-    content.remove(QStringLiteral("RestaurierungsHeft"));
+    content.remove(compact(QStringLiteral("Restoration Journal")));
     content.remove(QRegularExpression(QStringLiteral("Seite\\d+")));
     QVERIFY(content.contains(QStringLiteral("WORTSTART") + QString(3500, QChar('W')) +
                              QStringLiteral("WORTENDE")));

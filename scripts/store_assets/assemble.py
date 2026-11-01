@@ -76,7 +76,7 @@ def main():
     for log in args.check_log:
         shutil.copy2(log, verification / log.name)
     manifest = {
-        "app": "RestaurierungsHeft",
+        "app": "Restoration Journal",
         "version": version,
         "source_commit": commit,
         "languages": LANGUAGES,

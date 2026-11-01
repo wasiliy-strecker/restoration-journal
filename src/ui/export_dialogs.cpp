@@ -1,4 +1,5 @@
 #include "ui/export_dialogs.h"
+#include "ui/export_file_dialog.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileDialog>
@@ -9,11 +10,15 @@
 namespace restoration {
 QString ExportDialogs::choose(QWidget* parent, const QString& suggestedName) {
   const auto documents = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+#ifdef Q_OS_MACOS
+  return chooseExportFile(parent, QDir(documents), suggestedName, true, true);
+#else
   return QFileDialog::getSaveFileName(
       parent, QCoreApplication::translate("App", "Projekt als PDF exportieren"),
       QDir(documents).filePath(suggestedName),
       QCoreApplication::translate("App", "PDF-Dokument (*.pdf)"), nullptr,
       QFileDialog::DontConfirmOverwrite);
+#endif
 }
 bool ExportDialogs::confirmReplacement(QWidget* parent, const QString& path) {
   QMessageBox question(

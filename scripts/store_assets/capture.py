@@ -146,7 +146,7 @@ class Journey:
             stdout=self.log,
             stderr=self.log,
         )
-        self.main = self.window("RestaurierungsHeft")
+        self.main = self.window("Restoration Journal")
         self.command("xdotool", "windowactivate", "--sync", self.main)
         self.key("alt+F10")
         time.sleep(0.7)
@@ -199,7 +199,7 @@ class Journey:
         self.paste(value)
 
     def edit(self):
-        self.window("RestaurierungsHeft")
+        self.window("Restoration Journal")
         self.action("&Bearbeiten")
         return self.window(self.catalog["Projekt bearbeiten"])
 
@@ -219,12 +219,12 @@ class Journey:
         self.key("Escape")
         self.window(self.catalog["Änderungen verwerfen?"])
         self.key("Tab", "space")
-        self.window("RestaurierungsHeft")
+        self.window("Restoration Journal")
 
     def export_pdf(self, path=None, approve=True):
         before_db = self.database.read_bytes()
         previous = path.read_bytes() if path and path.exists() else None
-        self.window("RestaurierungsHeft")
+        self.window("Restoration Journal")
         self.key("ctrl+shift+e")
         self.window(self.catalog["Projekt als PDF exportieren"])
         if path is None:
@@ -238,7 +238,7 @@ class Journey:
                 self.window(self.catalog["PDF ersetzen?"])
                 self.capture("pdf-replace")
                 self.key("alt+e" if approve else "Return")
-        self.window("RestaurierungsHeft")
+        self.window("Restoration Journal")
         if path and approve:
             self.wait(lambda: path.is_file() and path.read_bytes() != previous)
             time.sleep(0.3)
@@ -382,7 +382,7 @@ class Journey:
                 self.capture("04-language", store=True)
                 self.key("Escape", "Escape")
 
-                self.window("RestaurierungsHeft")
+                self.window("Restoration Journal")
                 self.key("ctrl+n")
                 self.editor_title = "Projekt hinzufügen"
                 editor = self.window(self.catalog[self.editor_title])
@@ -498,7 +498,7 @@ class Journey:
                 self.photo(photo_sources[0])
                 self.key("ctrl+s")
                 self.wait(lambda: self.rows()[-1][4] == photo_sources[0].read_bytes())
-                self.window("RestaurierungsHeft")
+                self.window("Restoration Journal")
                 self.action("&Löschen")
                 self.window(self.catalog["Projekt löschen?"])
                 self.key("Return")
@@ -521,7 +521,7 @@ class Journey:
                 )
                 preserved = self.rows()
                 assert [row[4] for row in preserved] == [row[4] for row in original]
-                self.window("RestaurierungsHeft")
+                self.window("Restoration Journal")
                 self.key("alt+F10")
                 self.command("xdotool", "windowsize", self.main, "560", "520")
                 self.capture("small-window")

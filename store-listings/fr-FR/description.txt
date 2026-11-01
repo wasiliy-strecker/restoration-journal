@@ -1,4 +1,4 @@
-RestaurierungsHeft
+Restoration Journal
 
 Enregistrez le nom, l’objet ou matériau, l’emplacement et les notes. Ajoutez une photo, trois états et des étapes à cocher. Exportez le projet enregistré avec sa photo, son état et ses étapes en PDF.
 

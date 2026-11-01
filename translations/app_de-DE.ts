@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
+<?xml version='1.0' encoding='utf-8'?>
 <TS version="2.1" language="de_DE" sourcelanguage="de_DE">
   <context>
     <name>App</name>
@@ -116,6 +115,10 @@
       <translation>Beim Lesen des Fotos ist ein Fehler aufgetreten.</translation>
     </message>
     <message>
+      <source>Bitte bestätige das Ersetzen der vorhandenen Exportdatei.</source>
+      <translation>Bitte bestätige das Ersetzen der vorhandenen Exportdatei.</translation>
+    </message>
+    <message>
       <source>Bitte gib einen Projektnamen ein.</source>
       <translation>Bitte gib einen Projektnamen ein.</translation>
     </message>
@@ -218,12 +221,28 @@
       <translation>Das persönliche Datenverzeichnis ist nicht verfügbar.</translation>
     </message>
     <message>
+      <source>Dateiname ohne Ordnerpfad. Die Endung .json wird bei Bedarf ergänzt.</source>
+      <translation>Dateiname ohne Ordnerpfad. Die Endung .json wird bei Bedarf ergänzt.</translation>
+    </message>
+    <message>
       <source>Dateiverweise oder unbekannte Dateiidentität sind nicht zulässig.</source>
       <translation>Dateiverweise oder unbekannte Dateiidentität sind nicht zulässig.</translation>
     </message>
     <message>
       <source>Daten werden verarbeitet …</source>
       <translation>Daten werden verarbeitet …</translation>
+    </message>
+    <message>
+      <source>Datenschutz</source>
+      <translation>Datenschutz</translation>
+    </message>
+    <message>
+      <source>Datenschutzerklärung für Restoration Journal</source>
+      <translation>Datenschutzerklärung für Restoration Journal</translation>
+    </message>
+    <message>
+      <source>Datenverzeichnis: %1</source>
+      <translation>Datenverzeichnis: %1</translation>
     </message>
     <message>
       <source>Deine Projektliste ist noch leer. Füge dein erstes Restaurierungsprojekt hinzu.</source>
@@ -240,8 +259,16 @@
 %1</translation>
     </message>
     <message>
+      <source>Der Export konnte nicht sicher gespeichert werden. Prüfe Speicherplatz und Zugriffsrechte oder wähle einen anderen lokalen Ordner. Ein vorhandener Export bleibt erhalten.</source>
+      <translation>Der Export konnte nicht sicher gespeichert werden. Prüfe Speicherplatz und Zugriffsrechte oder wähle einen anderen lokalen Ordner. Ein vorhandener Export bleibt erhalten.</translation>
+    </message>
+    <message>
       <source>Der Fremdschlüsselschutz konnte nicht aktiviert werden.</source>
       <translation>Der Fremdschlüsselschutz konnte nicht aktiviert werden.</translation>
+    </message>
+    <message>
+      <source>Der Import würde die Grenze von 10.000 Einträgen überschreiten. Die Sammlung bleibt unverändert.</source>
+      <translation>Der Import würde die Grenze von 10.000 Einträgen überschreiten. Die Sammlung bleibt unverändert.</translation>
     </message>
     <message>
       <source>Der Projektstatus ist ungültig.</source>
@@ -302,6 +329,14 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
       <translation>Die IDs oder die Reihenfolge der Arbeitsschritte sind ungültig. Die Daten werden nicht verändert.</translation>
     </message>
     <message>
+      <source>Die Importdatei konnte nicht gelesen werden. Prüfe die Zugriffsrechte. Die Sammlung bleibt unverändert.</source>
+      <translation>Die Importdatei konnte nicht gelesen werden. Prüfe die Zugriffsrechte. Die Sammlung bleibt unverändert.</translation>
+    </message>
+    <message>
+      <source>Die Informationen konnten nicht geladen werden. Bitte installiere die App erneut.</source>
+      <translation>Die Informationen konnten nicht geladen werden. Bitte installiere die App erneut.</translation>
+    </message>
+    <message>
       <source>Die PDF konnte nicht sicher gespeichert werden. Prüfe Ordner, Zugriffsrechte, freien Speicher und eine mögliche Dateisperre. Du kannst ein anderes Ziel wählen.
 %1</source>
       <translation>Die PDF konnte nicht sicher gespeichert werden. Prüfe Ordner, Zugriffsrechte, freien Speicher und eine mögliche Dateisperre. Du kannst ein anderes Ziel wählen.
@@ -328,6 +363,10 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
       <translation>Die Sammlung konnte nicht geöffnet werden.</translation>
     </message>
     <message>
+      <source>Die Sammlungsdatei enthält ungültige oder zu große Daten. Die Sammlung bleibt unverändert.</source>
+      <translation>Die Sammlungsdatei enthält ungültige oder zu große Daten. Die Sammlung bleibt unverändert.</translation>
+    </message>
+    <message>
       <source>Die Schema-Version konnte nicht gelesen werden.</source>
       <translation>Die Schema-Version konnte nicht gelesen werden.</translation>
     </message>
@@ -336,8 +375,16 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
       <translation>Die Sprache konnte nicht gespeichert werden. Prüfe das Datenverzeichnis und deine Zugriffsrechte. Die bisherige Einstellung bleibt erhalten.</translation>
     </message>
     <message>
+      <source>Die Zieldatei wurde nach der Auswahl verändert. Wähle sie erneut. Sie wurde nicht ersetzt.</source>
+      <translation>Die Zieldatei wurde nach der Auswahl verändert. Wähle sie erneut. Sie wurde nicht ersetzt.</translation>
+    </message>
+    <message>
       <source>Die Zuordnung gespeicherter Arbeitsschritte ist beschädigt.</source>
       <translation>Die Zuordnung gespeicherter Arbeitsschritte ist beschädigt.</translation>
+    </message>
+    <message>
+      <source>Die folgenden Hinweise und Lizenztexte beschreiben die verwendeten Fremdkomponenten. Rechtliche Originaltexte werden in ihrer Originalsprache angezeigt. Weitere Laufzeithinweise befinden sich in den Lizenzordnern der installierten App.</source>
+      <translation>Die folgenden Hinweise und Lizenztexte beschreiben die verwendeten Fremdkomponenten. Rechtliche Originaltexte werden in ihrer Originalsprache angezeigt. Weitere Laufzeithinweise befinden sich in den Lizenzordnern der installierten App.</translation>
     </message>
     <message>
       <source>Die gespeicherte Checkliste ist beschädigt. %1</source>
@@ -364,16 +411,24 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
       <translation>Die mitgelieferte PDF-Schrift konnte nicht geladen werden.</translation>
     </message>
     <message>
-      <source>Die vorhandene Datei hat kein bekanntes RestaurierungsHeft-Schema. Sie wird nicht überschrieben.</source>
-      <translation>Die vorhandene Datei hat kein bekanntes RestaurierungsHeft-Schema. Sie wird nicht überschrieben.</translation>
+      <source>Die vorhandene Datei hat kein bekanntes Restoration Journal-Schema. Sie wird nicht überschrieben.</source>
+      <translation>Die vorhandene Datei hat kein bekanntes Restoration Journal-Schema. Sie wird nicht überschrieben.</translation>
     </message>
     <message>
-      <source>Diese Datenbank benötigt eine neuere Version von RestaurierungsHeft. Die vorhandene Datei wird nicht verändert.</source>
-      <translation>Diese Datenbank benötigt eine neuere Version von RestaurierungsHeft. Die vorhandene Datei wird nicht verändert.</translation>
+      <source>Dies ist keine gültige Restoration Journal-Sammlung. Wähle eine mit Exportieren erzeugte JSON-Datei. Die Sammlung bleibt unverändert.</source>
+      <translation>Dies ist keine gültige Restoration Journal-Sammlung. Wähle eine mit Exportieren erzeugte JSON-Datei. Die Sammlung bleibt unverändert.</translation>
     </message>
     <message>
-      <source>Diese Datenbank gehört nicht zu RestaurierungsHeft. Die Datei wird nicht ersetzt.</source>
-      <translation>Diese Datenbank gehört nicht zu RestaurierungsHeft. Die Datei wird nicht ersetzt.</translation>
+      <source>Diese Datei verwendet eine nicht unterstützte Exportversion. Die Sammlung bleibt unverändert.</source>
+      <translation>Diese Datei verwendet eine nicht unterstützte Exportversion. Die Sammlung bleibt unverändert.</translation>
+    </message>
+    <message>
+      <source>Diese Datenbank benötigt eine neuere Version von Restoration Journal. Die vorhandene Datei wird nicht verändert.</source>
+      <translation>Diese Datenbank benötigt eine neuere Version von Restoration Journal. Die vorhandene Datei wird nicht verändert.</translation>
+    </message>
+    <message>
+      <source>Diese Datenbank gehört nicht zu Restoration Journal. Die Datei wird nicht ersetzt.</source>
+      <translation>Diese Datenbank gehört nicht zu Restoration Journal. Die Datei wird nicht ersetzt.</translation>
     </message>
     <message>
       <source>Diese Sammlung ist bereits in einer anderen App-Instanz geöffnet. Schließe sie dort und lade hier erneut.</source>
@@ -400,12 +455,32 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
       <translation>Ein gespeicherter Schritttext ist ungültig.</translation>
     </message>
     <message>
+      <source>Eine Sammlung darf höchstens 10.000 Einträge und 256 MiB enthalten.</source>
+      <translation>Eine Sammlung darf höchstens 10.000 Einträge und 256 MiB enthalten.</translation>
+    </message>
+    <message>
+      <source>Eine Sammlungsdatei darf höchstens 10.000 Einträge und 256 MiB enthalten. Es wurde keine unvollständige Datei oder Sammlung gespeichert.</source>
+      <translation>Eine Sammlungsdatei darf höchstens 10.000 Einträge und 256 MiB enthalten. Es wurde keine unvollständige Datei oder Sammlung gespeichert.</translation>
+    </message>
+    <message>
       <source>Eine lokale Sammlung für deine Restaurierungsprojekte.</source>
       <translation>Eine lokale Sammlung für deine Restaurierungsprojekte.</translation>
     </message>
     <message>
       <source>Eine weitere PDF-Seite konnte nicht geschrieben werden.</source>
       <translation>Eine weitere PDF-Seite konnte nicht geschrieben werden.</translation>
+    </message>
+    <message>
+      <source>Einträge importieren?</source>
+      <translation>Einträge importieren?</translation>
+    </message>
+    <message>
+      <source>Einträge in der Datei: %1. Vorhandene Einträge bleiben erhalten. Bereits vorhandene identische Exemplare werden übersprungen. Nach dem Import wird die Suche geleert.</source>
+      <translation>Einträge in der Datei: %1. Vorhandene Einträge bleiben erhalten. Bereits vorhandene identische Exemplare werden übersprungen. Nach dem Import wird die Suche geleert.</translation>
+    </message>
+    <message>
+      <source>Entwicklung: Wasiliy Strecker · AppFabrik AI</source>
+      <translation>Entwicklung: Wasiliy Strecker · AppFabrik AI</translation>
     </message>
     <message>
       <source>Erhalten, aufarbeiten und dokumentieren.</source>
@@ -418,6 +493,18 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
     <message>
       <source>Es ist nicht genügend Speicherplatz verfügbar. Schaffe Platz und versuche es erneut.</source>
       <translation>Es ist nicht genügend Speicherplatz verfügbar. Schaffe Platz und versuche es erneut.</translation>
+    </message>
+    <message>
+      <source>Export abgeschlossen. Einträge: %1.</source>
+      <translation>Export abgeschlossen. Einträge: %1.</translation>
+    </message>
+    <message>
+      <source>Export ersetzen?</source>
+      <translation>Export ersetzen?</translation>
+    </message>
+    <message>
+      <source>Exportieren</source>
+      <translation>Exportieren</translation>
     </message>
     <message>
       <source>Fertig</source>
@@ -456,6 +543,10 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
       <translation>Geplant</translation>
     </message>
     <message>
+      <source>Gesamte Sammlung exportieren</source>
+      <translation>Gesamte Sammlung exportieren</translation>
+    </message>
+    <message>
       <source>Gespeicherte Arbeitsschritte</source>
       <translation>Gespeicherte Arbeitsschritte</translation>
     </message>
@@ -466,6 +557,18 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
     <message>
       <source>Hinweis zum Speichern</source>
       <translation>Hinweis zum Speichern</translation>
+    </message>
+    <message>
+      <source>Import abgeschlossen. Hinzugefügt: %1. Bereits vorhanden: %2.</source>
+      <translation>Import abgeschlossen. Hinzugefügt: %1. Bereits vorhanden: %2.</translation>
+    </message>
+    <message>
+      <source>Importieren</source>
+      <translation>Importieren</translation>
+    </message>
+    <message>
+      <source>Info</source>
+      <translation>Info</translation>
     </message>
     <message>
       <source>Isoliertes absolutes Datenverzeichnis.</source>
@@ -486,6 +589,14 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
     <message>
       <source>Keine Projekte gefunden. Ändere oder leere die Suche.</source>
       <translation>Keine Projekte gefunden. Ändere oder leere die Suche.</translation>
+    </message>
+    <message>
+      <source>Lizenzen</source>
+      <translation>Lizenzen</translation>
+    </message>
+    <message>
+      <source>Lokal auf diesem Computer gespeichert</source>
+      <translation>Lokal auf diesem Computer gespeichert</translation>
     </message>
     <message>
       <source>Löschen</source>
@@ -514,6 +625,10 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
     <message>
       <source>Optional</source>
       <translation>Optional</translation>
+    </message>
+    <message>
+      <source>Ordner für den Export wählen</source>
+      <translation>Ordner für den Export wählen</translation>
     </message>
     <message>
       <source>PDF ersetzen?</source>
@@ -580,30 +695,24 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</translation>
       <translation>Projektname</translation>
     </message>
     <message>
-      <source>RestaurierungsHeft %1
-
-Deine Sammlung bleibt lokal.
-Datenverzeichnis: %2
-
-%3</source>
-      <translation>RestaurierungsHeft %1
-
-Deine Sammlung bleibt lokal.
-Datenverzeichnis: %2
-
-%3</translation>
-    </message>
-    <message>
-      <source>RestaurierungsHeft kann nicht starten</source>
-      <translation>RestaurierungsHeft kann nicht starten</translation>
-    </message>
-    <message>
       <source>Restaurierungsprojekt</source>
       <translation>Restaurierungsprojekt</translation>
     </message>
     <message>
       <source>Restaurierungsprojekte</source>
       <translation>Restaurierungsprojekte</translation>
+    </message>
+    <message>
+      <source>Restoration Journal kann nicht starten</source>
+      <translation>Restoration Journal kann nicht starten</translation>
+    </message>
+    <message>
+      <source>Restoration Journal-Sammlung (*.json *.JSON)</source>
+      <translation>Restoration Journal-Sammlung (*.json *.JSON)</translation>
+    </message>
+    <message>
+      <source>Restoration Journal-Sammlung importieren</source>
+      <translation>Restoration Journal-Sammlung importieren</translation>
     </message>
     <message>
       <source>Sammlung durchsuchen</source>
@@ -642,6 +751,10 @@ Datenverzeichnis: %2
       <translation>Sprache gespeichert. Sie gilt beim nächsten Start.</translation>
     </message>
     <message>
+      <source>Stand: 1. November 2026</source>
+      <translation>Stand: 1. November 2026</translation>
+    </message>
+    <message>
       <source>Status</source>
       <translation>Status</translation>
     </message>
@@ -662,12 +775,74 @@ Datenverzeichnis: %2
       <translation>Unbekannter gespeicherter Projektstatus „%1“. Die Daten werden nicht verändert.</translation>
     </message>
     <message>
+      <source>Verantwortlicher und Kontakt
+Wasiliy Strecker · AppFabrik AI
+Ludwigstrasse 23, 86152 Augsburg, Deutschland
+Datenschutz: contact@appfabrik-ai.de
+Support: support@appfabrik-ai.de
+
+Zweck und gespeicherte Daten
+Restoration Journal verwaltet deine privaten Einträge. Die App speichert Namen, Materialangaben, Aufbewahrungsorte, Notizen, interne Eintragskennungen und deine Spracheinstellung sowie ein optionales Foto, den Projektstatus und Arbeitsschritte mit Reihenfolge und Erledigungsstand standardmäßig lokal im Benutzerprofil deines Computers. Fotos bleiben als Originaldateiinhalt gespeichert und können Metadaten enthalten. Die Angaben können personenbezogene Informationen enthalten, wenn du sie selbst einträgst. Die Verarbeitung dient ausschließlich den von dir angeforderten Funktionen zum Verwalten, Suchen, Exportieren und Importieren deiner Sammlung.
+
+Lokale Verarbeitung
+Die App benötigt kein Konto und keinen Server. Sie übermittelt deine Sammlung und Spracheinstellung nicht an den Entwickler oder andere Empfänger. Sie enthält keine Werbung, Telemetrie, Nutzungsanalyse oder eigene Cloud-Synchronisierung. Die Datenschutzerklärung ist Bestandteil der App und wird ohne Internetverbindung angezeigt. Restoration Journal verschlüsselt weder seine gespeicherte Sammlung noch exportierte JSON-Dateien selbst. Der Schutz hängt auch von deinem Benutzerkonto, den Zugriffsrechten und einer gegebenenfalls aktivierten Datenträgerverschlüsselung ab.
+
+Import, Export und Sicherungskopien
+Die App liest ausgewählte JSON-Dateien und Fotos lokal. Ein JSON-Export enthält alle gespeicherten Einträge mit einem optionalen Foto, dem Projektstatus und Arbeitsschritten mit Reihenfolge und Erledigungsstand. Er enthält keine internen Eintragskennungen und keine Spracheinstellung. Schrittkennungen, Reihenfolge und Häkchen sind enthalten. Du bestimmst den Speicherort und eine mögliche Weitergabe. Exportierte Dateien sind eigenständige Kopien und werden durch Änderungen in der App nicht aktualisiert oder gelöscht. Synchronisierte Ordner, Netzlaufwerke oder Sicherungsdienste können diese Dateien außerhalb der App verarbeiten oder übertragen. Dafür gelten die Einstellungen und Datenschutzbedingungen des jeweiligen Anbieters. Restoration Journal steuert diese Dienste nicht.
+
+PDF-Ausgabe
+Ein PDF enthält das ausgewählte gespeicherte Projekt mit Foto, Status und Checkliste. Die App verschlüsselt diese PDF-Dateien nicht. Auch diese Dateien sind eigenständige Kopien, deren Weitergabe und Löschung du selbst bestimmst.
+
+Speicherdauer und Löschung
+Die App bewahrt die Sammlung auf, bis du Einträge löschst oder die gespeicherten App-Daten entfernst. Du kannst Einträge in der App ansehen, bearbeiten und löschen. Zum vollständigen Entfernen der lokalen Sammlung und Spracheinstellung schließt du die App und entfernst ihren Datenordner. Die Speicherorte sind in der mitgelieferten Anleitung beschrieben. Exportdateien und andere Sicherungskopien musst du an ihren jeweiligen Speicherorten gesondert löschen. Das Löschen eines Eintrags ist keine garantierte sichere Löschung aller früheren Dateiinhalte. Verlasse dich nicht darauf, dass eine Deinstallation alle App-Daten und externen Kopien entfernt.
+
+Kontakt und Support
+Wenn du uns freiwillig eine E-Mail sendest, verarbeiten wir deine E-Mail-Adresse, den Nachrichteninhalt und beigefügte Dateien zur Bearbeitung der Anfrage. Deine lokal gespeicherte Sammlung wird dabei nicht automatisch mitgesendet. Rechtsgrundlage ist bei vertragsbezogenen Anfragen Artikel 6 Absatz 1 Buchstabe b DSGVO, ansonsten unser berechtigtes Interesse an der Beantwortung von Anfragen nach Artikel 6 Absatz 1 Buchstabe f DSGVO. Wir bewahren die Korrespondenz nur so lange auf, wie dies für die Bearbeitung und gesetzliche Aufbewahrungspflichten erforderlich ist.
+
+Deine Rechte und weitere Anbieter
+Soweit anwendbar, hast du Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht auf Beschwerde bei einer Datenschutzaufsichtsbehörde. Nutze dafür den Datenschutzkontakt. Auf Sammlungen, die ausschließlich auf deinem Computer liegen, hat der Entwickler keinen Zugriff. Beim Bezug oder Aktualisieren über Apple App Store, Microsoft Store oder GitHub können diese Anbieter selbst Daten verarbeiten. Dafür gelten deren eigene Datenschutzbedingungen. Diese Erklärung beschreibt die Datenverarbeitung durch Restoration Journal und wird bei entsprechenden Änderungen aktualisiert.</source>
+      <translation>Verantwortlicher und Kontakt
+Wasiliy Strecker · AppFabrik AI
+Ludwigstrasse 23, 86152 Augsburg, Deutschland
+Datenschutz: contact@appfabrik-ai.de
+Support: support@appfabrik-ai.de
+
+Zweck und gespeicherte Daten
+Restoration Journal verwaltet deine privaten Einträge. Die App speichert Namen, Materialangaben, Aufbewahrungsorte, Notizen, interne Eintragskennungen und deine Spracheinstellung sowie ein optionales Foto, den Projektstatus und Arbeitsschritte mit Reihenfolge und Erledigungsstand standardmäßig lokal im Benutzerprofil deines Computers. Fotos bleiben als Originaldateiinhalt gespeichert und können Metadaten enthalten. Die Angaben können personenbezogene Informationen enthalten, wenn du sie selbst einträgst. Die Verarbeitung dient ausschließlich den von dir angeforderten Funktionen zum Verwalten, Suchen, Exportieren und Importieren deiner Sammlung.
+
+Lokale Verarbeitung
+Die App benötigt kein Konto und keinen Server. Sie übermittelt deine Sammlung und Spracheinstellung nicht an den Entwickler oder andere Empfänger. Sie enthält keine Werbung, Telemetrie, Nutzungsanalyse oder eigene Cloud-Synchronisierung. Die Datenschutzerklärung ist Bestandteil der App und wird ohne Internetverbindung angezeigt. Restoration Journal verschlüsselt weder seine gespeicherte Sammlung noch exportierte JSON-Dateien selbst. Der Schutz hängt auch von deinem Benutzerkonto, den Zugriffsrechten und einer gegebenenfalls aktivierten Datenträgerverschlüsselung ab.
+
+Import, Export und Sicherungskopien
+Die App liest ausgewählte JSON-Dateien und Fotos lokal. Ein JSON-Export enthält alle gespeicherten Einträge mit einem optionalen Foto, dem Projektstatus und Arbeitsschritten mit Reihenfolge und Erledigungsstand. Er enthält keine internen Eintragskennungen und keine Spracheinstellung. Schrittkennungen, Reihenfolge und Häkchen sind enthalten. Du bestimmst den Speicherort und eine mögliche Weitergabe. Exportierte Dateien sind eigenständige Kopien und werden durch Änderungen in der App nicht aktualisiert oder gelöscht. Synchronisierte Ordner, Netzlaufwerke oder Sicherungsdienste können diese Dateien außerhalb der App verarbeiten oder übertragen. Dafür gelten die Einstellungen und Datenschutzbedingungen des jeweiligen Anbieters. Restoration Journal steuert diese Dienste nicht.
+
+PDF-Ausgabe
+Ein PDF enthält das ausgewählte gespeicherte Projekt mit Foto, Status und Checkliste. Die App verschlüsselt diese PDF-Dateien nicht. Auch diese Dateien sind eigenständige Kopien, deren Weitergabe und Löschung du selbst bestimmst.
+
+Speicherdauer und Löschung
+Die App bewahrt die Sammlung auf, bis du Einträge löschst oder die gespeicherten App-Daten entfernst. Du kannst Einträge in der App ansehen, bearbeiten und löschen. Zum vollständigen Entfernen der lokalen Sammlung und Spracheinstellung schließt du die App und entfernst ihren Datenordner. Die Speicherorte sind in der mitgelieferten Anleitung beschrieben. Exportdateien und andere Sicherungskopien musst du an ihren jeweiligen Speicherorten gesondert löschen. Das Löschen eines Eintrags ist keine garantierte sichere Löschung aller früheren Dateiinhalte. Verlasse dich nicht darauf, dass eine Deinstallation alle App-Daten und externen Kopien entfernt.
+
+Kontakt und Support
+Wenn du uns freiwillig eine E-Mail sendest, verarbeiten wir deine E-Mail-Adresse, den Nachrichteninhalt und beigefügte Dateien zur Bearbeitung der Anfrage. Deine lokal gespeicherte Sammlung wird dabei nicht automatisch mitgesendet. Rechtsgrundlage ist bei vertragsbezogenen Anfragen Artikel 6 Absatz 1 Buchstabe b DSGVO, ansonsten unser berechtigtes Interesse an der Beantwortung von Anfragen nach Artikel 6 Absatz 1 Buchstabe f DSGVO. Wir bewahren die Korrespondenz nur so lange auf, wie dies für die Bearbeitung und gesetzliche Aufbewahrungspflichten erforderlich ist.
+
+Deine Rechte und weitere Anbieter
+Soweit anwendbar, hast du Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht auf Beschwerde bei einer Datenschutzaufsichtsbehörde. Nutze dafür den Datenschutzkontakt. Auf Sammlungen, die ausschließlich auf deinem Computer liegen, hat der Entwickler keinen Zugriff. Beim Bezug oder Aktualisieren über Apple App Store, Microsoft Store oder GitHub können diese Anbieter selbst Daten verarbeiten. Dafür gelten deren eigene Datenschutzbedingungen. Diese Erklärung beschreibt die Datenverarbeitung durch Restoration Journal und wird bei entsprechenden Änderungen aktualisiert.</translation>
+    </message>
+    <message>
+      <source>Version %1</source>
+      <translation>Version %1</translation>
+    </message>
+    <message>
       <source>Verwerfen</source>
       <translation>Verwerfen</translation>
     </message>
     <message>
       <source>Vollständige Notiz</source>
       <translation>Vollständige Notiz</translation>
+    </message>
+    <message>
+      <source>Vorgang abgebrochen.</source>
+      <translation>Vorgang abgebrochen.</translation>
     </message>
     <message>
       <source>Was möchtest du dir zu diesem Projekt merken?</source>
@@ -698,12 +873,20 @@ Datenverzeichnis: %2
       <translation>Wähle ein Projekt, um seine Arbeitsschritte zu sehen.</translation>
     </message>
     <message>
+      <source>Wähle eine normale .json-Datei in einem vorhandenen Ordner außerhalb der App-Daten. Dateiverknüpfungen sind als Exportziel nicht erlaubt.</source>
+      <translation>Wähle eine normale .json-Datei in einem vorhandenen Ordner außerhalb der App-Daten. Dateiverknüpfungen sind als Exportziel nicht erlaubt.</translation>
+    </message>
+    <message>
       <source>Wähle einen Exportordner außerhalb des App-Datenverzeichnisses.</source>
       <translation>Wähle einen Exportordner außerhalb des App-Datenverzeichnisses.</translation>
     </message>
     <message>
       <source>Wähle einen absoluten Dateipfad mit der Endung .pdf.</source>
       <translation>Wähle einen absoluten Dateipfad mit der Endung .pdf.</translation>
+    </message>
+    <message>
+      <source>Wähle zuerst eine gültige Importdatei.</source>
+      <translation>Wähle zuerst eine gültige Importdatei.</translation>
     </message>
     <message>
       <source>Zu diesem Projekt gibt es noch keine Notiz.</source>
@@ -722,8 +905,8 @@ Datenverzeichnis: %2
       <translation>Änderungen verwerfen?</translation>
     </message>
     <message>
-      <source>Über RestaurierungsHeft</source>
-      <translation>Über RestaurierungsHeft</translation>
+      <source>Über Restoration Journal</source>
+      <translation>Über Restoration Journal</translation>
     </message>
     <message>
       <source>Über die App</source>
@@ -732,6 +915,10 @@ Datenverzeichnis: %2
     <message>
       <source>„%1“</source>
       <translation>„%1“</translation>
+    </message>
+    <message>
+      <source>„%1“ ist bereits vorhanden. Durch die gesamte gespeicherte Sammlung ersetzen?</source>
+      <translation>„%1“ ist bereits vorhanden. Durch die gesamte gespeicherte Sammlung ersetzen?</translation>
     </message>
     <message>
       <source>„%1“ wurde gespeichert, passt aber nicht zur aktuellen Suche. Mit „Suche leeren“ findest du es wieder.</source>
@@ -748,6 +935,10 @@ Datenverzeichnis: %2
     <message>
       <source>☑ Erledigt</source>
       <translation>☑ Erledigt</translation>
+    </message>
+    <message>
+      <source>Dateiname ohne Ordnerpfad. Die Endung .pdf wird bei Bedarf ergänzt.</source>
+      <translation>Dateiname ohne Ordnerpfad. Die Endung .pdf wird bei Bedarf ergänzt.</translation>
     </message>
   </context>
 </TS>

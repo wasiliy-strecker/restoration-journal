@@ -1,11 +1,43 @@
-# RestaurierungsHeft
+# Restoration Journal
+
+## Sammlung, Information und Sprache
+
+Hinzufügen steht oben rechts. Unter der Tabelle stehen Bearbeiten und Löschen.
+Die Spaltenüberschriften sortieren auf- und absteigend. Textspalten verwenden die
+aktuelle Sprache und eine natürliche Zahlenreihenfolge. Status folgt der Reihenfolge
+geplant, angefangen, fertig. Die Auswahl bleibt erhalten.
+
+Info enthält getrennte Fenster für Über die App, Datenschutz und Lizenzen.
+Alle Inhalte sind offline verfügbar. Neue Installationen verwenden die unterstützte
+Systemsprache mit Englisch als Fallback. Gespeicherte Sprachwahlen bleiben erhalten.
+
+Exportieren sichert die gesamte gespeicherte Sammlung als JSON mit eingebetteten
+Originalfotos und allen vorhandenen Status- und Checklistendaten. Importieren ergänzt
+fehlende Exemplare nach Bestätigung. Vorhandene Einträge werden nicht überschrieben.
+Erneuter Import derselben Datei legt keine zusätzlichen identischen Exemplare an.
+Exportdateien enthalten keine Spracheinstellung oder internen Eintrags-IDs.
+Schrittkennungen, Reihenfolge und Erledigungsstand werden bei vorhandenen Checklisten
+mitgesichert. Kollidierende Schrittkennungen werden beim Hinzufügen neu vergeben.
+
+Eine Transferdatei darf höchstens 256 MiB und 10.000 Einträge enthalten.
+Die bisherigen Fotogrenzen bleiben bestehen. Maximal 10.000 Schritte je Projekt
+und eine Million Zeichen je Textfeld. Die Grenze verändert vorhandene Daten nicht.
+Ein unvollständiger Import wird niemals gespeichert. Dateien anderer Apps und
+unbekannte Formatversionen werden abgewiesen. JSON-Dateien sind nicht verschlüsselt.
+
+Auf macOS wählst du erst einen Ordner und dann einen Dateinamen. Auf anderen
+Plattformen öffnet sich der Speicherdialog. Vorhandene Dateien werden erst nach
+Bestätigung und erneuter Prüfung ersetzt. Datenträger ohne Hardlinks werden für
+neue Dateien unterstützt. Bei hartem Abbruch kann dort eine unvollständige neue
+Datei zurückbleiben. Erstelle den Export dann erneut unter einem neuen Namen.
+
 
 Erhalten, aufarbeiten und dokumentieren. Verwalte kleine private
 Restaurierungsprojekte mit Projektname, Gegenstand oder Material, Aufbewahrungsort, mehrzeiliger
 Notiz, einem optionalen Foto, Projektstatus, einer Checkliste und PDF-Export.
 Alles bleibt lokal, ohne Konto und Internet.
 
-![RestaurierungsHeft mit synthetischem Erbstückregal](docs/screenshots/restaurierungsheft.png)
+![Restoration Journal mit synthetischem Erbstückregal](docs/screenshots/restaurierungsheft.png)
 
 Version 0.1.0 ist die fünfte kleine C++-App des Hobby-Portfolios und ein
 nachvollziehbares Bewerbungsprojekt. Gegenüber HolzwerkProjekt kommt genau eine
@@ -215,9 +247,9 @@ beschreiben Nachweise und Grenzen.
 | 2 | SammlerVitrine | Ein Foto |
 | 3 | ModellbauProjekt | Projektstatus |
 | 4 | HolzwerkProjekt | Checkliste |
-| 5 | RestaurierungsHeft | PDF-Export |
+| 5 | Restoration Journal | PDF-Export |
 
-Jede Stufe behält die vorherigen Grundfunktionen. RestaurierungsHeft ist die
+Jede Stufe behält die vorherigen Grundfunktionen. Restoration Journal ist die
 beauftragte fünfte und letzte Stufe. FactoryForge und PDF Batch Studio bleiben
 separate größere Projekte. Keine Kostenplanung, Werkzeugbestände, Fristen,
 Unteraufgaben, Fortschrittswerte, PDF-Import, PDF-Editor, Druckfunktion oder Cloud.
@@ -230,3 +262,15 @@ die Auswahl für den nächsten Start. Bestandsdaten und Projektumfang bleiben er
 [Internationalisierung](docs/internationalization.md) beschreibt Store-Texte, echte
 Linux-Aufnahmen, PDF-Nachweise und Lieferung als Ordner ohne Archiv.
 Windows-Abnahme und Einreichung bleiben separat.
+
+## JSON-Austauschformat
+
+Formatkennung `restoration-journal.collection`, Version `1`, Eintragsliste `projects`.
+Jeder Eintrag enthält `name`, `material`, `location`, `note` und `photoBase64`.
+Ohne Foto ist `photoBase64` null, sonst enthält es die ursprünglichen Bildbytes
+als kanonisches Base64. Interne Eintrags-IDs sind nicht Bestandteil des Formats.
+Status wird als `status` mit `planned`, `started` oder `finished` gespeichert.
+`steps` enthält `id`, `text`, `completed` und `position` je Arbeitsschritt.
+Schrittpositionen müssen als JSON-Zahlen exakt darstellbar sein.
+Dateien anderer Produkte, unbekannte Versionen und ungültige Felder werden
+abgewiesen. Der bestätigte Import verwendet einen bereits validierten Snapshot.

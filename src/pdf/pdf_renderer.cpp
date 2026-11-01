@@ -119,7 +119,7 @@ private:
   void decorate() {
     painter_.setFont(font_);
     painter_.setPen(QColor(QStringLiteral("#53645a")));
-    painter_.drawText(QPointF(left, 34), QStringLiteral("RestaurierungsHeft"));
+    painter_.drawText(QPointF(left, 34), QStringLiteral("Restoration Journal"));
     painter_.drawLine(QPointF(left, 44), QPointF(left + width, 44));
     painter_.drawText(
         QPointF(left, 812),
@@ -164,7 +164,7 @@ void renderProjectPdf(const ProjectDraft& project, QIODevice& output) {
   writer.setPageLayout(QPageLayout(QPageSize(QPageSize::A4), QPageLayout::Portrait,
                                    QMarginsF(0, 0, 0, 0), QPageLayout::Point));
   writer.setTitle(name);
-  writer.setCreator(QStringLiteral("RestaurierungsHeft"));
+  writer.setCreator(QStringLiteral("Restoration Journal"));
   QPainter painter;
   if (!painter.begin(&writer))
     throw ExportError(

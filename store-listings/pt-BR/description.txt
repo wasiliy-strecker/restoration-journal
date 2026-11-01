@@ -1,4 +1,4 @@
-RestaurierungsHeft
+Restoration Journal
 
 Registre nome, objeto ou material, local e notas. Adicione uma foto, três status e etapas com marcações. Exporte o projeto salvo com foto, status e lista de etapas como PDF.
 

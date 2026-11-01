@@ -1,4 +1,4 @@
-RestaurierungsHeft
+Restoration Journal
 
 Record a project name, item or material, storage location, and notes. Add a photo, three status values, and work steps with checkmarks. Export the saved project with its photo, status, and checklist as a PDF.
 

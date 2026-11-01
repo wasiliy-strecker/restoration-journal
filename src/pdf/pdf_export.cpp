@@ -8,6 +8,7 @@
 #include <QFileInfo>
 #include <QRegularExpression>
 #include <QTemporaryFile>
+#include <exception>
 #include <filesystem>
 #ifdef Q_OS_WIN
 #define NOMINMAX
@@ -144,7 +145,7 @@ ExportTarget inspectExportTarget(const QString& path, const QString& dataDirecto
   // Also reject aliases of our own database and lock, even with a .pdf name elsewhere.
   for (const auto& name :
        {QStringLiteral("restaurierungsheft.sqlite3"), QStringLiteral("collection.lock"),
-        QStringLiteral("restaurierungsheft.sqlite3-journal"),
+        QStringLiteral("language.txt"), QStringLiteral("restaurierungsheft.sqlite3-journal"),
         QStringLiteral("restaurierungsheft.sqlite3-wal"),
         QStringLiteral("restaurierungsheft.sqlite3-shm")}) {
     const auto protectedFile = QDir(dataDirectory).filePath(name);
@@ -167,7 +168,7 @@ ExportTarget inspectExportTarget(const QString& path, const QString& dataDirecto
 
 void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarget& target,
                       bool replaceApproved, const QString& dataDirectory,
-                      const PdfRenderer& renderer) {
+                      const PdfRenderer& renderer, const PdfLinkAttempt& link) {
   if (target.exists && !replaceApproved)
     throw ExportError(QCoreApplication::translate(
         "App", "Das Ersetzen der vorhandenen PDF wurde nicht bestätigt."));
@@ -191,11 +192,47 @@ void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarg
                "Keine Datei wurde ersetzt. Bitte wähle das Ziel erneut."));
   std::error_code error;
   if (!target.exists) {
-    // Atomic no-clobber publication. A competing new file is never overwritten.
-    std::filesystem::create_hard_link(nativePath(temporary.fileName()), nativePath(target.path),
-                                      error);
-    if (error)
+    if (link)
+      error = link(temporary.fileName(), target.path);
+    else
+      std::filesystem::create_hard_link(nativePath(temporary.fileName()), nativePath(target.path),
+                                        error);
+    if (error == std::errc::file_exists)
       fileFailure(QString::fromStdString(error.message()));
+    if (error) {
+      QFile source(temporary.fileName());
+      if (!source.open(QIODevice::ReadOnly))
+        fileFailure(source.errorString());
+      QFile output(target.path);
+      if (!output.open(QIODevice::WriteOnly | QIODevice::NewOnly))
+        fileFailure(output.errorString());
+      QByteArray createdIdentity;
+      try {
+        createdIdentity = identity(target.path);
+        while (!source.atEnd()) {
+          const auto chunk = source.read(64LL * 1024);
+          if (source.error() != QFileDevice::NoError)
+            fileFailure(source.errorString());
+          if (output.write(chunk) != chunk.size())
+            fileFailure(output.errorString());
+        }
+        if (!output.flush())
+          fileFailure(output.errorString());
+        output.close();
+        if (output.error() != QFileDevice::NoError)
+          fileFailure(output.errorString());
+      } catch (...) {
+        const auto failure = std::current_exception();
+        output.close();
+        try {
+          if (!createdIdentity.isEmpty() && identity(target.path) == createdIdentity)
+            QFile::remove(target.path);
+        } catch (const std::exception&) {
+          std::rethrow_exception(failure);
+        }
+        std::rethrow_exception(failure);
+      }
+    }
   } else {
 #ifdef Q_OS_WIN
     if (!MoveFileExW(reinterpret_cast<LPCWSTR>(temporary.fileName().utf16()),

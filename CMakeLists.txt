@@ -23,7 +23,7 @@ else()
   endif()
 endif()
 
-add_library(project_i18n src/i18n/languages.cpp)
+add_library(project_i18n src/i18n/languages.cpp src/i18n/privacy_notice.cpp)
 target_include_directories(project_i18n PUBLIC src)
 target_link_libraries(project_i18n PUBLIC Qt6::Core PRIVATE project_options)
 set(app_languages de-DE en-US es-ES fr-FR it-IT pt-BR)
@@ -45,17 +45,18 @@ target_link_libraries(project_domain PUBLIC project_i18n PRIVATE project_options
 add_library(project_photo src/application/photo_importer.cpp)
 target_include_directories(project_photo PUBLIC src)
 target_link_libraries(project_photo PUBLIC Qt6::Gui PRIVATE project_options)
-add_library(project_storage src/persistence/sqlite_project_repository.cpp src/persistence/data_directory.cpp src/persistence/language_preferences.cpp)
+add_library(project_storage src/application/collection_codec.cpp src/application/collection_transfer.cpp src/persistence/json_collection_file.cpp src/persistence/sqlite_project_repository.cpp src/persistence/data_directory.cpp src/persistence/language_preferences.cpp)
 target_link_libraries(project_storage PUBLIC project_domain project_photo Qt6::Sql PRIVATE project_options)
 add_library(project_pdf src/pdf/pdf_renderer.cpp src/pdf/pdf_export.cpp)
 target_link_libraries(project_pdf PUBLIC project_domain project_photo Qt6::Gui PRIVATE project_options)
 qt_add_resources(project_pdf export_fonts PREFIX "/" FILES assets/fonts/DejaVuSans.ttf)
-add_library(project_ui src/ui/export_dialogs.cpp src/ui/checklist_editor.cpp src/ui/storage_controller.cpp src/ui/project_editor.cpp src/ui/main_window.cpp src/ui/ui_support.cpp src/ui/photo_view.cpp src/ui/language_dialog.cpp)
+add_library(project_ui src/ui/information_dialog.cpp src/ui/sort_header.cpp src/ui/export_file_dialog.cpp src/ui/export_dialogs.cpp src/ui/checklist_editor.cpp src/ui/storage_controller.cpp src/ui/project_editor.cpp src/ui/main_window.cpp src/ui/ui_support.cpp src/ui/photo_view.cpp src/ui/language_dialog.cpp)
 target_link_libraries(project_ui PUBLIC project_storage project_pdf Qt6::Widgets PRIVATE project_options)
 qt_add_executable(restaurierungsheft WIN32 MACOSX_BUNDLE src/main.cpp)
 target_link_libraries(restaurierungsheft PRIVATE project_storage project_ui project_options)
 target_compile_definitions(restaurierungsheft PRIVATE APP_VERSION="${PROJECT_VERSION}")
-qt_add_resources(restaurierungsheft notices PREFIX "/licenses" FILES THIRD_PARTY_NOTICES.md)
+file(GLOB_RECURSE app_license_files CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/licenses/*")
+qt_add_resources(project_ui app_notices PREFIX "/notices" BASE "${CMAKE_CURRENT_SOURCE_DIR}" FILES THIRD_PARTY_NOTICES.md ${app_license_files})
 qt_add_resources(restaurierungsheft branding PREFIX "/" FILES assets/branding/icon-256.png)
 if(WIN32)
   enable_language(RC)
@@ -64,13 +65,13 @@ if(WIN32)
 endif()
 set_target_properties(restaurierungsheft PROPERTIES
   MACOSX_BUNDLE_GUI_IDENTIFIER de.appfabrik.restaurierungsheft
-  MACOSX_BUNDLE_BUNDLE_NAME RestaurierungsHeft
+  MACOSX_BUNDLE_BUNDLE_NAME "Restoration Journal"
   MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
   MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
   MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/packaging/macos/Info.plist.in")
 
 if(BUILD_TESTING)
-  foreach(test_name domain repository dialogs photo status photo_dialogs checklist pdf pdf_dialogs i18n)
+  foreach(test_name transfer transfer_ui information collection_export_dialogs collection_features domain repository dialogs photo status photo_dialogs checklist pdf pdf_dialogs i18n)
     add_executable(${test_name}_tests tests/${test_name}_test.cpp)
     target_link_libraries(${test_name}_tests PRIVATE project_storage project_ui Qt6::Test project_options)
     add_test(NAME ${test_name} COMMAND ${test_name}_tests)

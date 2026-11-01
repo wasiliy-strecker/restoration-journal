@@ -172,6 +172,7 @@ def exercise(args):
 
     with tempfile.TemporaryDirectory(prefix="restaurierungsheft-gui-") as temporary:
         directory = Path(temporary)
+        (directory / "language.txt").write_text("de-DE\n")
         database = directory / "restaurierungsheft.sqlite3"
         source = directory / "regal.png"
         replacement = directory / "holz.jpg"
@@ -211,20 +212,20 @@ def exercise(args):
                 stdout=log,
                 stderr=log,
             )
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             command("xdotool", "windowsize", focused, "1100", "800")
             command("xdotool", "windowmove", focused, "80", "60")
             wait_for(lambda: query("PRAGMA user_version") == [(1,)])
             time.sleep(0.5)
 
         def stop():
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             key("ctrl+q")
             process.wait(timeout=6)
             assert process.returncode == 0
 
         def edit():
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             time.sleep(0.5)
             key("alt+b")
             window("^Projekt bearbeiten$")
@@ -255,7 +256,7 @@ def exercise(args):
             except AssertionError:
                 capture("unerwarteter-speicherfehler")
                 raise
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             time.sleep(0.6)
 
         def picker(path=None):
@@ -275,7 +276,7 @@ def exercise(args):
         def pdf_export(path=None, approve=True, deny_directory=False):
             before_db = database.read_bytes()
             previous = path.read_bytes() if path and path.exists() else None
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             key("ctrl+shift+e")
             window("Projekt als PDF exportieren")
             capture("pdf-native-dateiauswahl")
@@ -295,13 +296,13 @@ def exercise(args):
                         key("alt+e")
                     else:
                         key("Return")
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             capture("pdf-nach-auswahl")
             if path and approve and not deny_directory:
                 wait_for(lambda: path.exists() and path.read_bytes() != previous)
                 time.sleep(0.4)
                 document = command("pdftotext", str(path), "-")
-                assert "RestaurierungsHeft" in document
+                assert "Restoration Journal" in document
                 fonts = command("pdffonts", str(path))
                 assert "DejaVuSans" in fonts and re.search(
                     r"yes\s+(yes|no)\s+yes", fonts
@@ -329,7 +330,7 @@ def exercise(args):
             key("Escape")
             window("Änderungen verwerfen")
             destructive()
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
 
         def step_field(index):
             key("alt+c")
@@ -544,18 +545,18 @@ def exercise(args):
             window("Projekt löschen")
             capture("13-loeschabbruch")
             key("Return")
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             assert len(rows()) == 2
             key("alt+l")
             window("Projekt löschen")
             destructive()
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             wait_for(lambda: len(rows()) == 1)
             assert rows()[0][0] == 2 and len(steps(2)) == 1 and steps(1) == []
             key("alt+l")
             window("Projekt löschen")
             destructive()
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             wait_for(lambda: rows() == [])
             assert query("SELECT count(*) FROM checklist_steps") == [(0,)]
             key("ctrl+n")
@@ -598,7 +599,7 @@ def exercise(args):
             key("alt+l")
             window("Projekt löschen")
             destructive()
-            window("^RestaurierungsHeft$")
+            window("^Restoration Journal$")
             wait_for(lambda: rows() == [])
             capture("14-wieder-leer")
             stop()
