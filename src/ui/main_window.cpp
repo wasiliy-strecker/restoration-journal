@@ -576,7 +576,12 @@ void MainWindow::exportAllPdf() {
 void MainWindow::choosePdf(qint64 id, const QString& name) {
   choosingExport_ = true;
   updateActions();
-  const auto path = exportDialogs_->choose(this, suggestedPdfName(name));
+  const auto timestamp =
+      QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_HH-mm-ss"));
+  const auto basename =
+      id == 0 ? QStringLiteral("restoration-journal") : suggestedPdfName(name).chopped(4);
+  const auto filename = basename + QChar('-') + timestamp + QStringLiteral(".pdf");
+  const auto path = exportDialogs_->choose(this, filename);
   choosingExport_ = false;
   if (!path.isEmpty())
     controller_.prepareExport(id, path, dataDirectory_);

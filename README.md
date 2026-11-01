@@ -177,6 +177,11 @@ Der Gesamtexport umfasst alle gespeicherten Projekte, unabhängig vom Suchfilter
 und ordnet sie alphabetisch in der App-Sprache. Jedes Projekt beginnt auf einer
 neuen Seite. Eine leere Sammlung kann nicht als PDF exportiert werden.
 
+Die vorgeschlagenen Dateinamen enthalten wie beim JSON-Export das lokale Datum
+und die Uhrzeit im Format `yyyy-MM-dd_HH-mm-ss`. Für alle Projekte lautet der
+Vorschlag `restoration-journal-2026-11-01_22-00-00.pdf`. Beim Einzelprojekt steht
+der bereinigte Projektname vor dem Zeitstempel. Der Name bleibt frei änderbar.
+
 Die PDFs verwenden denselben Aufbau wie Costume Planner: Titel und farbige
 Statuskarte, Angaben links neben dem proportionalen Foto, echte Farbkachel mit
 Hexcode, Notiz und farbige Karten für die Arbeitsschritte. Lange Angaben erscheinen
