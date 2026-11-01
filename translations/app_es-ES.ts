@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="es_ES" sourcelanguage="de_DE">
   <context>
     <name>App</name>
@@ -101,10 +102,6 @@
     <message>
       <source>Aufbewahrungsort</source>
       <translation>Ubicación</translation>
-    </message>
-    <message>
-      <source>Aufbewahrungsort: %1</source>
-      <translation>Ubicación: %1</translation>
     </message>
     <message>
       <source>Automatisch (Systemsprache)</source>
@@ -531,10 +528,6 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</source>
       <translation>Objeto / material</translation>
     </message>
     <message>
-      <source>Gegenstand / Material: %1</source>
-      <translation>Objeto / material: %1</translation>
-    </message>
-    <message>
       <source>Gegenstand oder &amp;Material</source>
       <translation>Objeto o &amp;material</translation>
     </message>
@@ -731,10 +724,6 @@ Möchtest du sie nach erfolgreicher PDF-Erzeugung ersetzen?</source>
       <translation>Eliminar paso</translation>
     </message>
     <message>
-      <source>Seite %1</source>
-      <translation>Página %1</translation>
-    </message>
-    <message>
       <source>Speichern</source>
       <translation>Guardar</translation>
     </message>
@@ -791,7 +780,7 @@ Import, Export und Sicherungskopien
 Die App liest ausgewählte JSON-Dateien und Fotos lokal. Ein JSON-Export enthält alle gespeicherten Einträge mit einem optionalen Foto, dem Projektstatus und Arbeitsschritten mit Reihenfolge und Erledigungsstand. Er enthält keine internen Eintragskennungen und keine Spracheinstellung. Schrittkennungen, Reihenfolge und Häkchen sind enthalten. Du bestimmst den Speicherort und eine mögliche Weitergabe. Exportierte Dateien sind eigenständige Kopien und werden durch Änderungen in der App nicht aktualisiert oder gelöscht. Synchronisierte Ordner, Netzlaufwerke oder Sicherungsdienste können diese Dateien außerhalb der App verarbeiten oder übertragen. Dafür gelten die Einstellungen und Datenschutzbedingungen des jeweiligen Anbieters. Restoration Journal steuert diese Dienste nicht.
 
 PDF-Ausgabe
-Ein PDF enthält das ausgewählte gespeicherte Projekt mit Foto, Status und Checkliste. Die App verschlüsselt diese PDF-Dateien nicht. Auch diese Dateien sind eigenständige Kopien, deren Weitergabe und Löschung du selbst bestimmst.
+Ein PDF enthält das ausgewählte gespeicherte Projekt oder alle gespeicherten Projekte mit Fotos, Farben, Status und Arbeitsschritten. Die App verschlüsselt diese PDF-Dateien nicht. Auch diese Dateien sind eigenständige Kopien, deren Weitergabe und Löschung du selbst bestimmst.
 
 Speicherdauer und Löschung
 Die App bewahrt die Sammlung auf, bis du Einträge löschst oder die gespeicherten App-Daten entfernst. Du kannst Einträge in der App ansehen, bearbeiten und löschen. Zum vollständigen Entfernen der lokalen Sammlung und Spracheinstellung schließt du die App und entfernst ihren Datenordner. Die Speicherorte sind in der mitgelieferten Anleitung beschrieben. Exportdateien und andere Sicherungskopien musst du an ihren jeweiligen Speicherorten gesondert löschen. Das Löschen eines Eintrags ist keine garantierte sichere Löschung aller früheren Dateiinhalte. Verlasse dich nicht darauf, dass eine Deinstallation alle App-Daten und externen Kopien entfernt.
@@ -817,7 +806,7 @@ Importación, exportación y copias de seguridad
 La aplicación lee localmente los archivos JSON y las fotos seleccionados. Una exportación JSON contiene todas las entradas guardadas, con una foto opcional, el estado del proyecto y pasos ordenados con su estado de realización. No contiene identificadores internos de entradas ni el idioma. Se incluyen los identificadores, el orden y el estado de realización de los pasos. Tú eliges dónde guardar y compartir los archivos. Los archivos exportados son copias independientes y no se actualizan ni eliminan con los cambios en la aplicación. Las carpetas sincronizadas, unidades de red o servicios de copia de seguridad pueden tratar o transferir estos archivos fuera de la aplicación. Se aplican sus propios ajustes y condiciones de privacidad. Restoration Journal no controla estos servicios.
 
 Salida PDF
-Un PDF contiene el proyecto guardado seleccionado con su foto, estado y lista de pasos. La aplicación no cifra estos archivos PDF. Son copias independientes cuyo uso compartido y eliminación decides tú.
+Un PDF contiene el proyecto guardado seleccionado o todos los proyectos guardados con fotos, colores, estado y pasos de trabajo. La aplicación no cifra estos archivos PDF. Son copias independientes cuyo uso compartido y eliminación decides tú.
 
 Conservación y eliminación
 La aplicación conserva tu colección hasta que elimines entradas o los datos guardados de la aplicación. Puedes consultar, editar y eliminar entradas en la aplicación. Para eliminar toda la colección local y la preferencia de idioma, cierra la aplicación y elimina su carpeta de datos. Las ubicaciones se describen en las instrucciones incluidas. Los archivos exportados y otras copias deben eliminarse por separado de sus respectivas ubicaciones. Eliminar una entrada no garantiza el borrado seguro de todos los contenidos anteriores de los archivos. No debes asumir que desinstalar la aplicación elimina todos sus datos y las copias externas.
@@ -961,8 +950,32 @@ Cuando corresponda, tienes derecho de acceso, rectificación, supresión, limita
       <translation>El color debe ser un valor hexadecimal como #RRGGBB o #RRGGBBAA.</translation>
     </message>
     <message>
-      <source>Farbe: %1</source>
-      <translation>Color: %1</translation>
+      <source>%1 von %2 Schritten erledigt</source>
+      <translation>%1 de %2 pasos completados</translation>
+    </message>
+    <message>
+      <source>Alle Projekte …</source>
+      <translation>Todos los proyectos …</translation>
+    </message>
+    <message>
+      <source>Ausgewähltes Projekt …</source>
+      <translation>Proyecto seleccionado …</translation>
+    </message>
+    <message>
+      <source>Die Sammlung enthält keine Projekte.</source>
+      <translation>La colección no contiene proyectos.</translation>
+    </message>
+    <message>
+      <source>Keine Arbeitsschritte hinterlegt.</source>
+      <translation>No hay pasos guardados.</translation>
+    </message>
+    <message>
+      <source>Restoration Journal · Projektübersicht</source>
+      <translation>Restoration Journal · Resumen del proyecto</translation>
+    </message>
+    <message>
+      <source>Seite %1 von %2</source>
+      <translation>Página %1 de %2</translation>
     </message>
   </context>
 </TS>

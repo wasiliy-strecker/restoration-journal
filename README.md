@@ -168,40 +168,44 @@ Animierte PNG-Dateien werden abgewiesen. Die proportionale Vorschau berücksicht
 vom Qt-Decoder unterstützte Orientierung. Besondere Farbprofile werden nicht
 zusätzlich aufbereitet. Keine Galerie, Bildbearbeitung, OCR oder Bilderkennung.
 
-## Ein gespeichertes Projekt als PDF
+## Ein Projekt oder die gesamte Sammlung als PDF
 
-Wähle im Hauptfenster ein Projekt und „Als PDF exportieren …“ oder
-Strg+Umschalt+E / Cmd+Umschalt+E. Ohne Auswahl bleibt die Aktion deaktiviert.
-Der native Speicherdialog schlägt den bereinigten Projektnamen mit `.pdf` vor.
-Wähle einen eigenen Zielordner außerhalb des App-Datenverzeichnisses.
-Abbrechen verändert keine Dateien. Vorhandene PDFs brauchen eine ausdrückliche
-Freigabe. Bei der app-eigenen Rückfrage ist **Abbrechen** die sichere Vorauswahl.
-Je nach Plattform kann auch der native Dialog eine Rückfrage zeigen.
+„Als PDF exportieren …“ öffnet im Hauptfenster ein Menü mit „Ausgewähltes Projekt …“
+und „Alle Projekte …“. Strg+Umschalt+E / Cmd+Umschalt+E exportiert weiterhin das
+gewählte Projekt. Ohne Auswahl bleibt nur der Einzelprojekt-Export deaktiviert.
+Der Gesamtexport umfasst alle gespeicherten Projekte, unabhängig vom Suchfilter,
+und ordnet sie alphabetisch in der App-Sprache. Jedes Projekt beginnt auf einer
+neuen Seite. Eine leere Sammlung kann nicht als PDF exportiert werden.
 
-Die PDF enthält ausschließlich den gespeicherten Stand genau dieses Projekts.
-Im Bearbeitungsdialog gibt es keine Exportaktion. Name, vorhandene Material-
-und Ortsangaben, vollständige Notiz, deutscher Status, Foto und alle Schritte
-werden im A4-Hochformat ausgegeben. „☐ Offen“ und „☑ Erledigt“ sind auch ohne
-Farbe eindeutig. Lange Wörter, Notizen und einzelne überlange Schritte werden
-über Seiten fortgesetzt. Leere optionale Angaben werden ausgelassen.
+Die PDFs verwenden denselben Aufbau wie Costume Planner: Titel und farbige
+Statuskarte, Angaben links neben dem proportionalen Foto, echte Farbkachel mit
+Hexcode, Notiz und farbige Karten für die Arbeitsschritte. Lange Angaben erscheinen
+untereinander. Ein Zähler und ein Fortschrittsbalken zeigen erledigte Schritte.
+Offen und Erledigt sind durch Text und Häkchen auch ohne Farbe eindeutig.
+Lange Texte und Arbeitsschritte werden vollständig über weitere Seiten fortgesetzt.
+Kopf- und Fußbereich enthalten Restoration Journal und Seite-von-Gesamt-Angaben.
 
-DejaVu Sans 2.37 ist app-lokal eingebettet. Umlaute, zusammengesetzte und
-zerlegte Unicode-Schreibweisen, ß, Ömer, Eurozeichen und übliche Satzzeichen
-sind geprüft. Nicht unterstützte Zeichen, etwa bestimmte Emojis, erzeugen
-einen Hinweis vor Dateiübernahme. Bitte den genannten Text korrigieren und
-speichern. Gespeicherte Texte werden für das Layout nicht verändert.
+Die PDF enthält ausschließlich gespeicherte Daten einschließlich Originalfoto,
+Status, Farbe und aller Arbeitsschritte. Im Editor gibt es keine Exportaktion.
+Zwei Layout-Durchläufe bestimmen zuerst die Seitenzahl und schreiben anschließend
+das Dokument. Für den Gesamtexport bleiben beide Durchläufe in derselben
+SQLite-Lesetransaktion. Es wird jeweils nur ein vollständiges Foto geladen.
+DejaVu Sans 2.37 in Regular und Bold ist in der App und in den PDFs eingebettet.
+Fehlende Zeichen werden vor Dateiübernahme gemeldet, ohne gespeicherte Daten zu ändern.
 
-Der Export liest und schreibt im Hintergrund. Suchen und Lesen bleiben möglich.
-Bearbeiten, Löschen, weitere Exporte und Schließen warten bis zum Abschluss.
-Die Erfolgsmeldung erscheint erst nach sicherer Dateiübernahme. Bei Schreibfehlern
-bleibt eine bestehende PDF erhalten. Ein erneuter Versuch mit anderem Ziel ist möglich.
-Temporäre Dateien entstehen ausschließlich im gewählten Zielordner und werden
-nach Möglichkeit aufgeräumt. Die Datenbank und Fotoquellen bleiben unverändert.
+Auf macOS wählst du einen Zielordner und danach den Dateinamen. Auf anderen
+Plattformen öffnet sich der native Speicherdialog. Abbrechen verändert keine
+Dateien. Bestehende PDFs werden nur nach ausdrücklicher Bestätigung und erneuter
+Zielprüfung atomar ersetzt. Neue Dateien können auch ohne Hardlinks exklusiv
+angelegt werden. Nach hartem Abbruch kann dabei eine unvollständige neue Datei
+zurückbleiben. Wähle einen eigenen Ordner außerhalb des App-Datenverzeichnisses.
 
-Lokale Dateisysteme mit Hardlinks und atomarem Dateiersatz sind erforderlich.
-FAT/exFAT und besondere Netzlaufwerke sind nicht zugesichert. Geänderte Ziele
-werden vor Übernahme erneut geprüft. Die Grenzen bei gleichzeitigen Änderungen
-stehen in [Architektur](docs/architecture.md). Es gibt keinen PDF-Viewer in der App.
+Der Export läuft im Hintergrund. Suchen und Lesen bleiben möglich. Bearbeiten,
+Löschen, weitere Exporte und Schließen warten bis zum Abschluss. Fehler erhalten
+vorhandene Dateien und erlauben einen erneuten Versuch. Temporäre Dateien liegen
+im gewählten Zielordner und werden nach Möglichkeit aufgeräumt. Die technischen
+Grenzen stehen in [Architektur](docs/architecture.md). Es gibt keinen PDF-Viewer
+in der App. Native Windows- und macOS-Abnahmen bleiben erforderlich.
 
 ## Tastatur und kleine Fenster
 

@@ -30,11 +30,7 @@ def verify(path):
                 float(word.attrib[key]) for key in ("xMin", "yMin", "xMax", "yMax")
             )
             assert x0 >= 47 and x1 <= 548, (word.text, "Seitenrand")
-            if (
-                word.text not in ("Restoration Journal", "Seite")
-                and not (word.text or "").isdecimal()
-            ):
-                assert y0 >= 63 and y1 <= 778, (word.text, "Inhaltsbereich")
+            assert (28 <= y0 and y1 <= 44) or (79 <= y0 and y1 <= 792) or (808 <= y0 and y1 <= 821), (word.text, "Inhaltsbereich")
             for u0, v0, u1, v1 in rectangles:
                 assert not (
                     min(x1, u1) - max(x0, u0) > 0.5 and min(y1, v1) - max(y0, v0) > 0.5

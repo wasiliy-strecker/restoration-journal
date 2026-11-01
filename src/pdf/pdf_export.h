@@ -22,9 +22,14 @@ struct ExportTarget {
 ExportTarget inspectExportTarget(const QString& path, const QString& dataDirectory);
 using PdfLinkAttempt = std::function<std::error_code(const QString&, const QString&)>;
 using PdfRenderer = std::function<void(const ProjectDraft&, QIODevice&)>;
+using CollectionPdfRenderer = std::function<void(const ProjectSource&, QIODevice&)>;
 void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarget& target,
                       bool replaceApproved, const QString& dataDirectory,
                       const PdfRenderer& renderer = renderProjectPdf,
                       const PdfLinkAttempt& link = {});
+void exportCollectionPdf(ProjectRepository& repository, const ExportTarget& target,
+                         bool replaceApproved, const QString& dataDirectory,
+                         const CollectionPdfRenderer& renderer = renderProjectsPdf,
+                         const PdfLinkAttempt& link = {});
 } // namespace restoration
 Q_DECLARE_METATYPE(restoration::ExportTarget)

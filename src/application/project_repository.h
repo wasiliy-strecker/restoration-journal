@@ -1,5 +1,6 @@
 #pragma once
 
+#include "application/project_source.h"
 #include "domain/project.h"
 
 namespace restoration {
@@ -20,6 +21,8 @@ class ProjectRepository {
 public:
   virtual ~ProjectRepository() = default;
   virtual TransferDraftList transferSnapshot() = 0;
+  // Source is valid only during consume. SQLite streams under a single read transaction.
+  virtual void withSavedProjects(const ProjectSnapshotConsumer& consume);
   virtual CollectionImportResult importEntries(const TransferDraftList& drafts) = 0;
   virtual void initialize() = 0;
   virtual ProjectList findAll() = 0;

@@ -49,7 +49,7 @@ add_library(project_storage src/application/collection_codec.cpp src/application
 target_link_libraries(project_storage PUBLIC project_domain project_photo Qt6::Sql PRIVATE project_options)
 add_library(project_pdf src/pdf/pdf_renderer.cpp src/pdf/pdf_export.cpp)
 target_link_libraries(project_pdf PUBLIC project_domain project_photo Qt6::Gui PRIVATE project_options)
-qt_add_resources(project_pdf export_fonts PREFIX "/" FILES assets/fonts/DejaVuSans.ttf)
+qt_add_resources(project_pdf export_fonts PREFIX "/" FILES assets/fonts/DejaVuSans.ttf assets/fonts/DejaVuSans-Bold.ttf)
 add_library(project_ui src/ui/native_edit_menus.cpp src/ui/color_field.cpp src/ui/information_dialog.cpp src/ui/sort_header.cpp src/ui/export_file_dialog.cpp src/ui/export_dialogs.cpp src/ui/checklist_editor.cpp src/ui/storage_controller.cpp src/ui/project_editor.cpp src/ui/main_window.cpp src/ui/ui_support.cpp src/ui/photo_view.cpp src/ui/language_dialog.cpp)
 target_link_libraries(project_ui PUBLIC project_storage project_pdf Qt6::Widgets PRIVATE project_options)
 qt_add_executable(restaurierungsheft WIN32 MACOSX_BUNDLE src/main.cpp)
@@ -71,7 +71,7 @@ set_target_properties(restaurierungsheft PROPERTIES
   MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/packaging/macos/Info.plist.in")
 
 if(BUILD_TESTING)
-  foreach(test_name native_edit_menus color transfer transfer_ui information collection_export_dialogs collection_features domain repository dialogs photo status photo_dialogs checklist pdf pdf_dialogs i18n)
+  foreach(test_name native_edit_menus color transfer transfer_ui information collection_export_dialogs collection_features domain repository dialogs photo status photo_dialogs checklist pdf collection_pdf pdf_dialogs i18n)
     add_executable(${test_name}_tests tests/${test_name}_test.cpp)
     target_link_libraries(${test_name}_tests PRIVATE project_storage project_ui Qt6::Test project_options)
     add_test(NAME ${test_name} COMMAND ${test_name}_tests)

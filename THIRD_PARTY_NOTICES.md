@@ -47,7 +47,7 @@ PDF-Erzeugung verwendet ausschließlich QPdfWriter, QPainter und QTextLayout
 im bereits dynamisch eingebundenen Qt Gui. QtPdf, QtPrintSupport, Browser,
 Office und PDF-Drucker werden nicht benötigt.
 
-Die unveränderte DejaVu Sans 2.37 wird als app-lokale Schriftressource
+Die unveränderte DejaVu Sans 2.37 in Regular und Bold wird als app-lokale Schriftressource
 mitgeliefert und in PDF-Dateien eingebettet. DejaVu baut auf Bitstream Vera
 auf. Die Lizenz erlaubt Nutzung und Weitergabe unter Beibehaltung der Hinweise.
 Die Schrift wurde nicht verändert. Lizenztext: licenses/dejavu-LICENSE.txt.

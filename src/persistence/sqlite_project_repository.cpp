@@ -480,6 +480,16 @@ void SqliteProjectRepository::remove(qint64 id) {
   transaction.commit();
 }
 
+void SqliteProjectRepository::withSavedProjects(const ProjectSnapshotConsumer& consume) {
+  Transaction transaction(database_);
+  const auto rows = searchProjects(findAllInTransaction(), QString());
+  consume([this, &rows](const ProjectReceiver& receive) {
+    for (const auto& row : rows)
+      receive(findInTransaction(row.id));
+  });
+  transaction.commit();
+}
+
 TransferDraftList SqliteProjectRepository::transferSnapshot() {
   Transaction transaction(database_);
   const auto rows = findAllInTransaction();

@@ -1,5 +1,6 @@
 #include "persistence/sqlite_project_repository.h"
 #include "ui/main_window.h"
+#include <QAction>
 #include <QApplication>
 #include <QFileDialog>
 #include <QLabel>
@@ -85,7 +86,7 @@ private slots:
         [&] { return std::make_unique<SqliteProjectRepository>(directory.path()); });
     MainWindow window(controller, directory.path());
     window.show();
-    auto* button = window.findChild<QPushButton*>(QStringLiteral("exportPdf"));
+    auto* button = window.findChild<QAction*>(QStringLiteral("exportSelectedPdf"));
     QVERIFY(!button->isEnabled());
     QSignalSpy loaded(&controller, &StorageController::loaded);
     QVERIFY(QTest::qWaitFor([&] { return loaded.size() == 1; }, 5000));
@@ -101,7 +102,7 @@ private slots:
         dialog->reject();
       }
     });
-    button->click();
+    button->trigger();
     QVERIFY(seen);
     QVERIFY(!controller.isBusy());
     QVERIFY(button->isEnabled());
@@ -132,9 +133,9 @@ private slots:
         [&] { return std::make_unique<SqliteProjectRepository>(directory.path()); });
     MainWindow window(controller, directory.path(), nullptr, dialogs);
     window.show();
-    auto* button = window.findChild<QPushButton*>(QStringLiteral("exportPdf"));
+    auto* button = window.findChild<QAction*>(QStringLiteral("exportSelectedPdf"));
     QVERIFY(QTest::qWaitFor([&] { return button->isEnabled(); }, 5000));
-    button->click(); // Empty picker result.
+    button->trigger(); // Empty picker result.
     QVERIFY(!controller.isBusy());
     dialogs->path = destination.filePath(QStringLiteral("existing.pdf"));
     {
@@ -142,24 +143,24 @@ private slots:
       QVERIFY(file.open(QIODevice::WriteOnly));
       file.write("original");
     }
-    button->click();
+    button->trigger();
     QVERIFY(QTest::qWaitFor([&] { return !controller.isBusy(); }, 5000));
     QCOMPARE(dialogs->confirmations, 1);
     QCOMPARE(bytes(dialogs->path), QByteArray("original"));
     dialogs->approved = true;
     QSignalSpy exported(&controller, &StorageController::exported);
-    button->click();
+    button->trigger();
     QVERIFY(QTest::qWaitFor([&] { return exported.size() == 1; }, 5000));
     QVERIFY(pdfText(dialogs->path).contains(QStringLiteral("Projekt")));
     QSignalSpy failed(&controller, &StorageController::failed);
     dialogs->path = destination.filePath(QStringLiteral("missing/error.pdf"));
-    button->click();
+    button->trigger();
     QVERIFY(QTest::qWaitFor([&] { return failed.size() == 1; }, 5000));
     QVERIFY(window.findChild<QLabel*>(QStringLiteral("mainFeedback"))
                 ->text()
                 .contains(QStringLiteral("Zielordner")));
     dialogs->path = destination.filePath(QStringLiteral("retry.pdf"));
-    button->click();
+    button->trigger();
     QVERIFY(QTest::qWaitFor([&] { return exported.size() == 2; }, 5000));
     QCOMPARE(bytes(directory.filePath(QStringLiteral("restaurierungsheft.sqlite3"))), originalDb);
   }
@@ -178,7 +179,7 @@ private slots:
         [&] { return std::make_unique<SlowRepository>(directory.path(), reads); });
     MainWindow window(controller, directory.path(), nullptr, dialogs);
     window.show();
-    auto* button = window.findChild<QPushButton*>(QStringLiteral("exportPdf"));
+    auto* button = window.findChild<QAction*>(QStringLiteral("exportSelectedPdf"));
     QVERIFY(QTest::qWaitFor(
         [&] { return window.findChild<QPushButton*>(QStringLiteral("editProject"))->isEnabled(); },
         5000));
@@ -199,8 +200,8 @@ private slots:
     timer.setInterval(5);
     connect(&timer, &QTimer::timeout, &window, [&] { ++ticks; });
     timer.start();
-    button->click();
-    button->click();
+    button->trigger();
+    button->trigger();
     QVERIFY(controller.isBusy());
     QVERIFY(!window.close());
     QVERIFY(!window.findChild<QPushButton*>(QStringLiteral("addProject"))->isEnabled());
@@ -213,6 +214,42 @@ private slots:
     QVERIFY(!text.contains(QStringLiteral("Falsches Projekt")));
     QVERIFY(!text.contains(QStringLiteral("Alter Listenstand")));
     QCOMPARE(bytes(directory.filePath(QStringLiteral("restaurierungsheft.sqlite3"))), before);
+  }
+  void allProjectsIgnoreSearchAndWorkWithoutSelection() {
+    QTemporaryDir directory, destination;
+    {
+      SqliteProjectRepository repo(directory.path());
+      repo.initialize();
+      repo.create({QStringLiteral("Alpha"), {}, {}, QStringLiteral("First saved project")});
+      repo.create({QStringLiteral("Zulu"), {}, {}, QStringLiteral("Second saved project")});
+    }
+    auto dialogs = std::make_shared<Dialogs>();
+    dialogs->path = destination.filePath(QStringLiteral("all.pdf"));
+    StorageController controller(
+        [&] { return std::make_unique<SqliteProjectRepository>(directory.path()); });
+    MainWindow window(controller, directory.path(), nullptr, dialogs);
+    window.show();
+    auto* all = window.findChild<QAction*>(QStringLiteral("exportAllPdf"));
+    auto* selected = window.findChild<QAction*>(QStringLiteral("exportSelectedPdf"));
+    QVERIFY(QTest::qWaitFor([&] { return all->isEnabled(); }, 5000));
+    window.findChild<QLineEdit*>(QStringLiteral("searchProjects"))
+        ->setText(QStringLiteral("No results"));
+    QVERIFY(!selected->isEnabled());
+    QVERIFY(all->isEnabled());
+    QSignalSpy exported(&controller, &StorageController::exported);
+    all->trigger();
+    QVERIFY(controller.isBusy());
+    QVERIFY(!all->isEnabled());
+    QVERIFY(!window.close());
+    QVERIFY(QTest::qWaitFor([&] { return exported.size() == 1; }, 5000));
+    const auto contents = pdfText(dialogs->path);
+    QVERIFY(contents.contains(QStringLiteral("First saved project")));
+    QVERIFY(contents.contains(QStringLiteral("Second saved project")));
+    QVERIFY(all->isEnabled());
+    QVERIFY(!selected->isEnabled());
+    dialogs->path.clear();
+    all->trigger();
+    QVERIFY(!controller.isBusy());
   }
   void destroyedWindowWhileWorkerFinishes() {
     QTemporaryDir directory, destination;
@@ -233,7 +270,7 @@ private slots:
         5000));
     const auto before = reads->load();
     QSignalSpy exported(&controller, &StorageController::exported);
-    window->findChild<QPushButton*>(QStringLiteral("exportPdf"))->click();
+    window->findChild<QAction*>(QStringLiteral("exportSelectedPdf"))->trigger();
     QVERIFY(QTest::qWaitFor([&] { return reads->load() > before; }, 5000));
     window.reset();
     QVERIFY(QTest::qWaitFor([&] { return exported.size() == 1; }, 5000));

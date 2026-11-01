@@ -15,6 +15,7 @@ public:
   SqliteProjectRepository(const SqliteProjectRepository&) = delete;
   SqliteProjectRepository& operator=(const SqliteProjectRepository&) = delete;
   TransferDraftList transferSnapshot() override;
+  void withSavedProjects(const ProjectSnapshotConsumer& consume) override;
   CollectionImportResult importEntries(const TransferDraftList& drafts) override;
   void initialize() override;
   ProjectList findAll() override;

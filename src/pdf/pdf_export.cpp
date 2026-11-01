@@ -166,21 +166,20 @@ ExportTarget inspectExportTarget(const QString& path, const QString& dataDirecto
   return target;
 }
 
-void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarget& target,
-                      bool replaceApproved, const QString& dataDirectory,
-                      const PdfRenderer& renderer, const PdfLinkAttempt& link) {
+namespace {
+void exportPdf(const ExportTarget& target, bool replaceApproved, const QString& dataDirectory,
+               const std::function<void(QIODevice&)>& render, const PdfLinkAttempt& link) {
   if (target.exists && !replaceApproved)
     throw ExportError(QCoreApplication::translate(
         "App", "Das Ersetzen der vorhandenen PDF wurde nicht bestätigt."));
   if (inspectExportTarget(target.path, dataDirectory) != target)
     throw ExportError(QCoreApplication::translate(
         "App", "Das PDF-Ziel hat sich geändert. Bitte wähle es erneut."));
-  const auto snapshot = repository.find(id);
   QTemporaryFile temporary(
       QFileInfo(target.path).dir().filePath(QStringLiteral(".restaurierungsheft-XXXXXX.tmp")));
   if (!temporary.open())
     fileFailure(temporary.errorString());
-  renderer(snapshot, temporary);
+  render(temporary);
   if (temporary.error() != QFileDevice::NoError || !temporary.flush())
     fileFailure(temporary.errorString());
   temporary.close();
@@ -246,5 +245,26 @@ void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarg
 #endif
   }
   // QTemporaryFile removes only its own temporary name on all exit paths.
+}
+} // namespace
+
+void exportProjectPdf(ProjectRepository& repository, qint64 id, const ExportTarget& target,
+                      bool replaceApproved, const QString& dataDirectory,
+                      const PdfRenderer& renderer, const PdfLinkAttempt& link) {
+  exportPdf(
+      target, replaceApproved, dataDirectory,
+      [&](QIODevice& output) { renderer(repository.find(id), output); }, link);
+}
+
+void exportCollectionPdf(ProjectRepository& repository, const ExportTarget& target,
+                         bool replaceApproved, const QString& dataDirectory,
+                         const CollectionPdfRenderer& renderer, const PdfLinkAttempt& link) {
+  exportPdf(
+      target, replaceApproved, dataDirectory,
+      [&](QIODevice& output) {
+        repository.withSavedProjects(
+            [&](const ProjectSource& source) { renderer(source, output); });
+      },
+      link);
 }
 } // namespace restoration

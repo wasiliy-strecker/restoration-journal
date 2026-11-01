@@ -1,5 +1,31 @@
 # Prüfbericht
 
+## Einzel- und Sammlungs-PDFs, 1. November 2026
+
+Der Nutzer beauftragte beide PDF-Umfänge und das Kartenlayout von Costume Planner.
+Development-Build, Formatter und 20 CTest-Suiten sind erfolgreich abgeschlossen.
+Die zusätzlichen Regressionen prüfen Gesamtexport ohne sichtbare Suchtreffer,
+separate Projektseiten, doppelte Namen, gespeicherte Zusatzdaten, eine unveränderte
+Lesesicht trotz externem WAL-Schreiber, leere Sammlungen, späte Zeichenfehler,
+Zieländerungen, bestätigten Ersatz und neue Dateien ohne Hardlinks.
+
+Poppler las Einzel-PDFs in sechs Sprachen und mehrseitige Dokumente erneut.
+Schrift und Geometrie wurden für minimale, zweitseitige und 14-seitige PDFs geprüft.
+Eine gerenderte deutsche Seite mit Status, Angaben, Foto und transparenter Farbe
+wurde visuell geprüft. Nachweise liegen unter `build/dev/verification/pdf/`.
+
+Auf ausdrücklichen Nutzerwunsch wurden die weiterlaufende statische Analyse,
+Sanitizer-Prüfung und native GUI-Abnahme beendet. Sie gelten für diesen Stand
+nicht als vollständig bestanden. Eine neue Paketprüfung wurde nicht gestartet.
+Der Nutzer übernimmt die manuelle Abnahme. Die aktualisierte App wurde mit der
+normalen Sammlung neu geöffnet. Das öffnet auch die zuvor gebaute Checkbox-Korrektur.
+
+Manuell: Im PDF-Menü ein ausgewähltes Projekt und anschließend alle Projekte
+exportieren. Bei einem Suchfilter ohne Treffer muss der Gesamtexport weiterhin
+alle gespeicherten Projekte enthalten. Fotos, Farbe, Status, Notizen und Schritte
+sowie Beginn jedes Projekts auf einer neuen Seite und Seitenzahlen ansehen.
+Native Windows- und macOS-Ausführung wurde nicht durchgeführt.
+
 ## Mac-Menüs und Systemdialogsprachen, 1. November 2026
 
 Die App registriert auf macOS ein natives Bearbeiten-Menü mit Ausschneiden,

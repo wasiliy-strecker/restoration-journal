@@ -191,6 +191,14 @@ Datenbankschreibpfad. Ein zuvor in der Liste angezeigter Stand wird nicht als
 Exportquelle verwendet. Der Renderer erhält nur diesen Wert und ein QIODevice.
 Er kennt keine Widgets, SQL-Verbindungen oder Dateidialoge.
 
+Das PDF-Menü ergänzt alle gespeicherten Projekte. ID 0 bezeichnet ausschließlich
+an der UI-/Worker-Grenze diesen Auftrag, gespeicherte IDs bleiben positiv.
+`withSavedProjects` stellt dem Renderer eine wiederholbar lesbare Quelle bereit.
+SQLite ordnet die IDs über die vorhandene sprachabhängige Sortierung und hält
+während beider Durchläufe dieselbe Lesetransaktion. Vollständige Fotos werden
+projektweise geladen. Ein anderer Repository-Typ kann einen unveränderlichen
+Snapshot liefern. Die Quelle darf nicht über den Consumer-Aufruf hinausleben.
+
 Während einer PDF bleiben Suche und Anzeige ansprechbar. Konkurrierende
 Mutationen und weitere Exporte sind deaktiviert. Schließen wird mit Hinweis
 zurückgestellt, danach kann das Fenster erneut geschlossen werden. Queued
@@ -213,10 +221,19 @@ Zeilentrenner werden für das Layout auf LF abgebildet, Tabulatoren auf vier
 Leerzeichen und Texte auf NFC. SQLite-Werte bleiben unverändert. Kein HTML
 wird interpretiert. URLs und Dateiverweise sind gewöhnlicher Text, ohne externe
 Ladevorgänge. Fotos werden vollständig geprüft und proportional in einen Bereich
-von höchstens 499 × 230 Punkt gesetzt. Kleine Bilder werden nicht hochgerechnet.
+neben den Angaben gesetzt. Bei langen Angaben steht das Foto in einer eigenen
+Karte mit höchstens 479 × 175 Punkt. Das Seitenverhältnis bleibt erhalten.
 Die Bildquelle ist ausschließlich der gespeicherte BLOB.
 
-Die unveränderte DejaVu Sans 2.37 liegt als Qt-Ressource in der App und wird vor
+Die Karten übernehmen Farben und Geometrie von Costume Planner. Titel, Status,
+Angaben und Foto, Notiz und Arbeitsschritte erscheinen in dieser Reihenfolge.
+Die Farbkachel zeichnet Transparenz auf einem Schachbrett. Schrittzähler,
+Fortschrittsbalken und farbige Schrittkarten ergänzen die lesbaren Zustände.
+Die erste Messung verwendet dieselben Umbruch- und Platzierungsfunktionen ohne
+Zeichenausgabe. Der zweite Durchlauf schreibt Seite-von-Gesamt-Fußzeilen.
+Jedes Projekt beginnt auf einer neuen Seite. Eine leere Quelle ist ein Fehler.
+
+Die unveränderte DejaVu Sans 2.37 in Regular und Bold liegt als Qt-Ressource in der App und wird vor
 Workerstart registriert. Der Renderer prüft Unicode-Codepoints mit QRawFont,
 verbietet fehlende Glyphen, ungültige Surrogate und unsichtbare Steuer-/Formatzeichen
 und deaktiviert Schriftfallback. Er meldet nicht darstellbare Inhalte vor

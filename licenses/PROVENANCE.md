@@ -36,3 +36,9 @@ SHA-256: `7da195a74c55bef988d0d48f9508bd5d849425c1770dba5d7bfc6ce9ed848954`.
 Offizielle Veröffentlichung:
 https://github.com/dejavu-fonts/dejavu-fonts/releases/tag/version_2_37
 Die Lizenzkopie ist unverändert unter dejavu-LICENSE.txt enthalten.
+
+DejaVu Sans Bold 2.37, unveränderte TTF unter assets/fonts/DejaVuSans-Bold.ttf.
+Die Kopie stammt aus dem vorhandenen Costume-Planner-Bestand. `fc-scan` meldet
+DejaVu Sans Bold und Schriftversion 155320 / 65536, also 2.37.
+SHA-256: `5c1247acef7f2b8522a31742c76d6adcb5569bacc0be7ceaa4dc39dd252ce895`.
+Es gelten dieselbe offizielle Veröffentlichung und die vorhandene DejaVu-Lizenz.

@@ -2,6 +2,15 @@
 
 namespace restoration {
 
+void ProjectRepository::withSavedProjects(const ProjectSnapshotConsumer& consume) {
+  // Immutable fallback for replaceable repositories. SQLite avoids retaining all photos.
+  const auto snapshot = transferSnapshot();
+  consume([&snapshot](const ProjectReceiver& receive) {
+    for (const auto& project : snapshot)
+      receive(project);
+  });
+}
+
 ProjectList ProjectService::load() {
   repository_.initialize();
   return repository_.findAll();

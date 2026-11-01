@@ -190,6 +190,13 @@ MainWindow::MainWindow(StorageController& controller, QString dataDirectory, QWi
 
   collectionLayout->addLayout(actions);
   export_->setObjectName(QStringLiteral("exportPdf"));
+  auto* pdfMenu = new QMenu(export_);
+  export_->setMenu(pdfMenu);
+  exportSelectedPdf_ =
+      pdfMenu->addAction(QCoreApplication::translate("App", "Ausgewähltes Projekt …"));
+  exportSelectedPdf_->setObjectName(QStringLiteral("exportSelectedPdf"));
+  exportAllPdf_ = pdfMenu->addAction(QCoreApplication::translate("App", "Alle Projekte …"));
+  exportAllPdf_->setObjectName(QStringLiteral("exportAllPdf"));
   export_->setMinimumHeight(34);
   actions->addWidget(export_);
   auto* footer = new QHBoxLayout;
@@ -215,7 +222,8 @@ MainWindow::MainWindow(StorageController& controller, QString dataDirectory, QWi
   centralScroll->setWidget(central);
   setCentralWidget(centralScroll);
 
-  connect(export_, &QPushButton::clicked, this, &MainWindow::exportSelected);
+  connect(exportSelectedPdf_, &QAction::triggered, this, &MainWindow::exportSelected);
+  connect(exportAllPdf_, &QAction::triggered, this, &MainWindow::exportAllPdf);
   auto* exportShortcut = new QShortcut(QKeySequence(QStringLiteral("Ctrl+Shift+E")), this);
   connect(exportShortcut, &QShortcut::activated, this, &MainWindow::exportSelected);
   connect(&controller_, &StorageController::exportTargetReady, this,
@@ -517,7 +525,9 @@ void MainWindow::updateActions() {
   const bool available = ready_ && !transferRunning_ && !choosingExport_ && !controller_.isBusy() &&
                          (!editor_ || !editor_->isVisible());
   add_->setEnabled(available);
-  export_->setEnabled(available && selectedProject().has_value());
+  export_->setEnabled(available && !projects_.isEmpty());
+  exportSelectedPdf_->setEnabled(available && selectedProject().has_value());
+  exportAllPdf_->setEnabled(available && !projects_.isEmpty());
   language_->setEnabled(available);
   exportCollection_->setEnabled(available);
   importCollection_->setEnabled(available);
@@ -549,17 +559,27 @@ void MainWindow::openEditor(bool editing) {
 }
 
 void MainWindow::exportSelected() {
-  if (!export_->isEnabled())
+  if (!exportSelectedPdf_->isEnabled())
     return;
   const auto selected = selectedProject();
   if (!selected)
     return;
+  choosePdf(selected->id, selected->fields.name);
+}
+
+void MainWindow::exportAllPdf() {
+  if (!exportAllPdf_->isEnabled())
+    return;
+  choosePdf(0, QCoreApplication::translate("App", "Restaurierungsprojekte"));
+}
+
+void MainWindow::choosePdf(qint64 id, const QString& name) {
   choosingExport_ = true;
   updateActions();
-  const auto path = exportDialogs_->choose(this, suggestedPdfName(selected->fields.name));
+  const auto path = exportDialogs_->choose(this, suggestedPdfName(name));
   choosingExport_ = false;
   if (!path.isEmpty())
-    controller_.prepareExport(selected->id, path, dataDirectory_);
+    controller_.prepareExport(id, path, dataDirectory_);
   updateActions();
 }
 

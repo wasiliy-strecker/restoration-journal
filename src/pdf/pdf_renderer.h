@@ -1,5 +1,6 @@
 #pragma once
 
+#include "application/project_source.h"
 #include "domain/project.h"
 #include <QIODevice>
 
@@ -12,4 +13,5 @@ public:
 void initializePdfFonts();
 // No widgets, SQL, source paths or external resource loading. Device stays owned by caller.
 void renderProjectPdf(const ProjectDraft& project, QIODevice& output);
+void renderProjectsPdf(const ProjectSource& source, QIODevice& output);
 } // namespace restoration

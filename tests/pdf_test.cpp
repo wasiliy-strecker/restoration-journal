@@ -128,9 +128,9 @@ private slots:
     const auto text = run(QStringLiteral("pdftotext"), {path, QStringLiteral("-")});
     for (const auto& expected :
          {draft.name, draft.material, draft.location,
-          tr("Status: %1").arg(displayStatus(draft.status)), tr("Farbe: %1").arg(draft.color),
-          tr("Notiz"), tr("Arbeitsschritte"), tr("☑ Erledigt"), tr("☐ Offen"),
-          tr("Seite %1").arg(QLocale().toString(1))})
+          tr("Status: %1").arg(displayStatus(draft.status)), draft.color, tr("Notiz"),
+          tr("Arbeitsschritte"), tr("☑ Erledigt"), tr("☐ Offen"),
+          tr("Seite %1 von %2").arg(QLocale().toString(1), QLocale().toString(2))})
       QVERIFY2(compact(text).contains(compact(expected)), qPrintable(expected));
     QCOMPARE(text.count(QStringLiteral("Kanten prüfen – ação")), 2);
     QVERIFY(run(QStringLiteral("pdfimages"), {QStringLiteral("-list"), path})
@@ -149,7 +149,7 @@ private slots:
     const auto text = run(QStringLiteral("pdftotext"), {path, QStringLiteral("-")});
     QVERIFY(text.contains(QStringLiteral("Schrank")));
     QVERIFY(text.contains(QStringLiteral("Geplant")));
-    QVERIFY(!text.contains(QStringLiteral("Arbeitsschritte")));
+    QVERIFY(text.contains(QStringLiteral("Keine Arbeitsschritte hinterlegt.")));
     QVERIFY(run(QStringLiteral("pdfinfo"), {path})
                 .contains(QRegularExpression(QStringLiteral("Pages:\\s+1"))));
     const auto fonts = run(QStringLiteral("pdffonts"), {path});
@@ -232,7 +232,8 @@ private slots:
     // Repeated page furniture may separate a word spanning pages.
     auto content = text;
     content.remove(compact(QStringLiteral("Restoration Journal")));
-    content.remove(QRegularExpression(QStringLiteral("Seite\\d+")));
+    content.remove(compact(QStringLiteral("· Projektübersicht")));
+    content.remove(QRegularExpression(QStringLiteral("Seite\\d+von\\d+")));
     QVERIFY(content.contains(QStringLiteral("WORTSTART") + QString(3500, QChar('W')) +
                              QStringLiteral("WORTENDE")));
     for (int index = 0; index < 180; ++index) {
@@ -251,7 +252,7 @@ private slots:
         QVERIFY(a.value(QStringLiteral("xMin")).toDouble() >= 47);
         QVERIFY(a.value(QStringLiteral("xMax")).toDouble() <= 548);
         const auto y = a.value(QStringLiteral("yMax")).toDouble();
-        QVERIFY(y <= 816);
+        QVERIFY(y <= 821);
       }
     }
     QVERIFY(!xml.hasError());

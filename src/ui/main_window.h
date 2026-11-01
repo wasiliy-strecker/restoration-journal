@@ -7,6 +7,7 @@
 #include <QPointer>
 
 class QLabel;
+class QAction;
 class QLineEdit;
 class QPlainTextEdit;
 class QPushButton;
@@ -38,6 +39,8 @@ private:
   void importCollection();
   void showAbout();
   void exportSelected();
+  void exportAllPdf();
+  void choosePdf(qint64 id, const QString& name);
   std::shared_ptr<ExportDialogs> exportDialogs_;
   bool choosingExport_ = false;
   void showLanguage();
@@ -65,6 +68,8 @@ private:
   QPushButton* reload_;
   QPushButton* language_;
   QPushButton* export_;
+  QAction* exportSelectedPdf_;
+  QAction* exportAllPdf_;
   QPushButton* exportCollection_;
   QPushButton* importCollection_;
   QString transferDirectory_;

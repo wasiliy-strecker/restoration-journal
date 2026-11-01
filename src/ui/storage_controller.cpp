@@ -88,7 +88,11 @@ void StorageWorker::writeExport(qint64 id, const ExportTarget& target, bool appr
     if (!repository_)
       throw StorageError(
           QCoreApplication::translate("App", "Die Projekte sind noch nicht geladen."));
-    exportProjectPdf(*repository_, id, target, approved, dataDirectory);
+    // Persisted project IDs are positive. Zero identifies the complete saved collection.
+    if (id == 0)
+      exportCollectionPdf(*repository_, target, approved, dataDirectory);
+    else
+      exportProjectPdf(*repository_, id, target, approved, dataDirectory);
     emit exported(target.path);
   } catch (const std::exception& error) {
     emit failed(Operation::Export, QString::fromUtf8(error.what()));

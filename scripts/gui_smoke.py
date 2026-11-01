@@ -273,11 +273,14 @@ def exercise(args):
             window("^Projekt (hinzufügen|bearbeiten)$")
             time.sleep(0.3)
 
-        def pdf_export(path=None, approve=True, deny_directory=False):
+        def pdf_export(path=None, approve=True, deny_directory=False, collection=False):
             before_db = database.read_bytes()
             previous = path.read_bytes() if path and path.exists() else None
             window("^Restoration Journal$")
-            key("ctrl+shift+e")
+            if collection:
+                key("alt+p", "End", "Return")
+            else:
+                key("ctrl+shift+e")
             window("Projekt als PDF exportieren")
             capture("pdf-native-dateiauswahl")
             if path is None:
@@ -596,11 +599,27 @@ def exercise(args):
                 str(output / "mehrseitig.pdf"),
                 str(output / "mehrseitig"),
             )
-            key("alt+l")
-            window("Projekt löschen")
-            destructive()
-            window("^Restoration Journal$")
-            wait_for(lambda: rows() == [])
+            key("ctrl+n")
+            window("^Projekt hinzufügen$")
+            text("Zweiter PDF-Bericht")
+            save()
+            key("ctrl+f")
+            text("KeinSuchtreffer")
+            pdf_export(output / "gesamte-sammlung.pdf", collection=True)
+            collection_text = command("pdftotext", str(output / "gesamte-sammlung.pdf"), "-")
+            pages = [page for page in collection_text.split("\f") if page.strip()]
+            assert "Kleine Schatulle" in pages[0]
+            assert "Zweiter PDF-Bericht" in pages[-1]
+            assert all("Zweiter PDF-Bericht" not in page for page in pages[:-1])
+            assert "AllerletzterSchritt" in collection_text
+            assert all(f"Seite {i + 1} von {len(pages)}" in page for i, page in enumerate(pages))
+            key("ctrl+f", "ctrl+a", "BackSpace")
+            for remaining in (1, 0):
+                key("alt+l")
+                window("Projekt löschen")
+                destructive()
+                window("^Restoration Journal$")
+                wait_for(lambda: len(rows()) == remaining)
             capture("14-wieder-leer")
             stop()
             (output / "result.json").write_text(

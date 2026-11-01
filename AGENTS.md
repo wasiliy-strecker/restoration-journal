@@ -3,7 +3,8 @@
 Eigenständige fünfte C++20-App mit Qt 6.8.3 Widgets, CMake und QSQLITE.
 Am 28. Oktober 2026 ausdrücklich beauftragt. Die frühere Reserve ist aktiviert.
 Umfang: vier Textfelder, ein Foto, drei Statuswerte, Checkliste und PDF-Export
-je eines gespeicherten Projekts. Keine weiteren Hauptfunktionen.
+eines gespeicherten Projekts oder aller Projekte. Der Gesamtexport ist seit
+1. November 2026 ausdrücklich beauftragt. Keine weiteren Hauptfunktionen.
 
 Workspace-Regeln gelten ergänzend. Andere Apps nur lesen. Eigene App-Kennung
 `de.appfabrik.restaurierungsheft`. Keine gemeinsame Runtime oder Datenübernahme.
@@ -84,3 +85,15 @@ Prüfung und mit atomarer Migration von Schema 1. App-IDs, Datenpfade und
 vorhandene Inhalte bleiben erhalten. Neue Werte verwenden #RRGGBB oder
 #RRGGBBAA. Alte Exporte ohne Farbe bleiben lesbar. Alle sechs Sprachen abdecken.
 Restoration Journal übernimmt die Farbe auch in den vorhandenen PDF-Export.
+
+## PDF-Einzel- und Gesamtexport, 1. November 2026
+
+Auf Nutzerauftrag entspricht der PDF-Aufbau Costume Planner. Titel und Status,
+Angaben links und proportionales Foto rechts, Farbkachel mit Hexcode, Notiz und
+Arbeitsschritte als Karten sowie Fortschrittsbalken und Seite-von-Gesamt zählen
+dazu. Bei langen Angaben fällt die Übersicht auf Karten untereinander zurück.
+Jedes Projekt beginnt auf einer neuen Seite. Alle gespeicherten Projekte werden
+alphabetisch in der App-Sprache ausgegeben, unabhängig von Suche und Auswahl.
+Beide Layout-Durchläufe müssen denselben Snapshot lesen. SQLite hält dazu eine
+Lesetransaktion offen und lädt jeweils nur ein vollständiges Projekt mit Foto.
+DejaVu Sans und DejaVu Sans Bold bleiben app-lokal gebündelt.
