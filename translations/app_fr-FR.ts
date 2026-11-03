@@ -230,10 +230,6 @@
       <translation>Confidentialité</translation>
     </message>
     <message>
-      <source>Datenschutzerklärung für Restoration Journal</source>
-      <translation>Politique de confidentialité de Restoration Journal</translation>
-    </message>
-    <message>
       <source>Datenverzeichnis: %1</source>
       <translation>Dossier de données : %1</translation>
     </message>
@@ -736,10 +732,6 @@ Le remplacer après la création réussie du PDF ?</translation>
       <translation>Langue enregistrée. Elle sera appliquée au prochain démarrage.</translation>
     </message>
     <message>
-      <source>Stand: 1. November 2026</source>
-      <translation>Dernière mise à jour : 1 novembre 2026</translation>
-    </message>
-    <message>
       <source>Status</source>
       <translation>État</translation>
     </message>
@@ -758,60 +750,6 @@ Le remplacer après la création réussie du PDF ?</translation>
     <message>
       <source>Unbekannter gespeicherter Projektstatus „%1“. Die Daten werden nicht verändert.</source>
       <translation>État de projet enregistré inconnu : « %1 ». Vos données ne seront pas modifiées.</translation>
-    </message>
-    <message>
-      <source>Verantwortlicher und Kontakt
-Wasiliy Strecker · AppFabrik AI
-Ludwigstrasse 23, 86152 Augsburg, Deutschland
-Datenschutz: contact@appfabrik-ai.de
-Support: support@appfabrik-ai.de
-
-Zweck und gespeicherte Daten
-Restoration Journal verwaltet deine privaten Einträge. Die App speichert Namen, Materialangaben, Aufbewahrungsorte, Farben, Notizen, interne Eintragskennungen und deine Spracheinstellung sowie ein optionales Foto, den Projektstatus und Arbeitsschritte mit Reihenfolge und Erledigungsstand standardmäßig lokal im Benutzerprofil deines Computers. Fotos bleiben als Originaldateiinhalt gespeichert und können Metadaten enthalten. Die Angaben können personenbezogene Informationen enthalten, wenn du sie selbst einträgst. Die Verarbeitung dient ausschließlich den von dir angeforderten Funktionen zum Verwalten, Suchen, Exportieren und Importieren deiner Sammlung.
-
-Lokale Verarbeitung
-Die App benötigt kein Konto und keinen Server. Sie übermittelt deine Sammlung und Spracheinstellung nicht an den Entwickler oder andere Empfänger. Sie enthält keine Werbung, Telemetrie, Nutzungsanalyse oder eigene Cloud-Synchronisierung. Die Datenschutzerklärung ist Bestandteil der App und wird ohne Internetverbindung angezeigt. Restoration Journal verschlüsselt weder seine gespeicherte Sammlung noch exportierte JSON-Dateien selbst. Der Schutz hängt auch von deinem Benutzerkonto, den Zugriffsrechten und einer gegebenenfalls aktivierten Datenträgerverschlüsselung ab.
-
-Import, Export und Sicherungskopien
-Die App liest ausgewählte JSON-Dateien und Fotos lokal. Ein JSON-Export enthält alle gespeicherten Einträge mit einem optionalen Foto, dem Projektstatus und Arbeitsschritten mit Reihenfolge und Erledigungsstand. Er enthält keine internen Eintragskennungen und keine Spracheinstellung. Schrittkennungen, Reihenfolge und Häkchen sind enthalten. Du bestimmst den Speicherort und eine mögliche Weitergabe. Exportierte Dateien sind eigenständige Kopien und werden durch Änderungen in der App nicht aktualisiert oder gelöscht. Synchronisierte Ordner, Netzlaufwerke oder Sicherungsdienste können diese Dateien außerhalb der App verarbeiten oder übertragen. Dafür gelten die Einstellungen und Datenschutzbedingungen des jeweiligen Anbieters. Restoration Journal steuert diese Dienste nicht.
-
-PDF-Ausgabe
-Ein PDF enthält das ausgewählte gespeicherte Projekt oder alle gespeicherten Projekte mit Fotos, Farben, Status und Arbeitsschritten. Die App verschlüsselt diese PDF-Dateien nicht. Auch diese Dateien sind eigenständige Kopien, deren Weitergabe und Löschung du selbst bestimmst.
-
-Speicherdauer und Löschung
-Die App bewahrt die Sammlung auf, bis du Einträge löschst oder die gespeicherten App-Daten entfernst. Du kannst Einträge in der App ansehen, bearbeiten und löschen. Zum vollständigen Entfernen der lokalen Sammlung und Spracheinstellung schließt du die App und entfernst ihren Datenordner. Die Speicherorte sind in der mitgelieferten Anleitung beschrieben. Exportdateien und andere Sicherungskopien musst du an ihren jeweiligen Speicherorten gesondert löschen. Das Löschen eines Eintrags ist keine garantierte sichere Löschung aller früheren Dateiinhalte. Verlasse dich nicht darauf, dass eine Deinstallation alle App-Daten und externen Kopien entfernt.
-
-Kontakt und Support
-Wenn du uns freiwillig eine E-Mail sendest, verarbeiten wir deine E-Mail-Adresse, den Nachrichteninhalt und beigefügte Dateien zur Bearbeitung der Anfrage. Deine lokal gespeicherte Sammlung wird dabei nicht automatisch mitgesendet. Rechtsgrundlage ist bei vertragsbezogenen Anfragen Artikel 6 Absatz 1 Buchstabe b DSGVO, ansonsten unser berechtigtes Interesse an der Beantwortung von Anfragen nach Artikel 6 Absatz 1 Buchstabe f DSGVO. Wir bewahren die Korrespondenz nur so lange auf, wie dies für die Bearbeitung und gesetzliche Aufbewahrungspflichten erforderlich ist.
-
-Deine Rechte und weitere Anbieter
-Soweit anwendbar, hast du Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht auf Beschwerde bei einer Datenschutzaufsichtsbehörde. Nutze dafür den Datenschutzkontakt. Auf Sammlungen, die ausschließlich auf deinem Computer liegen, hat der Entwickler keinen Zugriff. Beim Bezug oder Aktualisieren über Apple App Store, Microsoft Store oder GitHub können diese Anbieter selbst Daten verarbeiten. Dafür gelten deren eigene Datenschutzbedingungen. Diese Erklärung beschreibt die Datenverarbeitung durch Restoration Journal und wird bei entsprechenden Änderungen aktualisiert.</source>
-      <translation>Responsable et contact
-Wasiliy Strecker · AppFabrik AI
-Ludwigstrasse 23, 86152 Augsbourg, Allemagne
-Confidentialité : contact@appfabrik-ai.de
-Assistance : support@appfabrik-ai.de
-
-Finalités et données enregistrées
-Restoration Journal organise vos entrées personnelles. L’application enregistre par défaut les noms, informations sur les matériaux, emplacements, couleurs, notes, identifiants internes et votre langue, ainsi que une photo facultative, l’état du projet et des étapes ordonnées avec leur état d’achèvement, localement dans le profil utilisateur de votre ordinateur. Les photos conservent leur contenu original et peuvent inclure des métadonnées. Les champs peuvent contenir des données personnelles si vous les saisissez. Le traitement sert uniquement aux fonctions demandées de gestion, recherche, exportation et importation de votre collection.
-
-Traitement local
-L’application ne nécessite ni compte ni serveur. Elle ne transmet pas votre collection ni votre choix de langue au développeur ou à d’autres destinataires. Elle ne contient ni publicité, ni télémétrie, ni analyse d’utilisation, ni synchronisation cloud intégrée. Cette politique fait partie de l’application et reste consultable sans connexion Internet. Restoration Journal ne chiffre pas lui-même la collection enregistrée ni les fichiers JSON exportés. Leur protection dépend aussi de votre compte utilisateur, des droits d’accès et du chiffrement du disque éventuellement activé.
-
-Importation, exportation et sauvegardes
-L’application lit localement les fichiers JSON et les photos sélectionnés. Un export JSON contient toutes les entrées enregistrées, y compris une photo facultative, l’état du projet et des étapes ordonnées avec leur état d’achèvement. Il exclut les identifiants internes des entrées et le choix de langue. Les identifiants, l’ordre et l’état d’achèvement des étapes sont inclus. Vous choisissez l’emplacement et un éventuel partage. Les fichiers exportés sont des copies indépendantes, qui ne sont ni actualisées ni supprimées par les modifications dans l’application. Les dossiers synchronisés, lecteurs réseau ou services de sauvegarde peuvent traiter ou transmettre ces fichiers hors de l’application. Leurs propres paramètres et conditions de confidentialité s’appliquent. Restoration Journal ne contrôle pas ces services.
-
-Sortie PDF
-Un PDF contient le projet enregistré sélectionné ou tous les projets enregistrés avec leurs photos, couleurs, états et étapes de travail. L’application ne chiffre pas ces fichiers PDF. Ce sont des copies indépendantes dont vous gérez le partage et la suppression.
-
-Conservation et suppression
-L’application conserve votre collection jusqu’à la suppression des entrées ou des données enregistrées de l’application. Vous pouvez consulter, modifier et supprimer les entrées dans l’application. Pour supprimer toute la collection locale et le choix de langue, fermez l’application et supprimez son dossier de données. Les emplacements sont décrits dans les instructions fournies. Les exports et autres sauvegardes doivent être supprimés séparément à leurs emplacements respectifs. Supprimer une entrée ne garantit pas l’effacement sécurisé de tous les anciens contenus des fichiers. Ne supposez pas qu’une désinstallation supprime toutes les données et copies externes.
-
-Contact et assistance
-Si vous nous envoyez volontairement un e-mail, nous traitons votre adresse e-mail, le message et ses pièces jointes pour répondre à votre demande. Votre collection locale n’est pas jointe automatiquement. La base juridique est l’article 6, paragraphe 1, point b du RGPD pour les demandes liées à un contrat. Pour les autres demandes, il s’agit de notre intérêt légitime à répondre aux sollicitations selon l’article 6, paragraphe 1, point f du RGPD. Nous conservons la correspondance uniquement pendant la durée nécessaire au traitement et aux obligations légales de conservation.
-
-Vos droits et autres fournisseurs
-Selon les dispositions applicables, vous disposez des droits d’accès, de rectification, d’effacement, de limitation du traitement, de portabilité et d’opposition, ainsi que du droit de déposer une réclamation auprès d’une autorité de protection des données. Utilisez le contact de confidentialité ci-dessus. Le développeur n’a pas accès aux collections stockées uniquement sur votre ordinateur. Lorsque vous obtenez ou mettez à jour l’application via Apple App Store, Microsoft Store ou GitHub, ces fournisseurs peuvent traiter des données de manière indépendante selon leurs propres conditions. Cette politique décrit le traitement de Restoration Journal et sera actualisée si celui-ci change.</translation>
     </message>
     <message>
       <source>Version %1</source>
@@ -972,6 +910,10 @@ Selon les dispositions applicables, vous disposez des droits d’accès, de rect
     <message>
       <source>Seite %1 von %2</source>
       <translation>Page %1 sur %2</translation>
+    </message>
+    <message>
+      <source>Die Datenschutzerklärung konnte nicht im Browser geöffnet werden. Kopiere diese Adresse und öffne sie in deinem Browser. Die Erklärung ist auf Englisch.</source>
+      <translation>La politique de confidentialité n’a pas pu être ouverte dans le navigateur. Copiez cette adresse et ouvrez-la dans votre navigateur. La politique est en anglais.</translation>
     </message>
   </context>
 </TS>

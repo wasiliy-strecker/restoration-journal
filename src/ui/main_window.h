@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ui/privacy_link.h"
+
 #include "ui/export_dialogs.h"
 #include "ui/project_editor.h"
 
@@ -20,7 +22,8 @@ class MainWindow final : public QMainWindow {
 public:
   MainWindow(StorageController& controller, QString dataDirectory, QWidget* parent = nullptr,
              std::shared_ptr<ExportDialogs> exportDialogs = {},
-             QString languagePreference = QStringLiteral("auto"));
+             QString languagePreference = QStringLiteral("auto"),
+             BrowserOpener browser = openInDefaultBrowser);
 
 protected:
   void closeEvent(QCloseEvent* event) override;
@@ -44,6 +47,7 @@ private:
   std::shared_ptr<ExportDialogs> exportDialogs_;
   bool choosingExport_ = false;
   void showLanguage();
+  BrowserOpener browser_;
   StorageController& controller_;
   QString dataDirectory_;
   QString languagePreference_;

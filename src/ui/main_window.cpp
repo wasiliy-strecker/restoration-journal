@@ -40,12 +40,13 @@
 namespace restoration {
 
 MainWindow::MainWindow(StorageController& controller, QString dataDirectory, QWidget* parent,
-                       std::shared_ptr<ExportDialogs> exportDialogs, QString languagePreference)
+                       std::shared_ptr<ExportDialogs> exportDialogs, QString languagePreference,
+                       BrowserOpener browser)
     : QMainWindow(parent),
       exportDialogs_(exportDialogs ? std::move(exportDialogs) : std::make_shared<ExportDialogs>()),
-      controller_(controller), dataDirectory_(std::move(dataDirectory)),
-      languagePreference_(std::move(languagePreference)), search_(new QLineEdit(this)),
-      table_(new QTableWidget(this)), note_(new QPlainTextEdit(this)),
+      browser_(std::move(browser)), controller_(controller),
+      dataDirectory_(std::move(dataDirectory)), languagePreference_(std::move(languagePreference)),
+      search_(new QLineEdit(this)), table_(new QTableWidget(this)), note_(new QPlainTextEdit(this)),
       checklist_(new QPlainTextEdit(this)), photo_(new PhotoView(this)),
       detailTitle_(new QLabel(this)), state_(new QLabel(this)), feedback_(new QLabel(this)),
       count_(new QLabel(this)),
@@ -242,10 +243,7 @@ MainWindow::MainWindow(StorageController& controller, QString dataDirectory, QWi
     feedback_->setText(QCoreApplication::translate("App", "PDF gespeichert: %1").arg(path));
   });
   connect(aboutAction, &QAction::triggered, this, &MainWindow::showAbout);
-  connect(privacyAction, &QAction::triggered, this, [this] {
-    InformationDialog dialog(InformationPage::Privacy, dataDirectory_, this);
-    dialog.exec();
-  });
+  connect(privacyAction, &QAction::triggered, this, [this] { openPrivacyPolicy(this, browser_); });
   connect(licensesAction, &QAction::triggered, this, [this] {
     InformationDialog dialog(InformationPage::Licenses, dataDirectory_, this);
     dialog.exec();

@@ -63,7 +63,8 @@ Der Nutzer bestätigt für alle fünf C++-Apps die unterstützte Systemsprache b
 Erststart mit Englisch als Fallback. Explizite Sprachwahlen bleiben erhalten.
 Dies ersetzt die allgemeine Englisch-Vorgabe ausschließlich für diese C++-Reihe.
 
-Info enthält Über die App, Datenschutz und Lizenzen mit roten Schließen-Buttons.
+Info enthält Über die App, den Datenschutz-Link und Lizenzen. Die Dialoge
+für App-Informationen und Lizenzen behalten ihre roten Schließen-Buttons.
 Die Original-Lizenztexte werden offline eingebettet. Sammlungstransfer per JSON
 ist in dieser Stufe ausdrücklich beauftragt, einschließlich aller vorhandenen
 Fotos und gegebenenfalls Status und Checklisten. Kein Austausch zwischen Apps.
@@ -100,3 +101,19 @@ alphabetisch in der App-Sprache ausgegeben, unabhängig von Suche und Auswahl.
 Beide Layout-Durchläufe müssen denselben Snapshot lesen. SQLite hält dazu eine
 Lesetransaktion offen und lädt jeweils nur ein vollständiges Projekt mit Foto.
 DejaVu Sans, DejaVu Sans Bold und Noto Emoji bleiben app-lokal gebündelt.
+
+## Kanonische Datenschutzerklärung, 3. November 2026
+
+Auf ausdrücklichen Nutzerauftrag wird ausschließlich die englische `PRIVACY.md`
+im eigenen Repository als vollständige Erklärung gepflegt. Sie übernimmt die
+bisherigen englischen App-Texte mit aktualisierten Hinweisen zum Browseraufruf.
+Die feste Adresse für diese App und alle Store-Sprachen lautet:
+
+https://github.com/wasiliy-strecker/restoration-journal/blob/main/PRIVACY.md
+
+„Info“ → „Datenschutz“ öffnet diese Adresse im externen Standardbrowser.
+Keine vollständigen Datenschutztexte zusätzlich in Sprachkatalogen, Dialogen
+oder GitHub Pages pflegen. Menütexte und Startfehler bleiben lokalisiert.
+Der Python-Export kopiert ausschließlich die Originaldatei und ihre URL in
+einen neuen Lieferordner. Alte Lieferungen sind historische Nachweise.
+Diese Entscheidung ersetzt die älteren Vorgaben zum Offline-Datenschutzdialog.
