@@ -305,7 +305,8 @@ private slots:
     QCOMPARE(rendered.size(), withoutEmoji.size());
     // Every field must gain painted glyphs, including the bold title and the checklist.
     for (const auto& band :
-         {QPair{80, 115}, QPair{165, 200}, QPair{213, 248}, QPair{295, 330}, QPair{402, 437}}) {
+         {QPair<int, int>{80, 115}, QPair<int, int>{165, 200}, QPair<int, int>{213, 248},
+          QPair<int, int>{295, 330}, QPair<int, int>{402, 437}}) {
       int changed = 0;
       const qreal scale = static_cast<qreal>(rendered.height()) / 842;
       for (int y = qRound(band.first * scale); y < qRound(band.second * scale); ++y)
@@ -428,12 +429,24 @@ private slots:
         exportProjectPdf(repository, saved.id, target, failure != 0, directory.path(), renderer),
         ExportError);
     QCOMPARE(invoked, failure != 0);
+    const bool cleanupBlocked = failure == 5 && !QFileInfo(destination.path()).isWritable();
     QFile::setPermissions(destination.path(),
                           QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
     QFile::setPermissions(path, QFileDevice::ReadOwner | QFileDevice::WriteOwner);
     QCOMPARE(readBytes(path),
              failure == 2 || failure == 3 ? QByteArray("concurrent") : QByteArray("old pdf bytes"));
     QCOMPARE(readBytes(dbPath), databaseBefore);
+    if (cleanupBlocked) {
+      // Revoking directory write access also prevents unlinking the temporary file.
+      // Only the fixture restores its permissions; the exporter must not do that.
+      const auto temporaryNames =
+          QDir(destination.path())
+              .entryList({QStringLiteral(".restaurierungsheft-*.tmp")}, QDir::Files | QDir::Hidden);
+      QCOMPARE(temporaryNames.size(), 1);
+      const auto temporaryPath = destination.filePath(temporaryNames.first());
+      QCOMPARE(readBytes(temporaryPath), QByteArray("partial"));
+      QVERIFY(QFile::remove(temporaryPath));
+    }
     QCOMPARE(QDir(destination.path())
                  .entryList({QStringLiteral("*.tmp")}, QDir::Files | QDir::Hidden)
                  .size(),
@@ -491,7 +504,7 @@ private slots:
     QSqlDatabase::removeDatabase(QStringLiteral("wal-setup"));
     std::atomic<bool> failed = false;
     std::atomic<int> writes = 0;
-    std::jthread writer([&] {
+    std::thread writer([&] {
       {
         auto db =
             QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("snapshot-writer"));
@@ -536,6 +549,10 @@ private slots:
         }
       }
       QSqlDatabase::removeDatabase(QStringLiteral("snapshot-writer"));
+    });
+    const auto joinWriter = qScopeGuard([&writer] {
+      if (writer.joinable())
+        writer.join();
     });
     for (int index = 0; index < 150; ++index) {
       const auto snapshot = repository.find(saved.id);
