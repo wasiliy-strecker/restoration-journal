@@ -43,8 +43,11 @@ for restoration_size in 16 32 128 256 512; do
 done
 iconutil -c icns "$restoration_icons" -o "$restoration_app/Contents/Resources/RestaurierungsHeft.icns"
 /usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string RestaurierungsHeft.icns" "$restoration_app/Contents/Info.plist"
+# Normalize the staging copy before signing; reject invalid nested bundle IDs.
+python3 scripts/macos_bundle.py prepare --app "$restoration_app"
 # Ad-hoc signing permits local Apple-Silicon testing. It is not a distribution identity.
 codesign --force --deep --sign - "$restoration_app"
+python3 scripts/macos_bundle.py inspect --app "$restoration_app"
 hdiutil create -volname "Restoration Journal" -srcfolder "$restoration_stage" -ov -format UDZO "$restoration_dmg"
 shasum -a 256 "$restoration_dmg" > "$restoration_dmg.sha256"
 echo "$restoration_dmg"
