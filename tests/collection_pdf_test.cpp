@@ -107,10 +107,12 @@ private slots:
     });
     QCOMPARE(repository.find(saved.id).note, QStringLiteral("After"));
     QCOMPARE(repository.findAll().size(), 2);
-    QVERIFY_EXCEPTION_THROWN(repository.withSavedProjects([](const ProjectSource& source) {
-      source([](const ProjectDraft&) { throw ExportError(QStringLiteral("Late render failure")); });
-    }),
-                             ExportError);
+    QVERIFY_THROWS_EXCEPTION(ExportError,
+                             repository.withSavedProjects([](const ProjectSource& source) {
+                               source([](const ProjectDraft&) {
+                                 throw ExportError(QStringLiteral("Late render failure"));
+                               });
+                             }));
     repository.create({QStringLiteral("After failed export"), {}, {}, {}});
     QCOMPARE(repository.findAll().size(), 3);
   }
@@ -122,8 +124,8 @@ private slots:
     const auto path = output.filePath(QStringLiteral("existing.pdf"));
     write(path, "Existing PDF");
     auto target = inspectExportTarget(path, data.path());
-    QVERIFY_EXCEPTION_THROWN(exportCollectionPdf(repository, target, true, data.path()),
-                             ExportError);
+    QVERIFY_THROWS_EXCEPTION(ExportError,
+                             exportCollectionPdf(repository, target, true, data.path()));
     QCOMPARE(bytes(path), QByteArray("Existing PDF"));
     repository.create({QStringLiteral("Alpha"), {}, {}, {}});
     repository.create({QStringLiteral("Zulu"), {}, {}, QString::fromUcs4(U"🧵")});
@@ -139,8 +141,8 @@ private slots:
           },
           device);
     };
-    QVERIFY_EXCEPTION_THROWN(
-        exportCollectionPdf(repository, target, true, data.path(), failingRenderer), ExportError);
+    QVERIFY_THROWS_EXCEPTION(
+        ExportError, exportCollectionPdf(repository, target, true, data.path(), failingRenderer));
     QCOMPARE(bytes(path), QByteArray("Existing PDF"));
     QCOMPARE(
         QDir(output.path()).entryList({QStringLiteral("*.tmp")}, QDir::Files | QDir::Hidden).size(),
@@ -166,18 +168,17 @@ private slots:
                         renderProjectsPdf, denied);
     QVERIFY(bytes(path).startsWith("%PDF-"));
     const auto original = bytes(path);
-    QVERIFY_EXCEPTION_THROWN(
-        exportCollectionPdf(repository, inspectExportTarget(path, data.path()), false, data.path()),
-        ExportError);
+    QVERIFY_THROWS_EXCEPTION(ExportError,
+                             exportCollectionPdf(repository, inspectExportTarget(path, data.path()),
+                                                 false, data.path()));
     QCOMPARE(bytes(path), original);
     auto target = inspectExportTarget(path, data.path());
-    QVERIFY_EXCEPTION_THROWN(
-        exportCollectionPdf(repository, target, true, data.path(),
-                            [&](const ProjectSource& source, QIODevice& device) {
-                              renderProjectsPdf(source, device);
-                              write(path, "Concurrent change");
-                            }),
-        ExportError);
+    QVERIFY_THROWS_EXCEPTION(
+        ExportError, exportCollectionPdf(repository, target, true, data.path(),
+                                         [&](const ProjectSource& source, QIODevice& device) {
+                                           renderProjectsPdf(source, device);
+                                           write(path, "Concurrent change");
+                                         }));
     QCOMPARE(bytes(path), QByteArray("Concurrent change"));
     exportCollectionPdf(repository, inspectExportTarget(path, data.path()), true, data.path());
     QVERIFY(textFrom(path).contains(QStringLiteral("Project")));

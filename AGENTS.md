@@ -117,3 +117,20 @@ oder GitHub Pages pflegen. Menütexte und Startfehler bleiben lokalisiert.
 Der Python-Export kopiert ausschließlich die Originaldatei und ihre URL in
 einen neuen Lieferordner. Alte Lieferungen sind historische Nachweise.
 Diese Entscheidung ersetzt die älteren Vorgaben zum Offline-Datenschutzdialog.
+
+## Mac App Store, 4. November 2026
+
+Der aktuelle Nutzerauftrag autorisiert die Mac-Store-Vorbereitung vor Microsoft,
+einschließlich der notwendigen Workspace-Metadaten und des Changelogs. Der
+registrierte Name lautet **Restoration Journal**, die englische Bundle-ID
+`de.appfabrik.restorationjournal`. Bestehende interne Datenkennung
+`de.appfabrik.restaurierungsheft`, SQLite-Datei, Schema und JSON-Format bleiben
+kompatibel. Neue technische Bezeichner möglichst auf Englisch halten.
+
+Eigenständige app-lokale Release-Werkzeuge verwenden, universelle ARM64/x86_64-
+Bundles mit Qt 6.8.3 und enger Sandbox signieren. Erst nach automatisierten und
+nativen Prüfungen sowie der ausdrücklichen Funktionsbestätigung des Nutzers
+paketieren und einreichen. Die Abnahme umfasst Foto, Farbe, Status, Checklisten
+und PDF-Einzel-/Gesamtexport einschließlich Abbruch und Überschreibschutz.
+Abgeschlossene Änderungen lokal committen; kein Push. Private Signierdaten und
+erzeugte Artefakte bleiben unversioniert.

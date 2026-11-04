@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
   <key>CFBundleExecutable</key><string>${MACOSX_BUNDLE_EXECUTABLE_NAME}</string>
-  <key>CFBundleIdentifier</key><string>de.appfabrik.restaurierungsheft</string>
+  <key>CFBundleIdentifier</key><string>de.appfabrik.restorationjournal</string>
   <key>CFBundleName</key><string>Restoration Journal</string>
   <key>CFBundleDisplayName</key><string>Restoration Journal</string>
   <key>CFBundleVersion</key><string>${MACOSX_BUNDLE_BUNDLE_VERSION}</string>
@@ -19,6 +19,7 @@
     <string>pt-BR</string>
   </array>
   <key>LSMinimumSystemVersion</key><string>12.0</string>
+  <key>ITSAppUsesNonExemptEncryption</key><false/>
   <key>NSHighResolutionCapable</key><true/>
   <key>NSHumanReadableCopyright</key><string>© 2026 Wasiliy Strecker</string>
   <key>LSApplicationCategoryType</key><string>public.app-category.lifestyle</string>

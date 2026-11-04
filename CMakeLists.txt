@@ -1,14 +1,16 @@
 cmake_minimum_required(VERSION 3.25)
-project(RestaurierungsHeft VERSION 0.1.0 LANGUAGES CXX)
+project(RestaurierungsHeft VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(RESTAURIERUNGSHEFT_SANITIZERS "Enable address and undefined behavior checks" OFF)
+set(RESTORATION_JOURNAL_BUILD_NUMBER "1" CACHE STRING "Mac Store build number")
+option(RESTORATION_JOURNAL_STORE_CAPTURE "Build native Store screenshot helper" OFF)
 include(CTest)
 find_package(Qt6 6.8.3 EXACT REQUIRED COMPONENTS Core Gui Widgets Sql LinguistTools)
-if(BUILD_TESTING)
+if(BUILD_TESTING OR RESTORATION_JOURNAL_STORE_CAPTURE)
   find_package(Qt6 6.8.3 EXACT REQUIRED COMPONENTS Test)
 endif()
 
@@ -64,9 +66,9 @@ if(WIN32)
   target_sources(restaurierungsheft PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/app.rc")
 endif()
 set_target_properties(restaurierungsheft PROPERTIES
-  MACOSX_BUNDLE_GUI_IDENTIFIER de.appfabrik.restaurierungsheft
+  MACOSX_BUNDLE_GUI_IDENTIFIER de.appfabrik.restorationjournal
   MACOSX_BUNDLE_BUNDLE_NAME "Restoration Journal"
-  MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+  MACOSX_BUNDLE_BUNDLE_VERSION ${RESTORATION_JOURNAL_BUILD_NUMBER}
   MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION}
   MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/packaging/macos/Info.plist.in")
 
@@ -81,6 +83,11 @@ if(BUILD_TESTING)
   add_test(NAME privacy_delivery COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/scripts/test_export_privacy.py")
   add_test(NAME catalogs COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/scripts/check_translations.py")
   add_test(NAME macos_localizations COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/scripts/check_macos_localizations.py")
+endif()
+
+if(RESTORATION_JOURNAL_STORE_CAPTURE)
+  add_executable(mac_store_capture scripts/store_assets/mac_capture.cpp)
+  target_link_libraries(mac_store_capture PRIVATE project_ui Qt6::Test project_options)
 endif()
 
 install(TARGETS restaurierungsheft BUNDLE DESTINATION . RUNTIME DESTINATION bin)

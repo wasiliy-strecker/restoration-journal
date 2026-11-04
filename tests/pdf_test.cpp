@@ -84,20 +84,18 @@ private slots:
                      data.path(), renderProjectPdf, denied);
     QVERIFY(readBytes(path).startsWith("%PDF-"));
     const auto original = readBytes(path);
-    QVERIFY_EXCEPTION_THROWN(exportProjectPdf(repository, saved.id,
-                                              inspectExportTarget(path, data.path()), false,
-                                              data.path(), renderProjectPdf, denied),
-                             ExportError);
+    QVERIFY_THROWS_EXCEPTION(
+        ExportError, exportProjectPdf(repository, saved.id, inspectExportTarget(path, data.path()),
+                                      false, data.path(), renderProjectPdf, denied));
     QCOMPARE(readBytes(path), original);
     const auto raced = output.filePath(QStringLiteral("raced.pdf"));
     const auto collision = [&raced](const QString&, const QString&) {
       writeBytes(raced, "Another writer");
       return std::make_error_code(std::errc::operation_not_supported);
     };
-    QVERIFY_EXCEPTION_THROWN(exportProjectPdf(repository, saved.id,
-                                              inspectExportTarget(raced, data.path()), false,
-                                              data.path(), renderProjectPdf, collision),
-                             ExportError);
+    QVERIFY_THROWS_EXCEPTION(
+        ExportError, exportProjectPdf(repository, saved.id, inspectExportTarget(raced, data.path()),
+                                      false, data.path(), renderProjectPdf, collision));
     QCOMPARE(readBytes(raced), QByteArray("Another writer"));
   }
 
@@ -327,9 +325,9 @@ private slots:
   void invalidUnicodeStillFailsBeforeWriting() {
     QBuffer output;
     output.open(QIODevice::WriteOnly);
-    QVERIFY_EXCEPTION_THROWN(
-        renderProjectPdf({QStringLiteral("Projekt"), {}, {}, QString(QChar(0xd800))}, output),
-        ExportError);
+    QVERIFY_THROWS_EXCEPTION(
+        ExportError,
+        renderProjectPdf({QStringLiteral("Projekt"), {}, {}, QString(QChar(0xd800))}, output));
     QVERIFY(output.data().isEmpty());
   }
   void safeNames_data() {
@@ -425,9 +423,9 @@ private slots:
       if (failure == 7)
         throw ExportError(QStringLiteral("Abschlussfehler"));
     };
-    QVERIFY_EXCEPTION_THROWN(
-        exportProjectPdf(repository, saved.id, target, failure != 0, directory.path(), renderer),
-        ExportError);
+    QVERIFY_THROWS_EXCEPTION(
+        ExportError,
+        exportProjectPdf(repository, saved.id, target, failure != 0, directory.path(), renderer));
     QCOMPARE(invoked, failure != 0);
     const bool cleanupBlocked = failure == 5 && !QFileInfo(destination.path()).isWritable();
     QFile::setPermissions(destination.path(),
@@ -465,19 +463,19 @@ private slots:
                              destination.filePath(QStringLiteral("wrong.txt")),
                              destination.filePath(QStringLiteral("missing/target.pdf")),
                              directory.filePath(QStringLiteral("own.pdf"))})
-      QVERIFY_EXCEPTION_THROWN(inspectExportTarget(path, directory.path()), ExportError);
+      QVERIFY_THROWS_EXCEPTION(ExportError, inspectExportTarget(path, directory.path()));
     const auto folder = destination.filePath(QStringLiteral("folder.pdf"));
     QDir().mkdir(folder);
-    QVERIFY_EXCEPTION_THROWN(inspectExportTarget(folder, directory.path()), ExportError);
+    QVERIFY_THROWS_EXCEPTION(ExportError, inspectExportTarget(folder, directory.path()));
 #ifdef Q_OS_UNIX
     const auto alias = destination.filePath(QStringLiteral("alias.pdf"));
     QVERIFY(QFile::link(directory.filePath(QStringLiteral("restaurierungsheft.sqlite3")), alias));
-    QVERIFY_EXCEPTION_THROWN(inspectExportTarget(alias, directory.path()), ExportError);
+    QVERIFY_THROWS_EXCEPTION(ExportError, inspectExportTarget(alias, directory.path()));
     QVERIFY(QFile::remove(alias));
     std::filesystem::create_hard_link(
         directory.filePath(QStringLiteral("restaurierungsheft.sqlite3")).toStdString(),
         alias.toStdString());
-    QVERIFY_EXCEPTION_THROWN(inspectExportTarget(alias, directory.path()), ExportError);
+    QVERIFY_THROWS_EXCEPTION(ExportError, inspectExportTarget(alias, directory.path()));
 #endif
   }
   void snapshotUnderConcurrentTransactions() {
@@ -589,7 +587,8 @@ private slots:
     const auto path = destination.filePath(QStringLiteral("old.pdf"));
     writeBytes(path, QByteArray("untouched"));
     const auto target = inspectExportTarget(path, directory.path());
-    QVERIFY_EXCEPTION_THROWN(exportProjectPdf(repository, saved.id, target, true, directory.path(),
+    QVERIFY_THROWS_EXCEPTION(ExportError,
+                             exportProjectPdf(repository, saved.id, target, true, directory.path(),
                                               [](const ProjectDraft& draft, QIODevice& output) {
                                                 auto* file = qobject_cast<QFile*>(&output);
                                                 if (!file)
@@ -602,8 +601,7 @@ private slots:
                                                 if (result < 0)
                                                   throw std::runtime_error("dup2 failed");
                                                 renderProjectPdf(draft, output);
-                                              }),
-                             ExportError);
+                                              }));
     QCOMPARE(readBytes(path), QByteArray("untouched"));
     QCOMPARE(QDir(destination.path())
                  .entryList({QStringLiteral("*.tmp")}, QDir::Files | QDir::Hidden)

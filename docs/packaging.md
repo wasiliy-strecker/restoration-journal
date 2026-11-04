@@ -2,15 +2,17 @@
 
 Aktueller öffentlicher Name: **Restoration Journal**. Alle sechs Oberflächensprachen bleiben
 verfügbar. Neue Installationen verwenden die unterstützte Systemsprache mit Englisch
-als Fallback. Die technischen Kennungen und Datenverzeichnisse bleiben unverändert.
+als Fallback. Interne Datenkennungen und Datenverzeichnisse bleiben unverändert;
+die registrierte Mac-Bundle-ID lautet `de.appfabrik.restorationjournal`.
 macOS erlaubt Zugriff auf ausgewählte Dateien und Ordner mit Lese-/Schreibrechten.
 Die Export-Ordnerwahl gewährt Zugriff auch für temporäre Nachbardateien.
 Native macOS-Sandbox und ein physischer exFAT-Datenträger benötigen eigene Abnahme.
 
 
-Ziel ist zuerst der Microsoft Store, später der Mac App Store. Die lokalen
-Pakete sind Testlieferungen. Ein Paketformat allein belegt weder Lizenzkonformität
-noch bestandene Store-Zertifizierung.
+Der Nutzer hat die Mac-Store-Vorbereitung vorgezogen. Der aktuelle universelle
+Signierungs- und Einreichungsweg steht in [Mac App Store release](mac-app-store-release.md).
+Die generischen Pakete bleiben Testlieferungen. Ein Paketformat allein belegt
+weder Lizenzkonformität noch bestandene Store-Zertifizierung.
 
 ## Gemeinsame Regeln
 
@@ -115,9 +117,9 @@ export RESTAURIERUNGSHEFT_QT_ROOT=/pfad/Qt/6.8.3/macos
 bash scripts/package_macos.sh
 ```
 
-Das Skript erzeugt `RestaurierungsHeft.app`, bündelt Qt über `macdeployqt`, prüft
+Das Skript erzeugt `Restoration Journal.app`, bündelt Qt über `macdeployqt`, prüft
 QSQLITE, JPEG- und Cocoa-Plugin und erstellt eine DMG. Das Bundle hat die Kennung
-`de.appfabrik.restaurierungsheft` und ein eigenes Icon. Die Ad-hoc-Signatur dient
+`de.appfabrik.restorationjournal` und ein eigenes Icon. Die Ad-hoc-Signatur dient
 lokalen Tests und ist keine vertrauenswürdige Distributionssignatur.
 
 `packaging/macos/app-store.entitlements` bereitet App Sandbox und
@@ -128,13 +130,14 @@ müssen innerhalb der tatsächlichen Sandbox-Freigabe nativ geprüft werden.
 Das vorbereitete Entitlement allein belegt diese Abläufe nicht. Dauerhafter Zugriff auf die externe
 Quelle und Security-Scoped Bookmarks sind für den gespeicherten BLOB nicht nötig.
 Die App benötigt keinen Netzwerkzugriff. Das Entitlement muss nativ geprüft werden.
-Store-Identität, Team, Provisioning und Signierung aller Bundle-Bestandteile
-müssen später auf einem Mac festgelegt und geprüft werden. Keine pauschalen
+Der aktuelle universelle Store-Build, Team, Provisioning und Signierung aller
+Bundle-Bestandteile sind in [Mac App Store release](mac-app-store-release.md)
+beschrieben. Keine pauschalen
 Entitlements zum Abschalten von Bibliotheksprüfungen hinzufügen.
 
 In der Sandbox liegt der von QStandardPaths gelieferte App-Pfad innerhalb des
 App-Containers, typischerweise unter
-`~/Library/Containers/de.appfabrik.restaurierungsheft/Data/Library/Application Support/`.
+`~/Library/Containers/de.appfabrik.restorationjournal/Data/Library/Application Support/`.
 Den vollständigen tatsächlich verwendeten Pfad mit „Über die App“ kontrollieren.
 Normale Nutzerdaten nicht automatisch kopieren oder migrieren. `--data-dir`
 ist bei Sandbox-Tests auf zugängliche Containerpfade beschränkt.

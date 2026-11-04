@@ -70,12 +70,14 @@ Alles bleibt lokal, ohne Konto und Internet.
 
 ![Restoration Journal mit synthetischem Erbstückregal](docs/screenshots/restaurierungsheft.png)
 
-Version 0.1.0 ist die fünfte kleine C++-App des Hobby-Portfolios und ein
+Version 1.0 ist die fünfte kleine C++-App des Hobby-Portfolios und ein
 nachvollziehbares Bewerbungsprojekt. Gegenüber HolzwerkProjekt kommt genau eine
 Hauptfunktion hinzu: PDF-Export. Am 28. Oktober 2026 wurde die frühere Reserve
-ausdrücklich beauftragt. Veröffentlichungsziele sind ausdrücklich
-**zuerst Microsoft Store, später Mac App Store für Mac-Computer**.
-Es wurde nichts veröffentlicht oder bei einem Store eingereicht.
+ausdrücklich beauftragt. Der Nutzer hat am 4. November 2026 die Vorbereitung
+für den **Mac App Store** vorgezogen. Die englische Mac-Bundle-ID lautet
+`de.appfabrik.restorationjournal`; bestehende interne Datenpfade bleiben erhalten.
+Die native Abnahme und der Einreichungsablauf sind in
+[Mac App Store release](docs/mac-app-store-release.md) beschrieben.
 
 ## Entwickeln und starten
 
