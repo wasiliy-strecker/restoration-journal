@@ -84,12 +84,8 @@ ProjectEditor::ProjectEditor(StorageController& controller,
   error_->setWordWrap(true);
   error_->setAccessibleName(QCoreApplication::translate("App", "Hinweis zum Speichern"));
   error_->hide();
-  connect(name_, &QLineEdit::textChanged, this, [this] {
-    if (validationError_ && !name_->text().trimmed().isEmpty()) {
-      validationError_ = false;
-      error_->hide();
-    }
-  });
+  connect(name_, &QLineEdit::textChanged, this, &ProjectEditor::updateValidationFeedback);
+  connect(checklist_, &ChecklistEditor::changed, this, &ProjectEditor::updateValidationFeedback);
   if (existing) {
     (void)storedStatus(existing->fields.status);
     id_ = existing->id;
@@ -123,7 +119,6 @@ ProjectEditor::ProjectEditor(StorageController& controller,
       QCoreApplication::translate("App", "Nur der Projektname ist erforderlich."), formWidget);
   hint->setWordWrap(true);
   form->addRow(hint);
-  form->addRow(error_);
   form->addRow(QCoreApplication::translate("App", "&Projektname *"), name_);
   form->addRow(QCoreApplication::translate("App", "Gegenstand oder &Material"), material_);
   form->addRow(QCoreApplication::translate("App", "Farbe"), color_);
@@ -147,6 +142,8 @@ ProjectEditor::ProjectEditor(StorageController& controller,
     QTimer::singleShot(0, field, [scroll, field] { scroll->ensureWidgetVisible(field); });
   });
   root->addWidget(scroll, 1);
+  // Keep the reason for a rejected save visible even at the bottom of a long checklist.
+  root->addWidget(error_);
   auto* buttons = new QDialogButtonBox(this);
   buttons->addButton(cancel_, QDialogButtonBox::RejectRole);
   buttons->addButton(save_, QDialogButtonBox::AcceptRole);
@@ -163,14 +160,13 @@ ProjectEditor::ProjectEditor(StorageController& controller,
     }
   });
   connect(&controller_, &StorageController::failed, this,
-          [this, scroll](Operation operation, const QString& message) {
+          [this](Operation operation, const QString& message) {
             if ((operation == Operation::Save && saving_) ||
                 (operation == Operation::Import && importing_)) {
               importing_ = false;
               setSaving(false);
               error_->setText(message);
               error_->show();
-              scroll->ensureWidgetVisible(error_);
             }
           });
   connect(&controller_, &StorageController::imported, this,
@@ -240,7 +236,26 @@ void ProjectEditor::save() {
     validationError_ = true;
     error_->setText(QString::fromUtf8(error.what()));
     error_->show();
-    scroll_->ensureWidgetVisible(error_);
+    auto* field = name_->text().trimmed().isEmpty() ? name_ : checklist_->firstInvalidField();
+    if (field) {
+      // Wait until showing the error has resized the scroll viewport.
+      QTimer::singleShot(0, field, [this, field] {
+        field->setFocus();
+        scroll_->ensureWidgetVisible(field);
+      });
+    }
+  }
+}
+
+void ProjectEditor::updateValidationFeedback() {
+  if (!validationError_)
+    return;
+  try {
+    (void)validateDraft(draft());
+    validationError_ = false;
+    error_->hide();
+  } catch (const ValidationError& error) {
+    error_->setText(QString::fromUtf8(error.what()));
   }
 }
 
